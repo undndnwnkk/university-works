@@ -1,5 +1,9 @@
 package commands;
 
-public class Clear {
+import storage.Storage;
 
+public class Clear {
+    public Clear(Storage storage) {
+        storage.getFlatStorage().clear();
+    }
 }

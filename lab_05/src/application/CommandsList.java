@@ -33,7 +33,7 @@ public class CommandsList {
         commandArguments = Arrays.copyOfRange(commandAndArguments, 1, commandAndArguments.length);
     }
 
-    public CommandsList(Storage storage, String input) {
+    public CommandsList(Storage storage, String input, String filename) {
         getCommandAndArguments(input);
 
         switch (currentCommand) {
@@ -43,15 +43,15 @@ public class CommandsList {
             case "add" -> new Add(storage, commandArguments);
             case "update" -> new Update(storage, commandArguments);
             case "remove_by_id" -> new RemoveById(storage, commandArguments);
-//            case "clear" -> new Clear();
-//            case "save" -> new Save();
-//            case "execute_script" -> new ExecuteScript(commandArguments);
-//            case "exit" -> new Exit();
-//            case "remove_first" -> new RemoveFirst();
-//            case "reorder" -> new Reorder();
-//            case "sort" -> new Sort();
-//            case "min_by_id" -> new MinById();
-//            case "filter_by_transport" -> new FilterByTransport(commandArguments);
+            case "clear" -> new Clear(storage);
+            case "save" -> new Save(storage, filename);
+            case "execute_script" -> new ExecuteScript(storage, commandArguments);
+            case "exit" -> new Exit();
+            case "remove_first" -> new RemoveFirst(storage);
+            case "reorder" -> new Reorder(storage);
+            case "sort" -> new Sort(storage);
+            case "min_by_id" -> new MinById(storage);
+            case "filter_by_transport" -> new FilterByTransport(storage, commandArguments);
 //            case "filter_contains_name" -> new FilterContainsName(commandArguments);
             default -> System.out.println("Unknown command!");
         }

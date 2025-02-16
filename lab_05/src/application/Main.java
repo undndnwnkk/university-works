@@ -42,7 +42,7 @@ public class Main {
             while(true) {
                 System.out.print("\nPlease enter a command: ");
                 String command = scanner.nextLine();
-                new CommandsList(storage, command);
+                new CommandsList(storage, command, filename);
             }
         } catch(NoSuchElementException e) {
             System.out.println("Unknown command!");
