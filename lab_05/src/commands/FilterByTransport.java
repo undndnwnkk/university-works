@@ -10,7 +10,8 @@ public class FilterByTransport {
         } else {
             System.out.println("Elements with transport type " + commandArguments[0] + ":");
             for(Flat flat : storage.getFlatStorage()) {
-                if(flat.getTransport().equals(commandArguments[0])) {
+                if (flat.getTransport() != null &&
+                        flat.getTransport().toString().equals(commandArguments[0].toUpperCase())) {
                     System.out.println(flat);
                 }
             }

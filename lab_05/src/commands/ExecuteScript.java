@@ -15,7 +15,7 @@ public class ExecuteScript {
             return;
         }
 
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(storage.getFilename()))) {
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(commandArguments[0]))) {
             String currentLine;
             while ((currentLine = bufferedReader.readLine()) != null) {
                 currentLine.trim();

@@ -1,0 +1,33 @@
+[
+  {
+    "id": 6,
+    "name": "acv",
+    "coordinates": {
+      "x": 2.0,
+      "y": 2.0
+    },
+    "creationDate": "Feb 16, 2025, 6:33:32 PM",
+    "area": 2,
+    "numberOfRooms": 2,
+    "furnish": "BAD",
+    "view": "TERRIBLE",
+    "house": {
+      "name": "ajsdad",
+      "year": 34,
+      "numberOfFlatsOnFloor": 3
+    }
+  },
+  {
+    "id": 7,
+    "name": "sdfdsf",
+    "coordinates": {
+      "x": 2.0,
+      "y": 2.0
+    },
+    "creationDate": "Feb 16, 2025, 6:33:59 PM",
+    "area": 2,
+    "numberOfRooms": 2,
+    "furnish": "LITTLE",
+    "view": "PARK"
+  }
+]

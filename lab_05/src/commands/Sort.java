@@ -2,8 +2,6 @@ package commands;
 
 import storage.Storage;
 
-import java.util.Collections;
-
 public class Sort {
     public Sort(Storage storage) {
         if(storage.getFlatStorage().isEmpty()) {

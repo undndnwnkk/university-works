@@ -9,8 +9,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // To start: jar cfm app.jar src/META-INF/MANIFEST.mf -C out/production/lab_05 .
-        // java -jar app.jar your_file.json
+        // To start: javac -d out -cp src/libraries/gson-2.12.1.jar -sourcepath src $(find src -name "*.java")
+        // Create jar: jar cfm app.jar /home/undndnwnkk/development/java/itmo-labs/lab_05/src/META-INF/MANIFEST.mf -C out .
+        // Start program: java -cp app.jar:src/libraries/gson-2.12.1.jar application.Main test.json
 
         String filename;
         if(args.length == 0) {

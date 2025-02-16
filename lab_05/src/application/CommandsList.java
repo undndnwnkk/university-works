@@ -52,7 +52,7 @@ public class CommandsList {
             case "sort" -> new Sort(storage);
             case "min_by_id" -> new MinById(storage);
             case "filter_by_transport" -> new FilterByTransport(storage, commandArguments);
-//            case "filter_contains_name" -> new FilterContainsName(commandArguments);
+            case "filter_contains_name" -> new FilterContainsName(storage, commandArguments);
             default -> System.out.println("Unknown command!");
         }
     }
