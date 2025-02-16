@@ -16,8 +16,8 @@
 - [Installation & Running](#installation--running)
     - [Requirements](#requirements)
     - [Compilation & Execution](#compilation--execution)
-- [Contributing](#contributing)
-- [License](#license)
+- [Javadoc documentation](#javadoc-documentation)
+- [Diagram of project](#project-diagram)
 
 ## Overview
 This project is a command-line application for managing a collection of real estate flats. It provides a set of commands to manipulate, filter, and store information about flats. The data is stored in a JSON file, allowing persistent data storage and retrieval.
@@ -102,9 +102,21 @@ The `CommandsList` class processes user input and executes the appropriate comma
    java -cp app.jar:src/libraries/gson-2.12.1.jar application.Main data.json
    ```
 
-## Contributing
-Feel free to contribute by reporting issues or submitting pull requests.
+### Javadoc documentation
+1. Create docs/ folder with html-files:
+```sh
+javadoc -d docs -sourcepath src -subpackages application storage commands readWrite -classpath src/libraries/gson-2.12.1.jar
+```
+2. Go to docs/ folder
+```sh
+cd src/docs/
+```
+3. Open index.html file:
+```sh
+xdg-open index.html  # Linux
+open index.html      # macOS
+start index.html     # Windows (in command line)
+```
 
-## License
-This project is open-source and licensed under the MIT License.
-
+### Project diagram
+![](diagram.png)
