@@ -119,4 +119,4 @@ start index.html     # Windows (in command line)
 ```
 
 ### Project diagram
-![Diagram](diagram.png)
+![Diagram](https://github.com/undndnwnkk/university-works/raw/main/lab_05/diagram.png)
