@@ -119,4 +119,4 @@ start index.html     # Windows (in command line)
 ```
 
 ### Project diagram
-![](diagram.png)
+![Diagram](diagram.png)
