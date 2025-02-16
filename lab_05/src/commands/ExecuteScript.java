@@ -8,26 +8,34 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * The ExecuteScript class reads and executes commands from a file.
+ */
 public class ExecuteScript {
+    /**
+     * Executes commands from a specified script file.
+     * @param storage the storage object used in commands
+     * @param commandArguments the command arguments containing the script filename
+     */
     public ExecuteScript(Storage storage, String[] commandArguments) {
-        if(commandArguments.length == 0) {
-            System.out.println("Enough arguments to execute script");
+        if (commandArguments.length == 0) {
+            System.out.println("Error! No script filename provided.");
             return;
         }
 
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(commandArguments[0]))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(commandArguments[0]))) {
             String currentLine;
             while ((currentLine = bufferedReader.readLine()) != null) {
-                currentLine.trim();
-                if(!currentLine.isEmpty()) {
-                    System.out.println("Executing command " + currentLine);
+                currentLine = currentLine.trim();
+                if (!currentLine.isEmpty()) {
+                    System.out.println("Executing command: " + currentLine);
                     new CommandsList(storage, currentLine, storage.getFilename());
                 }
             }
-        } catch(FileNotFoundException e) {
-            System.out.println("File not found");
+        } catch (FileNotFoundException e) {
+            System.out.println("Error! File not found.");
         } catch (IOException e) {
-            System.out.println("Error reading file");
+            System.out.println("Error reading file.");
         }
     }
 }

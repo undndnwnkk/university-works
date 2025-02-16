@@ -4,6 +4,9 @@ import java.util.Arrays;
 import commands.*;
 import storage.Storage;
 
+/**
+ * The CommandsList class processes user commands and executes them accordingly.
+ */
 public class CommandsList {
     private final String[] commands = {
             "help",
@@ -26,6 +29,10 @@ public class CommandsList {
     private String currentCommand;
     private String[] commandArguments;
 
+    /**
+     * Splits input into command and arguments.
+     * @param input the user input string
+     */
     private void getCommandAndArguments(String input) {
         input = input.trim();
         String[] commandAndArguments = input.split("\\s+");
@@ -33,6 +40,12 @@ public class CommandsList {
         commandArguments = Arrays.copyOfRange(commandAndArguments, 1, commandAndArguments.length);
     }
 
+    /**
+     * Executes the appropriate command based on user input.
+     * @param storage the storage object containing flats
+     * @param input the user command input
+     * @param filename the filename where data is stored
+     */
     public CommandsList(Storage storage, String input, String filename) {
         getCommandAndArguments(input);
 

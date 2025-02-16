@@ -9,7 +9,19 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.Vector;
 
+/**
+ * The Reader class is responsible for reading JSON files and parsing them into objects.
+ */
 public class Reader {
+    /**
+     * Default constructor(nothing to do)
+     */
+    public Reader(){}
+    /**
+     * Reads a JSON file and parses it into a collection of Flat objects.
+     * @param filename the name of the JSON file
+     * @return a Vector of Flat objects
+     */
     public static Vector<Flat> readJson(String filename) {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(filename), "UTF-8")) {
             Gson gson = new Gson();
@@ -27,6 +39,13 @@ public class Reader {
         return null;
     }
 
+    /**
+     * Parses a JSON string into an object of the specified type.
+     * @param json the JSON string
+     * @param classType the class type to parse into
+     * @param <T> the type of object to return
+     * @return the parsed object or null if an error occurs
+     */
     public static <T> T parseJsonFromString(String json, Class<T> classType) {
         try {
             Gson gson = new Gson();
