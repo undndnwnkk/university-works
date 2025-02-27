@@ -4,13 +4,13 @@
     "name": "acv",
     "coordinates": {
       "x": 2.0,
-      "y": 2.0
+      "y": -50
     },
     "creationDate": "Feb 16, 2025, 6:33:32 PM",
     "area": 2,
     "numberOfRooms": 2,
     "furnish": "BAD",
-    "view": "TERRIBLE",
+    "view": "PARK",
     "house": {
       "name": "ajsdad",
       "year": 34,

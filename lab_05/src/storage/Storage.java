@@ -2,13 +2,14 @@ package storage;
 
 import collections.Flat;
 import readWrite.Reader;
+import validation.Validation;
 
 import java.util.Date;
 import java.util.Vector;
 
 /**
- * The Storage class represents a storage system for Flat objects.
- * It provides functionalities to load, store, and manage flats.
+ * The {@code Storage} class manages the collection of {@code Flat} objects.
+ * It loads data from a JSON file, ensures its validity, and provides methods to interact with the collection.
  */
 public class Storage {
     private Vector<Flat> flatStorage;
@@ -17,8 +18,9 @@ public class Storage {
     private int currentId = 1;
 
     /**
-     * Constructs a Storage instance and loads data from the specified file.
-     * @param filename the file to load flats from
+     * Constructs a {@code Storage} instance and loads data from the specified JSON file.
+     *
+     * @param filename the name of the JSON file to load data from.
      */
     public Storage(String filename) {
         this.filename = filename;
@@ -28,28 +30,24 @@ public class Storage {
     }
 
     /**
-     * Loads flats from the file and updates the storage.
+     * Loads data from the JSON file, validates it, and adds only valid objects to the collection.
+     * Also, determines the next available ID based on the highest existing ID.
      */
     public void loadFromFile() {
-        Vector<Flat> loadedFlats = Reader.readJson(filename);
-        if (loadedFlats != null) {
-            this.flatStorage = loadedFlats;
-            System.out.println("Loaded " + loadedFlats.size() + " flats");
+        Validation validation = new Validation(filename);
+        this.flatStorage = validation.getValidFlats();
 
-            int maxId = 0;
-            for (Flat flat : loadedFlats) {
-                if (flat.getId() > maxId) {
-                    maxId = flat.getId();
-                }
-            }
+        if (!flatStorage.isEmpty()) {
+            System.out.println("Loaded " + flatStorage.size() + " valid flats.");
+            int maxId = flatStorage.stream().mapToInt(Flat::getId).max().orElse(0);
             this.currentId = maxId + 1;
         } else {
-            System.out.println("No file found");
+            System.out.println("No valid flats found.");
         }
     }
 
     /**
-     * Prints information about the current storage collection.
+     * Prints information about the collection, including type, initialization date, and number of elements.
      */
     public void printCollectionInfo() {
         System.out.println("Collection information:");
@@ -59,40 +57,45 @@ public class Storage {
     }
 
     /**
-     * It's date getter
-     * @return the date when the storage was initialized
+     * Returns the initialization date of the collection.
+     *
+     * @return the date when the collection was initialized.
      */
     public Date getInitializationDate() {
         return initializationDate;
     }
 
     /**
-     * It's filename getter
-     * @return the filename where flats are stored
+     * Returns the filename associated with this storage.
+     *
+     * @return the name of the JSON file.
      */
     public String getFilename() {
         return filename;
     }
 
     /**
-     * It's collection getter
-     * @return the collection of stored flats
+     * Returns the collection of {@code Flat} objects.
+     *
+     * @return a {@code Vector} containing all valid {@code Flat} objects.
      */
     public Vector<Flat> getFlatStorage() {
         return flatStorage;
     }
 
     /**
-     * It's current ID getter
-     * @return the current ID counter for new flats
+     * Returns the current available ID for new objects.
+     *
+     * @return the next available ID.
      */
     public Integer getCurrentId() {
         return currentId;
     }
 
     /**
-     * Updates the current ID counter.
-     * @param currentId the new ID counter value
+     * Sets the current ID value, which is used for assigning new IDs.
+     *
+     * @param currentId the new ID value.
      */
     public void setCurrentId(Integer currentId) {
         this.currentId = currentId;

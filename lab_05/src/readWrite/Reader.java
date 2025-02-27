@@ -38,21 +38,4 @@ public class Reader {
         }
         return null;
     }
-
-    /**
-     * Parses a JSON string into an object of the specified type.
-     * @param json the JSON string
-     * @param classType the class type to parse into
-     * @param <T> the type of object to return
-     * @return the parsed object or null if an error occurs
-     */
-    public static <T> T parseJsonFromString(String json, Class<T> classType) {
-        try {
-            Gson gson = new Gson();
-            return gson.fromJson(json, classType);
-        } catch (JsonSyntaxException e) {
-            System.out.println("Invalid JSON format!");
-        }
-        return null;
-    }
 }

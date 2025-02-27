@@ -10,6 +10,7 @@ public class Help {
     public Help() {
         System.out.println("Available commands:");
         System.out.println("help -> List available commands");
+        System.out.println("show -> show current collection of classes");
         System.out.println("info -> Display collection information");
         System.out.println("add {element} -> Add a new element to the collection");
         System.out.println("update {id} {element} -> Update an element by its ID");
