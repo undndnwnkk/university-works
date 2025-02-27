@@ -53,7 +53,7 @@ public class CommandsList {
             case "help" -> new Help();
             case "info" -> new Info(storage);
             case "show" -> new Show(storage);
-            case "add" -> new Add(storage, commandArguments);
+            case "add" -> new Add(storage);
             case "update" -> new Update(storage, commandArguments);
             case "remove_by_id" -> new RemoveById(storage, commandArguments);
             case "clear" -> new Clear(storage);

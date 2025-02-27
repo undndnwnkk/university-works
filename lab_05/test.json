@@ -29,5 +29,24 @@
     "numberOfRooms": 2,
     "furnish": "LITTLE",
     "view": "PARK"
+  },
+  {
+    "id": 8,
+    "name": "kasdkasjd",
+    "coordinates": {
+      "x": 123.0,
+      "y": 32.0
+    },
+    "creationDate": "Feb 27, 2025, 10:47:22 AM",
+    "area": 22,
+    "numberOfRooms": 3,
+    "furnish": "LITTLE",
+    "view": "YARD",
+    "transport": "LITTLE",
+    "house": {
+      "name": "asdads",
+      "year": 23,
+      "numberOfFlatsOnFloor": 3
+    }
   }
 ]
