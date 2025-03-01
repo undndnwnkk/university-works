@@ -1,6 +1,8 @@
 package validation;
 
 import collections.Flat;
+import collections.Furnish;
+import collections.View;
 import readWrite.Reader;
 
 import java.util.Vector;
@@ -11,8 +13,7 @@ import java.util.Vector;
  * number of discarded elements is displayed in the console.
  */
 public class Validation {
-    private Vector<Flat> validFlats;
-    private int invalidCount;
+    private final Vector<Flat> validFlats;
 
     /**
      * Constructs a {@code Validation} instance that loads and validates data from a JSON file.
@@ -22,7 +23,7 @@ public class Validation {
     public Validation(String filename) {
         Vector<Flat> loadedFlats = Reader.readJson(filename);
         this.validFlats = new Vector<>();
-        this.invalidCount = 0;
+        int invalidCount = 0;
 
         if (loadedFlats != null) {
             for (Flat flat : loadedFlats) {
@@ -46,14 +47,24 @@ public class Validation {
      * @return {@code true} if the object is valid, otherwise {@code false}.
      */
     private boolean isValid(Flat flat) {
-        return flat != null &&
-                flat.getName() != null && !flat.getName().isEmpty() &&
-                flat.getCoordinates() != null &&
-                flat.getCoordinates().getY() > -46 &&
-                flat.getArea() > 0 &&
-                flat.getNumberOfRooms() > 0 &&
-                flat.getFurnish() != null &&
-                flat.getView() != null;
+        if(flat != null && flat.getName() != null
+            && !flat.getName().isEmpty()
+            && flat.getCoordinates() != null &&
+            flat.getCoordinates().getY() > -46 &&
+            flat.getArea() > 0 && flat.getNumberOfRooms() > 0 &&
+            flat.getFurnish() != null && flat.getView() != null) {
+
+            return (flat.getFurnish() == Furnish.BAD ||
+                    flat.getFurnish() == Furnish.FINE ||
+                    flat.getFurnish() == Furnish.LITTLE) &&
+                    (flat.getView() == View.PARK ||
+                            flat.getView() == View.YARD ||
+                            flat.getView() == View.STREET ||
+                            flat.getView() == View.TERRIBLE);
+        }
+        else {
+            return false;
+        }
     }
 
     /**

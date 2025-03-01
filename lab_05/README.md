@@ -5,8 +5,9 @@
 - [Features](#features)
 - [Project Structure](#project-structure)
     - [Storage System](#1-storage-system)
-    - [Command Handling](#2-command-handling)
-    - [Data Handling](#3-data-handling)
+    - [Validation System](#2-validation-system)
+    - [Command Handling](#3-command-handling)
+    - [Data Handling](#4-data-handling)
 - [How It Works](#how-it-works)
     - [Initialization](#initialization)
     - [Adding a Flat](#adding-a-flat)
@@ -35,7 +36,18 @@ This project is a command-line application for managing a collection of real est
 ### 1. **Storage System**
 The `Storage` class manages the collection of flats, loads them from a JSON file, and provides an interface for handling various operations.
 
-### 2. **Command Handling**
+### 2. **Validation System**
+The `Validation` class ensures data integrity by validating the loaded flats before adding them to the collection.
+- It reads flats from a JSON file using `Reader.readJson(filename)`.
+- Invalid flats are discarded, and their count is displayed.
+- The `isValid(Flat flat)` method checks:
+    - Name is not null or empty.
+    - Coordinates are not null, and `Y > -46`.
+    - Area and number of rooms are positive values.
+    - Furnish and view are not null and belong to allowed values.
+- The method `getValidFlats()` returns only valid flats.
+
+### 3. **Command Handling**
 The `CommandsList` class processes user input and executes the appropriate commands. The available commands include:
 - `help` - Displays available commands
 - `info` - Shows information about the collection
@@ -53,7 +65,7 @@ The `CommandsList` class processes user input and executes the appropriate comma
 - `filter_by_transport` - Filters flats by transport type
 - `filter_contains_name` - Displays flats whose names contain a given substring
 
-### 3. **Data Handling**
+### 4. **Data Handling**
 - The `Reader` class reads flat data from a JSON file
 - The `Writer` class saves the collection to a JSON file
 
@@ -61,8 +73,9 @@ The `CommandsList` class processes user input and executes the appropriate comma
 ### Initialization
 1. The program is executed with a JSON filename as an argument.
 2. The `Storage` class loads data from the specified file.
-3. A loop runs, prompting the user to enter commands.
-4. The `CommandsList` class processes and executes the entered command.
+3. The `Validation` class filters out invalid flats.
+4. A loop runs, prompting the user to enter commands.
+5. The `CommandsList` class processes and executes the entered command.
 
 ### Adding a Flat
 1. The user enters the `add` command.
@@ -120,3 +133,4 @@ start index.html     # Windows (in command line)
 
 ### Project diagram
 ![Diagram](https://github.com/undndnwnkk/university-works/raw/main/lab_05/diagram.png)
+

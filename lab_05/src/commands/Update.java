@@ -8,14 +8,21 @@ import collections.View;
 import collections.Transport;
 import storage.Storage;
 import java.util.Scanner;
-import java.util.Vector;
 
 /**
  * The Update class updates the attributes of an existing flat in the storage.
  */
-
 public class Update {
+    /**
+     * Storage contains our classes
+     */
     public final Storage storage;
+
+    /**
+     * Constructs an {@code Update} object and starts the update process for the given flat ID.
+     * @param storage The storage containing flats.
+     * @param commandArguments The arguments provided with the command, where the first argument should be the flat ID.
+     */
     public Update(Storage storage, String[] commandArguments) {
         this.storage = storage;
 
@@ -27,6 +34,10 @@ public class Update {
         }
     }
 
+    /**
+     * Reads new attributes from the console and updates the flat with the given ID.
+     * @param id The ID of the flat to update.
+     */
     private void readFromConsole(int id) {
         Flat updatingFlat = findFlatByid(id);
         Scanner scanner = new Scanner(System.in);
@@ -35,7 +46,7 @@ public class Update {
             // name response
             System.out.print("Set a new name: ");
             String currentInput = scanner.nextLine().trim();
-            if(currentInput != null) {
+            if(!currentInput.isEmpty()) {
                 updatingFlat.setName(currentInput);
             }
 
@@ -46,7 +57,7 @@ public class Update {
             System.out.print("Enter new X coordinate: ");
             currentInput = scanner.nextLine().trim();
 
-            if(currentInput != null) {
+            if(!currentInput.isEmpty()) {
                 try {
                     x = Float.parseFloat(currentInput);
                     newCoordinates.setX(x);
@@ -59,7 +70,7 @@ public class Update {
 
             System.out.print("Enter new Y coordinate: ");
             currentInput = scanner.nextLine().trim();
-            if(currentInput != null) {
+            if(!currentInput.isEmpty()) {
                 try {
                     y = Float.parseFloat(currentInput);
                     newCoordinates.setY(y);
@@ -73,76 +84,79 @@ public class Update {
 
             // Area response
             System.out.print("Set a new area : ");
-            currentInput = scanner.nextLine().trim();
-            if(currentInput != null) {
-                while(true) {
+            while(true) {
+                currentInput = scanner.nextLine().trim();
+
+                if(!currentInput.isEmpty()) {
                     try {
-                        int newArea = Integer.parseInt(currentInput);
-                        if(newArea > 0) {
-                            updatingFlat.setArea(newArea);
+                        if(Integer.parseInt(currentInput) > 0) {
+                            updatingFlat.setArea(Integer.parseInt(currentInput));
                             break;
                         } else {
-                            System.out.println("Area must be greater than 0");
+                            System.out.println("You wrote number, which less than 0. Try again!");
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("You don't wrote a number!");
+                        System.out.println("You don't wrote a number! Try again!");
                     }
                 }
             }
 
             // Number of rooms response
             System.out.print("Set a new number of rooms: ");
-            currentInput = scanner.nextLine().trim();
+            while(true) {
+                currentInput = scanner.nextLine().trim();
 
-            if(currentInput != null) {
-                while(true) {
-                    if(Integer.parseInt(currentInput) > 0) {
+                if(!currentInput.isEmpty()) {
+                    try {
                         updatingFlat.setNumberOfRooms(Integer.parseInt(currentInput));
                         break;
-                    } else {
-                        System.out.println("Number of rooms must be greater than 0");
+                    } catch (NumberFormatException e) {
+                        System.out.println("Incorrect data! Try again!");
                     }
                 }
             }
 
             // Furnish response
-            System.out.print("Set type of furnish (You can choose: FINE, BAD< LITTLE): ");
+            System.out.print("Set type of furnish(You can choose: fine, bad, little): ");
             currentInput = scanner.nextLine().trim();
 
-            if(currentInput != null) {
-                currentInput.toUpperCase();
+            if(!currentInput.isEmpty()) {
+                currentInput = currentInput.toUpperCase();
                 switch(currentInput) {
                     case "FINE" -> updatingFlat.setFurnish(Furnish.FINE);
                     case "BAD" -> updatingFlat.setFurnish(Furnish.BAD);
                     case "LITTLE" -> updatingFlat.setFurnish(Furnish.LITTLE);
+                    default -> System.out.println("Sorry, we don't has this type.. :(");
                 }
             }
 
             // View response
-            System.out.print("Set a new view type: (You can choose: street, yard, park, terrible)");
+            System.out.print("Set a new view type (You can choose: street, yard, park, terrible): ");
             currentInput = scanner.nextLine().trim();
 
-            if(currentInput != null) {
-                currentInput.toUpperCase();
+            if(!currentInput.isEmpty()) {
+                currentInput = currentInput.toUpperCase();
                 switch(currentInput) {
                     case "STREET" -> updatingFlat.setView(View.STREET);
                     case "YARD" -> updatingFlat.setView(View.YARD);
                     case "PARK" -> updatingFlat.setView(View.PARK);
                     case "TERRIBLE" -> updatingFlat.setView(View.TERRIBLE);
+                    default -> System.out.println("Sorry, we don't have this view type.. :(");
                 }
             }
 
             // Transport response
-            System.out.print("Choose a new transport type: (You can choose: few, none, little, normal, enough)");
+            System.out.print("Choose a new transport type (You can choose: few, none, little, normal, enough): ");
             currentInput = scanner.nextLine().trim();
-            if(currentInput != null) {
-                currentInput.toUpperCase();
+            if(!currentInput.isEmpty()) {
+                currentInput = currentInput.toUpperCase();
                 switch(currentInput) {
                     case "FEW" -> updatingFlat.setTransport(Transport.FEW);
                     case "NONE" -> updatingFlat.setTransport(Transport.NONE);
                     case "LITTLE" -> updatingFlat.setTransport(Transport.LITTLE);
                     case "NORMAL" -> updatingFlat.setTransport(Transport.NORMAL);
                     case "ENOUGH" -> updatingFlat.setTransport(Transport.ENOUGH);
+                    default -> System.out.println("Sorry, we don't have this transport type.. :(");
                 }
             }
 
@@ -150,15 +164,15 @@ public class Update {
             System.out.print("Do you want to enter house data? (yes/no): ");
             currentInput = scanner.nextLine().trim().toLowerCase();
 
-            if(currentInput == "yes" || currentInput == "y") {
+            if(currentInput.equals("yes") || currentInput.equals( "y")) {
                 House newHouse = new House();
 
                 // House name response
                 System.out.print("Write a new house name(or write 'null' to delete older name): ");
                 currentInput = scanner.nextLine().trim();
 
-                if(currentInput != null) {
-                    if(currentInput != "null") {
+                if(!currentInput.isEmpty()) {
+                    if(!currentInput.equals("null")) {
                         newHouse.setName(currentInput);
                     } else {
                         newHouse.setName(null);
@@ -169,14 +183,15 @@ public class Update {
 
                 // House year response
                 System.out.print("Write a new house year(it must be greater than 0 but lower than 822): ");
-                currentInput = scanner.nextLine().trim();
-                if(currentInput != null) {
+                if(!currentInput.isEmpty()) {
                     while(true) {
+                        currentInput = scanner.nextLine().trim();
+
                         if(Integer.parseInt(currentInput) > 0 && Integer.parseInt(currentInput) <= 822) {
                             newHouse.setYear(Integer.parseInt(currentInput));
                             break;
                         } else {
-                            System.out.println("Uncorrect number! Try again!");
+                            System.out.println("Incorrect number! Try again!");
                         }
                     }
                 } else {
@@ -185,24 +200,25 @@ public class Update {
 
                 // House Number of flats on room response
                 System.out.print("Write a number of flats on room: ");
-                currentInput = scanner.nextLine().trim();
+                while(true) {
+                    currentInput = scanner.nextLine().trim();
 
-                if(currentInput != null) {
-                    while(true) {
-                        if(Integer.parseInt(currentInput) > 0) {
-                            newHouse.setNumberOfFlatsOnFloor(Integer.parseInt(currentInput));
-                            break;
-                        } else {
-                            System.out.print("Write a number greater than 0!");
+                    if(!currentInput.isEmpty()) {
+                        try {
+                            if(Integer.parseInt(currentInput) > 0) {
+                                newHouse.setNumberOfFlatsOnFloor(Integer.parseInt(currentInput));
+                                break;
+                            } else {
+                                System.out.println("You should write more rooms than 0...");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Incorrect data! Try again!");
                         }
                     }
-                } else {
-                    newHouse.setNumberOfFlatsOnFloor(updatingFlat.getHouse().getNumberOfFlatsOnFloor());
                 }
 
                 // Adding newHouse to updating flat
                 updatingFlat.setHouse(newHouse);
-
                 System.out.println("Congratulations! Your new Flat info: \n" + updatingFlat.toString() );
             }
 
@@ -213,6 +229,11 @@ public class Update {
 
     }
 
+    /**
+     * Finds a flat by input id
+     * @param id It's id of the flat
+     * @return The flat with given id, or {@code null} if not found
+     */
     Flat findFlatByid(int id) {
         for(Flat flat : storage.getFlatStorage()) {
             if(flat.getId() == id) {
