@@ -51,6 +51,11 @@ public class Main {
         try {
             while (true) {
                 System.out.print("\nPlease enter a command: ");
+                if(!scanner.hasNextLine()) {
+                    System.out.println("\nUse 'exit' command to end a program");
+                    scanner = new Scanner(System.in);
+                    continue;
+                }
                 String command = scanner.nextLine();
                 new CommandsList(storage, command, filename);
             }

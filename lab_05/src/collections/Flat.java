@@ -16,18 +16,17 @@ public class Flat implements Comparable<Flat> {
 
     @Override
     public String toString() {
-        return "Flat{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", coordinates=" + coordinates +
-                ", creationDate=" + creationDate +
-                ", area=" + area +
-                ", numberOfRooms=" + numberOfRooms +
-                ", furnish=" + furnish +
-                ", view=" + view +
-                ", transport=" + transport +
-                ", house=" + house +
-                '}';
+        return "Flat " + id + " info: " +
+                "\n    Name of the flat: " + name +
+                "\n    X coordinate: " + coordinates.getX() +
+                "\n    Y coordinate: " + coordinates.getY() +
+                "\n    Creation date: " + creationDate +
+                "\n    Area: " + area +
+                "\n    Number of rooms: " + numberOfRooms +
+                "\n    Furnish type: " + furnish +
+                "\n    View type: " + view +
+                "\n    Transport type: " + transport +
+                "\n    House info: " + house;
     }
 
     // Getters and setters

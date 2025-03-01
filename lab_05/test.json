@@ -1,52 +1,34 @@
 [
   {
-    "id": 6,
-    "name": "acv",
+    "id": 1,
+    "name": "abc",
     "coordinates": {
       "x": 2.0,
-      "y": -50
+      "y": 1.0
     },
-    "creationDate": "Feb 16, 2025, 6:33:32 PM",
-    "area": 2,
+    "creationDate": "Mar 1, 2025, 4:27:32 PM",
+    "area": 13,
     "numberOfRooms": 2,
-    "furnish": "BAD",
-    "view": "PARK",
+    "furnish": "FINE",
+    "view": "STREET",
+    "transport": "NORMAL",
     "house": {
-      "name": "ajsdad",
-      "year": 34,
-      "numberOfFlatsOnFloor": 3
-    }
-  },
-  {
-    "id": 7,
-    "name": "sdfdsf",
-    "coordinates": {
-      "x": 2.0,
-      "y": 2.0
-    },
-    "creationDate": "Feb 16, 2025, 6:33:59 PM",
-    "area": 2,
-    "numberOfRooms": 2,
-    "furnish": "LITTLE",
-    "view": "PARK"
-  },
-  {
-    "id": 8,
-    "name": "kasdkasjd",
-    "coordinates": {
-      "x": 123.0,
-      "y": 32.0
-    },
-    "creationDate": "Feb 27, 2025, 10:47:22 AM",
-    "area": 22,
-    "numberOfRooms": 3,
-    "furnish": "LITTLE",
-    "view": "YARD",
-    "transport": "LITTLE",
-    "house": {
-      "name": "asdads",
+      "name": "abcde",
       "year": 23,
-      "numberOfFlatsOnFloor": 3
+      "numberOfFlatsOnFloor": 2
     }
+  },
+  {
+    "id": 2,
+    "name": "test",
+    "coordinates": {
+      "x": 1.0,
+      "y": 1.0
+    },
+    "creationDate": "Mar 1, 2025, 5:41:28 PM",
+    "area": 1,
+    "numberOfRooms": 1,
+    "furnish": "FINE",
+    "view": "STREET"
   }
 ]
