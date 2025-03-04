@@ -111,4 +111,5 @@ The information about Pokemon species and moves was obtained from [Pokemon Datab
 ## Pokemons info
 ![Pokemons](assets/pokemons.jpg)
 
-## 
+## Diagram of classes
+![Diagram](assets/diagram.png)
