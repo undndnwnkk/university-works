@@ -109,6 +109,6 @@ Class-Path: Pokemon.jar
 The information about Pokemon species and moves was obtained from [Pokemon Database](https://pokemondb.net/).
 
 ## Pokemons info
-![Pokemons](/assets/pokemons.jpg)
+![Pokemons](assets/pokemons.jpg)
 
 ## 
