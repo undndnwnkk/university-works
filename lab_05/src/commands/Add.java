@@ -135,7 +135,7 @@ public class Add {
             System.out.println("Available options for transport: FEW, NONE, LITTLE, NORMAL, ENOUGH");
             System.out.print("Enter transport type (or leave empty for null): ");
             String input = scanner.nextLine().trim().toUpperCase();
-            if (input.isEmpty()) break;
+            if (input.isEmpty() || input.equalsIgnoreCase("null")) break;
             try {
                 transport = Transport.valueOf(input);
                 break;
@@ -145,13 +145,13 @@ public class Add {
         }
         flat.setTransport(transport);
 
-        System.out.print("Do you want to enter house data? (yes/no): ");
+        System.out.print("Do you want to enter house data? (yes/no/null): ");
         String houseChoice = scanner.nextLine().trim().toLowerCase();
         if (houseChoice.equals("yes") || houseChoice.equals("y")) {
             House house = new House();
             System.out.print("Enter house name (or leave empty for null): ");
             String houseName = scanner.nextLine().trim();
-            if (houseName.isEmpty()) {
+            if (houseName.isEmpty() || houseName.equals("null")) {
                 houseName = null;
             }
             house.setName(houseName);

@@ -87,7 +87,7 @@ public class Update {
             while(true) {
                 currentInput = scanner.nextLine().trim();
 
-                if(!currentInput.isEmpty()) {
+                if(!currentInput.isEmpty() && currentInput.equalsIgnoreCase("null")) {
                     try {
                         if(Integer.parseInt(currentInput) > 0) {
                             updatingFlat.setArea(Integer.parseInt(currentInput));
@@ -98,6 +98,8 @@ public class Update {
                     } catch (NumberFormatException e) {
                         System.out.println("You don't wrote a number! Try again!");
                     }
+                } else {
+                    break;
                 }
             }
 
@@ -106,13 +108,15 @@ public class Update {
             while(true) {
                 currentInput = scanner.nextLine().trim();
 
-                if(!currentInput.isEmpty()) {
+                if(!currentInput.isEmpty() && currentInput.equalsIgnoreCase("null")) {
                     try {
                         updatingFlat.setNumberOfRooms(Integer.parseInt(currentInput));
                         break;
                     } catch (NumberFormatException e) {
                         System.out.println("Incorrect data! Try again!");
                     }
+                } else {
+                    break;
                 }
             }
 
@@ -120,7 +124,7 @@ public class Update {
             System.out.print("Set type of furnish(You can choose: fine, bad, little): ");
             currentInput = scanner.nextLine().trim();
 
-            if(!currentInput.isEmpty()) {
+            if(!currentInput.isEmpty() && currentInput.equalsIgnoreCase("null")) {
                 currentInput = currentInput.toUpperCase();
                 switch(currentInput) {
                     case "FINE" -> updatingFlat.setFurnish(Furnish.FINE);
@@ -134,7 +138,7 @@ public class Update {
             System.out.print("Set a new view type (You can choose: street, yard, park, terrible): ");
             currentInput = scanner.nextLine().trim();
 
-            if(!currentInput.isEmpty()) {
+            if(!currentInput.isEmpty() && currentInput.equalsIgnoreCase("null")) {
                 currentInput = currentInput.toUpperCase();
                 switch(currentInput) {
                     case "STREET" -> updatingFlat.setView(View.STREET);
@@ -146,9 +150,9 @@ public class Update {
             }
 
             // Transport response
-            System.out.print("Choose a new transport type (You can choose: few, none, little, normal, enough): ");
+            System.out.print("Choose a new transport type (You can choose: few, none, little, normal, enough, null): ");
             currentInput = scanner.nextLine().trim();
-            if(!currentInput.isEmpty()) {
+            if(!currentInput.isEmpty() && !currentInput.equalsIgnoreCase("null")) {
                 currentInput = currentInput.toUpperCase();
                 switch(currentInput) {
                     case "FEW" -> updatingFlat.setTransport(Transport.FEW);
@@ -161,7 +165,7 @@ public class Update {
             }
 
             // House response
-            System.out.print("Do you want to enter house data? (yes/no): ");
+            System.out.print("Do you want to enter house data? (yes/no/null): ");
             currentInput = scanner.nextLine().trim().toLowerCase();
 
             if(currentInput.equals("yes") || currentInput.equals( "y")) {
