@@ -1,0 +1,60 @@
+[
+  {
+    "id": 1,
+    "name": "abc",
+    "coordinates": {
+      "x": 2.0,
+      "y": 1.0
+    },
+    "creationDate": "Mar 1, 2025, 4:27:32 PM",
+    "area": 13,
+    "numberOfRooms": 2,
+    "furnish": "FINE",
+    "view": "STREET",
+    "transport": "NORMAL",
+    "house": {
+      "name": "abcde",
+      "year": 23,
+      "numberOfFlatsOnFloor": 2
+    }
+  },
+  {
+    "id": 2,
+    "name": "test",
+    "coordinates": {
+      "x": 1.0,
+      "y": 1.0
+    },
+    "creationDate": "Mar 1, 2025, 5:41:28 PM",
+    "area": 1,
+    "numberOfRooms": 1,
+    "furnish": "FINE",
+    "view": "STREET"
+  },
+  {
+    "id": 3,
+    "name": "def",
+    "coordinates": {
+      "x": 8.0,
+      "y": 76.0
+    },
+    "creationDate": "Mar 26, 2025, 5:44:02 PM",
+    "area": 12,
+    "numberOfRooms": 4,
+    "furnish": "FINE",
+    "view": "STREET"
+  },
+  {
+    "id": 4,
+    "name": ";asdmas;dm",
+    "coordinates": {
+      "x": 12312.0,
+      "y": 323232.0
+    },
+    "creationDate": "Apr 3, 2025, 5:01:05 PM",
+    "area": 22,
+    "numberOfRooms": 33,
+    "furnish": "FINE",
+    "view": "PARK"
+  }
+]

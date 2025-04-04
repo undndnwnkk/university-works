@@ -1,0 +1,8 @@
+2025-04-04 03:11:44 [ru.lab05.server.ServerApp.main()] INFO  ru.lab05.server.ServerApp - Collection was loaded from file test.json
+2025-04-04 03:11:44 [ru.lab05.server.ServerApp.main()] INFO  ru.lab05.server.ServerApp - Server started on port 8080
+2025-04-04 03:13:12,851 [ru.lab05.server.ServerApp.main()] INFO  ServerApp - Collection was loaded from file test.json
+2025-04-04 03:13:12,856 [ru.lab05.server.ServerApp.main()] INFO  ServerApp - Server started on port 8080
+2025-04-04 03:15:49,448 [ru.lab05.server.ServerApp.main()] INFO  ServerApp - Collection was loaded from file test.json
+2025-04-04 03:15:49,453 [ru.lab05.server.ServerApp.main()] INFO  ServerApp - Server started on port 8080
+2025-04-04 03:18:55,801 [ru.lab05.server.ServerApp.main()] INFO  ServerApp - Collection was loaded from file test.json
+2025-04-04 03:18:55,806 [ru.lab05.server.ServerApp.main()] INFO  ServerApp - Server started on port 8080

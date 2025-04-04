@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "name": "first",
+    "coordinates": {
+      "x": 1.0,
+      "y": 1.0
+    },
+    "creationDate": "Apr 4, 2025, 2:59:20 AM",
+    "area": 1,
+    "numberOfRooms": 1,
+    "furnish": "FINE",
+    "view": "YARD",
+    "transport": "FEW",
+    "house": {
+      "name": "first",
+      "year": 1,
+      "numberOfFlatsOnFloor": 1
+    }
+  },
+  {
+    "id": 2,
+    "name": "second",
+    "coordinates": {
+      "x": 2.0,
+      "y": 2.0
+    },
+    "creationDate": "Apr 4, 2025, 3:01:54 AM",
+    "area": 2,
+    "numberOfRooms": 2,
+    "furnish": "BAD",
+    "view": "YARD",
+    "transport": "LITTLE"
+  }
+]
