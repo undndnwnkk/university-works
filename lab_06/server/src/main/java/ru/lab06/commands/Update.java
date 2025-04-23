@@ -1,5 +1,7 @@
 package ru.lab06.commands;
 
+import ru.lab06.command.Command;
+import ru.lab06.command.CommandResponse;
 import ru.lab06.model.*;
 import ru.lab06.core.Storage;
 import java.util.Scanner;
@@ -7,25 +9,23 @@ import java.util.Scanner;
 /**
  * The Update class updates the attributes of an existing flat in the storage.
  */
-public class Update {
+public class Update implements Command {
     /**
      * Storage contains our classes
      */
-    public final Storage storage;
+    private String[] commandArguments;
 
-    /**
-     * Constructs an {@code Update} object and starts the update process for the given flat ID.
-     * @param storage The storage containing flats.
-     * @param commandArguments The arguments provided with the command, where the first argument should be the flat ID.
-     */
-    public Update(Storage storage, String[] commandArguments) {
-        this.storage = storage;
-
+    public Update(String[] commandArguments) {
+        this.commandArguments = commandArguments;
+    }
+    @Override
+    public CommandResponse execute(Storage storage) {
         if(commandArguments.length < 1) {
-            System.out.println("You don't write an id");
+            return new CommandResponse("You don't write an id");
         } else {
             int id = Integer.parseInt(commandArguments[0]);
-            readFromConsole(id);
+            readFromConsole(id, storage);
+            return new CommandResponse("Update was accepted");
         }
     }
 
@@ -33,19 +33,17 @@ public class Update {
      * Reads new attributes from the console and updates the flat with the given ID.
      * @param id The ID of the flat to update.
      */
-    private void readFromConsole(int id) {
-        Flat updatingFlat = findFlatByid(id);
+    private void readFromConsole(int id, Storage storage) {
+        Flat updatingFlat = findFlatByid(id, storage);
         Scanner scanner = new Scanner(System.in);
 
         if(updatingFlat != null) {
-            // name response
             System.out.print("Set a new name: ");
             String currentInput = scanner.nextLine().trim();
             if(!currentInput.isEmpty()) {
                 updatingFlat.setName(currentInput);
             }
 
-            // coordinates response
             float x;
             float y;
             Coordinates newCoordinates = new Coordinates();
@@ -77,7 +75,6 @@ public class Update {
             }
             updatingFlat.setCoordinates(newCoordinates);
 
-            // Area response
             System.out.print("Set a new area : ");
             while(true) {
                 currentInput = scanner.nextLine().trim();
@@ -98,7 +95,6 @@ public class Update {
                 }
             }
 
-            // Number of rooms response
             System.out.print("Set a new number of rooms: ");
             while(true) {
                 currentInput = scanner.nextLine().trim();
@@ -115,7 +111,6 @@ public class Update {
                 }
             }
 
-            // Furnish response
             System.out.print("Set type of furnish(You can choose: fine, bad, little): ");
             currentInput = scanner.nextLine().trim();
 
@@ -129,7 +124,6 @@ public class Update {
                 }
             }
 
-            // View response
             System.out.print("Set a new view type (You can choose: street, yard, park, terrible): ");
             currentInput = scanner.nextLine().trim();
 
@@ -144,7 +138,6 @@ public class Update {
                 }
             }
 
-            // Transport response
             System.out.print("Choose a new transport type (You can choose: few, none, little, normal, enough, null): ");
             currentInput = scanner.nextLine().trim();
             if(!currentInput.isEmpty() && !currentInput.equalsIgnoreCase("null")) {
@@ -159,14 +152,12 @@ public class Update {
                 }
             }
 
-            // House response
             System.out.print("Do you want to enter house data? (yes/no/null): ");
             currentInput = scanner.nextLine().trim().toLowerCase();
 
             if(currentInput.equals("yes") || currentInput.equals( "y")) {
                 House newHouse = new House();
 
-                // House name response
                 System.out.print("Write a new house name(or write 'null' to delete older name): ");
                 currentInput = scanner.nextLine().trim();
 
@@ -180,7 +171,6 @@ public class Update {
                     newHouse.setName(updatingFlat.getHouse().getName());
                 }
 
-                // House year response
                 System.out.print("Write a new house year(it must be greater than 0 but lower than 822): ");
                 if(!currentInput.isEmpty()) {
                     while(true) {
@@ -197,7 +187,6 @@ public class Update {
                     newHouse.setYear(updatingFlat.getHouse().getYear());
                 }
 
-                // House Number of flats on room response
                 System.out.print("Write a number of flats on room: ");
                 while(true) {
                     currentInput = scanner.nextLine().trim();
@@ -216,7 +205,6 @@ public class Update {
                     }
                 }
 
-                // Adding newHouse to updating flat
                 updatingFlat.setHouse(newHouse);
                 System.out.println("Congratulations! Your new Flat info: \n" + updatingFlat.toString() );
             }
@@ -233,7 +221,7 @@ public class Update {
      * @param id It's id of the flat
      * @return The flat with given id, or {@code null} if not found
      */
-    Flat findFlatByid(int id) {
+    Flat findFlatByid(int id, Storage storage) {
         for(Flat flat : storage.getFlatStorage()) {
             if(flat.getId() == id) {
                 return flat;

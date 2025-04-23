@@ -1,5 +1,7 @@
 package ru.lab06.commands;
 
+import ru.lab06.command.Command;
+import ru.lab06.command.CommandResponse;
 import ru.lab06.model.Flat;
 import ru.lab06.core.Storage;
 
@@ -8,16 +10,22 @@ import java.util.Vector;
 /**
  * The RemoveById class removes a flat from storage by its ID.
  */
-public class RemoveById {
+public class RemoveById implements Command {
     /**
      * Removes a flat with the given ID.
      * @param storage the storage object containing flats
      * @param commandArguments the command arguments containing the ID
      */
-    public RemoveById(Storage storage, String[] commandArguments) {
+    private String[] commandArguments;
+
+    public RemoveById(String[] commandArguments) {
+        this.commandArguments = commandArguments;
+    }
+
+    @Override
+    public CommandResponse execute(Storage storage) {
         if (commandArguments.length == 0) {
-            System.out.println("Error! No ID provided.");
-            return;
+            return new CommandResponse("Error, no ID was written");
         }
 
         try {
@@ -34,12 +42,16 @@ public class RemoveById {
 
             if (indexToRemove != -1) {
                 storageElements.remove(indexToRemove);
-                System.out.println("Removed flat with ID " + idToRemove);
+                return new CommandResponse("Removed flat with ID " + idToRemove);
             } else {
-                System.out.println("Error! No flat found with ID " + idToRemove);
+                return new CommandResponse("Error, no flat found with ID " + idToRemove);
             }
         } catch (NumberFormatException e) {
-            System.out.println("Error! ID must be an integer.");
+            return new CommandResponse("Error! ID must be an integer.");
         }
+    }
+
+    public RemoveById(Storage storage, String[] commandArguments) {
+
     }
 }

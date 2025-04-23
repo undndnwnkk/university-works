@@ -1,27 +1,39 @@
 
 package ru.lab06.commands;
 
+import ru.lab06.command.Command;
+import ru.lab06.command.CommandResponse;
 import ru.lab06.model.Flat;
 import ru.lab06.core.Storage;
 
 /**
  * The FilterContainsName class filters flats by a substring in their name.
  */
-public class FilterContainsName {
+public class FilterContainsName implements Command {
     /**
      * Displays flats whose names contain the given substring.
      * @param storage the storage containing flats
      * @param commandArguments the command arguments containing the substring
      */
-    public FilterContainsName(Storage storage, String[] commandArguments) {
+    private String[] commandArguments;
+
+    public FilterContainsName(String[] commandArguments) {
+        this.commandArguments = commandArguments;
+    }
+
+    @Override
+    public CommandResponse execute(Storage storage) {
         if (storage.getFlatStorage().isEmpty()) {
-            System.out.println("Storage is empty!");
+            return new CommandResponse("Storage is empty");
         } else {
+            StringBuilder output = new StringBuilder("Storage contains flats with name " + commandArguments[0] + ":\n");
             for (Flat flat : storage.getFlatStorage()) {
                 if (flat.getName().toLowerCase().contains(commandArguments[0].toLowerCase())) {
-                    System.out.println(flat);
+                    output.append(flat.toString()).append("\n");
                 }
             }
+
+            return new CommandResponse(output.toString());
         }
     }
 }

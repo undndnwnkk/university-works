@@ -1,5 +1,7 @@
 package ru.lab06.commands;
 
+import ru.lab06.command.Command;
+import ru.lab06.command.CommandResponse;
 import ru.lab06.model.*;
 
 import ru.lab06.core.Storage;
@@ -9,21 +11,24 @@ import java.util.Scanner;
 /**
  * The Add class handles adding new Flat objects to the storage.
  */
-public class Add {
+public class Add implements Command {
     private final Storage storage;
 
     /**
      * Constructs an Add command and reads user input to create a new Flat.
      * @param storage the storage to which the flat is added
      */
-    public Add(Storage storage) {
-        this.storage = storage;
+    @Override
+    public CommandResponse execute(Storage storage) {
         Flat newFlat = readFlatFromConsole();
         if (newFlat != null) {
             addFlat(newFlat);
+            return new CommandResponse("flat added successfully");
         }
-    }
 
+        return new CommandResponse("flat is null");
+
+    }
     /**
      * Constructs an Add command with a predefined Flat object.
      * @param storage the storage to which the flat is added
