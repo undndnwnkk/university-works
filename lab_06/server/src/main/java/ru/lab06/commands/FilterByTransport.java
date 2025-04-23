@@ -14,9 +14,9 @@ public class FilterByTransport implements Command {
      * @param storage the storage containing flats
      * @param commandArguments the command arguments containing transport type
      */
-    private String[] commandArguments;
+    private Object[] commandArguments;
 
-    public FilterByTransport(String[] commandArguments) {
+    public FilterByTransport(Object[] commandArguments) {
         this.commandArguments = commandArguments;
     }
 
@@ -26,10 +26,11 @@ public class FilterByTransport implements Command {
             return new CommandResponse("Storage is empty");
         } else {
             StringBuilder output = new StringBuilder("Elements with transport type " + commandArguments[0] + ":\n");
+            String currentTransport = (String) commandArguments[0];
             for (Flat flat : storage.getFlatStorage()) {
                 if (flat.getTransport() != null &&
-                        flat.getTransport().toString().equals(commandArguments[0].toUpperCase())) {
-                    output.append(flat.toString() + "\n");
+                        flat.getTransport().toString().equals(currentTransport.toLowerCase())) {
+                    output.append(flat + "\n");
                 }
             }
 

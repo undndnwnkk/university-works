@@ -16,9 +16,9 @@ public class RemoveById implements Command {
      * @param storage the storage object containing flats
      * @param commandArguments the command arguments containing the ID
      */
-    private String[] commandArguments;
+    private Object[] commandArguments;
 
-    public RemoveById(String[] commandArguments) {
+    public RemoveById(Object[] commandArguments) {
         this.commandArguments = commandArguments;
     }
 
@@ -29,7 +29,7 @@ public class RemoveById implements Command {
         }
 
         try {
-            int idToRemove = Integer.parseInt(commandArguments[0]);
+            int idToRemove = (Integer) commandArguments[0];
             Vector<Flat> storageElements = storage.getFlatStorage();
             int indexToRemove = -1;
 

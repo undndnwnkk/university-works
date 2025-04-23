@@ -4,6 +4,7 @@ import ru.lab06.core.Storage;
 
 import java.io.Serializable;
 
+@FunctionalInterface
 public interface Command extends Serializable{
     CommandResponse execute(Storage storage);
 }

@@ -15,9 +15,9 @@ public class FilterContainsName implements Command {
      * @param storage the storage containing flats
      * @param commandArguments the command arguments containing the substring
      */
-    private String[] commandArguments;
+    private Object[] commandArguments;
 
-    public FilterContainsName(String[] commandArguments) {
+    public FilterContainsName(Object[] commandArguments) {
         this.commandArguments = commandArguments;
     }
 
@@ -27,8 +27,9 @@ public class FilterContainsName implements Command {
             return new CommandResponse("Storage is empty");
         } else {
             StringBuilder output = new StringBuilder("Storage contains flats with name " + commandArguments[0] + ":\n");
+            String flatName = (String) commandArguments[0];
             for (Flat flat : storage.getFlatStorage()) {
-                if (flat.getName().toLowerCase().contains(commandArguments[0].toLowerCase())) {
+                if (flat.getName().toLowerCase().contains(flatName.toLowerCase())) {
                     output.append(flat.toString()).append("\n");
                 }
             }
