@@ -5,6 +5,7 @@ import ru.lab06.command.Command;
 import ru.lab06.command.CommandResponse;
 import ru.lab06.model.Flat;
 import ru.lab06.core.Storage;
+import ru.lab06.storage.StorageLike;
 
 /**
  * The FilterContainsName class filters flats by a substring in their name.
@@ -22,19 +23,19 @@ public class FilterContainsName implements Command {
     }
 
     @Override
-    public CommandResponse execute(Storage storage) {
-        if (storage.getFlatStorage().isEmpty()) {
-            return new CommandResponse("Storage is empty");
-        } else {
-            StringBuilder output = new StringBuilder("Storage contains flats with name " + commandArguments[0] + ":\n");
-            String flatName = (String) commandArguments[0];
-            for (Flat flat : storage.getFlatStorage()) {
-                if (flat.getName().toLowerCase().contains(flatName.toLowerCase())) {
-                    output.append(flat.toString()).append("\n");
-                }
-            }
+    public CommandResponse execute(StorageLike storage) {
+        if (commandArguments.length < 1) return new CommandResponse("You must provide a name substring");
 
-            return new CommandResponse(output.toString());
-        }
+        String substring = commandArguments[0].toString().toLowerCase();
+
+        String result = storage.getFlatStorage().stream()
+                .filter(flat -> flat.getName().toLowerCase().contains(substring))
+                .map(Flat::toString)
+                .reduce("", (a, b) -> a + b + "\n");
+
+        if (result.isEmpty()) return new CommandResponse("No matching flats found");
+
+        return new CommandResponse(result.trim());
     }
+
 }

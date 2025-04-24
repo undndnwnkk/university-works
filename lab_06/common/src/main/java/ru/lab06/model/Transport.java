@@ -1,6 +1,8 @@
 package ru.lab06.model;
 
-public enum Transport {
+import java.io.Serializable;
+
+public enum Transport implements Serializable {
     FEW,
     NONE,
     LITTLE,

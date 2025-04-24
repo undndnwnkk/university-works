@@ -35,4 +35,25 @@ public class CommandExecutor {
 
         return command.execute(storage);
     }
+
+
+    public static Command createCommand(String commandName, Object[] args) {
+        return switch (commandName.toLowerCase()) {
+            case "add" -> new Add(args);
+            case "update" -> new Update(args);
+            case "remove_by_id" -> new RemoveById(args);
+            case "remove_first" -> new RemoveFirst();
+            case "filter_contains_name" -> new FilterContainsName(args);
+            case "filter_by_transport" -> new FilterByTransport(args);
+            case "info" -> new Info();
+            case "show" -> new Show();
+            case "clear" -> new Clear();
+            case "min_by_id" -> new MinById();
+            case "reorder" -> new Reorder();
+            case "sort" -> new Sort();
+            case "help" -> new Help();
+            case "execute_script" -> new ExecuteScript(args);
+            default -> null;
+        };
+    }
 }

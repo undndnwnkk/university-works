@@ -1,6 +1,8 @@
 package ru.lab06.model;
 
-public enum Furnish {
+import java.io.Serializable;
+
+public enum Furnish implements Serializable {
     FINE,
     BAD,
     LITTLE;

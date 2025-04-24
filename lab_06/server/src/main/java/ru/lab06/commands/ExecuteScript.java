@@ -2,13 +2,12 @@ package ru.lab06.commands;
 
 import ru.lab06.command.Command;
 import ru.lab06.command.CommandResponse;
-import ru.lab06.command.CommandRequest;
+import ru.lab06.storage.StorageLike;
 import ru.lab06.network.CommandExecutor;
-import ru.lab06.core.Storage;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.StringTokenizer;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class ExecuteScript implements Command {
     private final Object[] args;
@@ -18,35 +17,42 @@ public class ExecuteScript implements Command {
     }
 
     @Override
-    public CommandResponse execute(Storage storage) {
-        if (args.length == 0) {
-            return new CommandResponse("Error, incorrect path :(");
+    public CommandResponse execute(StorageLike storage) {
+        if (args.length < 1) {
+            return new CommandResponse("Error: script filename was not provided");
         }
 
-        String filePath = args[0].toString();
-        StringBuilder fullOutput = new StringBuilder("Script has started:\n");
+        String path = args[0].toString();
+        File scriptFile = new File(path);
+        if (!scriptFile.exists()) {
+            return new CommandResponse("Error: file " + path + " does not exist");
+        }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
+        StringBuilder result = new StringBuilder();
+        try (Scanner scanner = new Scanner(scriptFile)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
                 if (line.isEmpty()) continue;
 
                 String[] parts = line.split("\\s+");
-                String cmdName = parts[0];
-                Object[] cmdArgs = new Object[parts.length - 1];
-                System.arraycopy(parts, 1, cmdArgs, 0, parts.length - 1);
+                String commandName = parts[0];
+                Object[] commandArgs = new Object[parts.length - 1];
+                System.arraycopy(parts, 1, commandArgs, 0, commandArgs.length);
 
-                CommandRequest requestFromFile = new CommandRequest(cmdName, cmdArgs);
-                CommandResponse responseFromFile = CommandExecutor.execute(requestFromFile, storage);
+                Command command = CommandExecutor.createCommand(commandName, commandArgs);
+                if (command == null) {
+                    result.append("Unknown command: ").append(commandName).append("\n");
+                    continue;
+                }
 
-                fullOutput.append("> ").append(line).append("\n");
-                fullOutput.append(responseFromFile.getMessage()).append("\n");
+                CommandResponse response = command.execute(storage);
+                result.append(response.getMessage()).append("\n");
             }
-        } catch (Exception e) {
-            return new CommandResponse("Error reading script: " + e.getMessage());
+
+        } catch (FileNotFoundException e) {
+            return new CommandResponse("Script reading error: " + e.getMessage());
         }
 
-        return new CommandResponse(fullOutput.toString());
+        return new CommandResponse(result.toString());
     }
 }

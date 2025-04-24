@@ -4,6 +4,8 @@ import ru.lab06.command.Command;
 import ru.lab06.command.CommandResponse;
 import ru.lab06.core.Storage;
 import ru.lab06.model.Flat;
+import ru.lab06.model.Transport;
+import ru.lab06.storage.StorageLike;
 
 /**
  * The FilterByTransport class filters flats by transport type.
@@ -21,20 +23,24 @@ public class FilterByTransport implements Command {
     }
 
     @Override
-    public CommandResponse execute(Storage storage) {
-        if (storage.getFlatStorage().isEmpty()) {
-            return new CommandResponse("Storage is empty");
-        } else {
-            StringBuilder output = new StringBuilder("Elements with transport type " + commandArguments[0] + ":\n");
-            String currentTransport = (String) commandArguments[0];
-            for (Flat flat : storage.getFlatStorage()) {
-                if (flat.getTransport() != null &&
-                        flat.getTransport().toString().equals(currentTransport.toLowerCase())) {
-                    output.append(flat + "\n");
-                }
-            }
+    public CommandResponse execute(StorageLike storage) {
+        if (commandArguments.length < 1) return new CommandResponse("Specify a transport");
 
-            return new CommandResponse(output.toString());
+        Transport transport;
+        try {
+            transport = Transport.valueOf(commandArguments[0].toString().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return new CommandResponse("Invalid transport value");
         }
+
+        String result = storage.getFlatStorage().stream()
+                .filter(flat -> transport.equals(flat.getTransport()))
+                .map(Flat::toString)
+                .reduce("", (a, b) -> a + b + "\n");
+
+        if (result.isEmpty()) return new CommandResponse("No flats with specified transport");
+
+        return new CommandResponse(result.trim());
     }
+
 }

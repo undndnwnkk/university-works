@@ -1,5 +1,6 @@
 package ru.lab06.core;
 
+import org.apache.logging.log4j.core.Logger;
 import ru.lab06.model.Flat;
 import ru.lab06.model.Furnish;
 import ru.lab06.model.View;
@@ -13,14 +14,16 @@ import java.util.Vector;
  */
 public class Validation {
     private final Vector<Flat> validFlats;
+    private final Logger logger;
 
     /**
      * Constructs a {@code Validation} instance that loads and validates data from a JSON file.
      *
      * @param filename the name of the JSON file to load data from.
      */
-    public Validation(String filename) {
+    public Validation(String filename, Logger logger) {
         Vector<Flat> loadedFlats = Reader.readJson(filename);
+        this.logger = logger;
         this.validFlats = new Vector<>();
         int invalidCount = 0;
 
@@ -33,10 +36,10 @@ public class Validation {
                 }
             }
         } else {
-            System.out.println("Error loading file. No data has been loaded.");
+            logger.warn("Error loading file. No data has been loaded.");
         }
 
-        System.out.println("Validation completed: " + invalidCount + " invalid elements found.");
+        logger.info("Validation completed: " + invalidCount + " invalid elements found.");
     }
 
     /**

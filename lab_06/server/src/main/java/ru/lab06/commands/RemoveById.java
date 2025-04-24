@@ -4,6 +4,7 @@ import ru.lab06.command.Command;
 import ru.lab06.command.CommandResponse;
 import ru.lab06.model.Flat;
 import ru.lab06.core.Storage;
+import ru.lab06.storage.StorageLike;
 
 import java.util.Vector;
 
@@ -23,13 +24,13 @@ public class RemoveById implements Command {
     }
 
     @Override
-    public CommandResponse execute(Storage storage) {
+    public CommandResponse execute(StorageLike storage) {
         if (commandArguments.length == 0) {
             return new CommandResponse("Error, no ID was written");
         }
 
         try {
-            int idToRemove = (Integer) commandArguments[0];
+            int idToRemove = Integer.parseInt(commandArguments[0].toString());
             Vector<Flat> storageElements = storage.getFlatStorage();
             int indexToRemove = -1;
 

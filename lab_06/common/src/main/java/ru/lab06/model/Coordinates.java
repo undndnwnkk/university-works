@@ -1,6 +1,8 @@
 package ru.lab06.model;
 
-public class Coordinates {
+import java.io.Serializable;
+
+public class Coordinates implements Serializable {
     private float x;
     private float y; // Значение поля должно быть больше -46
 

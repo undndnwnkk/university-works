@@ -3,6 +3,7 @@ package ru.lab06.commands;
 import ru.lab06.command.Command;
 import ru.lab06.command.CommandResponse;
 import ru.lab06.core.Storage;
+import ru.lab06.storage.StorageLike;
 
 /**
  * The Help class displays a list of available commands.
@@ -12,7 +13,7 @@ public class Help implements Command {
      * Displays all available commands and their descriptions.
      */
     @Override
-    public CommandResponse execute(Storage storage) {
+    public CommandResponse execute(StorageLike storage) {
         return new CommandResponse("Available commands:\n" +
                 "help -> List available commands\n"
         + "info -> Display collection information\n"

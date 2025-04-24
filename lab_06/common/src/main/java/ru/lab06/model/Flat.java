@@ -1,8 +1,9 @@
 package ru.lab06.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Flat implements Comparable<Flat> {
+public class Flat implements Comparable<Flat>, Serializable {
     private int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null

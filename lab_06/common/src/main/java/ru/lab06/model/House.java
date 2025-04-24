@@ -1,6 +1,8 @@
 package ru.lab06.model;
 
-public class House {
+import java.io.Serializable;
+
+public class House implements Serializable {
     private String name; // Может быть null
     private int year; // > 0, максимум 822
     private long numberOfFlatsOnFloor; // > 0

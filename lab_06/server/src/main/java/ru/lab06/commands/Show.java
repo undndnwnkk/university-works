@@ -4,7 +4,9 @@ import ru.lab06.command.Command;
 import ru.lab06.command.CommandResponse;
 import ru.lab06.model.Flat;
 import ru.lab06.core.Storage;
+import ru.lab06.storage.StorageLike;
 
+import java.util.Comparator;
 import java.util.Vector;
 
 /**
@@ -17,16 +19,17 @@ public class Show implements Command {
      */
 
     @Override
-    public CommandResponse execute(Storage storage) {
-        if (storage.getFlatStorage().isEmpty()) {
-            return new CommandResponse("Storage is empty :(");
+    public CommandResponse execute(StorageLike storage) {
+        String result = storage.getFlatStorage().stream()
+                .sorted(Comparator.comparing(Flat::getName))
+                .map(Flat::toString)
+                .reduce("", (a, b) -> a + b + "\n");
+
+        if (result.isEmpty()) {
+            return new CommandResponse("Collection is empty.");
         }
 
-        StringBuilder output = new StringBuilder("All flats:\n");
-        for (Flat flat : storage.getFlatStorage()) {
-            output.append(flat.toString()).append("\n");
-        }
-
-        return new CommandResponse(output.toString());
+        return new CommandResponse(result.trim());
     }
+
 }

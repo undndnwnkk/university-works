@@ -3,6 +3,7 @@ package ru.lab06.commands;
 import ru.lab06.command.Command;
 import ru.lab06.command.CommandResponse;
 import ru.lab06.core.Storage;
+import ru.lab06.storage.StorageLike;
 
 import java.util.Collections;
 
@@ -16,7 +17,7 @@ public class Reorder implements Command {
      */
 
     @Override
-    public CommandResponse execute(Storage storage) {
+    public CommandResponse execute(StorageLike storage) {
         if (storage.getFlatStorage().isEmpty()) {
             return new CommandResponse("Storage is empty, nothing to reverse :(");
         } else {
