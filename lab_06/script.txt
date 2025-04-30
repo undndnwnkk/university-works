@@ -1,0 +1,7 @@
+help
+info
+add
+show
+update 1
+remove_by_id 1
+filter_contains_name Loft
