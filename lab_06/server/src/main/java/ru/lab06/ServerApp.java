@@ -17,8 +17,8 @@ import java.nio.channels.Selector;
 import java.util.Iterator;
 
 public class ServerApp {
-    private static final int PORT = 8080;
-    private static final int BUFFER_SIZE = 65536;
+    private static final int port = 8080;
+    private static final int buffer_size = 65536;
     private static final Logger logger = (Logger) LogManager.getLogger(ServerApp.class);
 
     public static void main(String[] args) {
@@ -47,14 +47,14 @@ public class ServerApp {
         Storage storage = new Storage(args[0], logger);
 
         try (DatagramChannel channel = DatagramChannel.open()) {
-            channel.bind(new InetSocketAddress(PORT));
+            channel.bind(new InetSocketAddress(port));
             channel.configureBlocking(false);
 
             Selector selector = Selector.open();
             channel.register(selector, SelectionKey.OP_READ);
 
-            logger.info("Server started on port " + PORT);
-            ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
+            logger.info("Server started on port " + port);
+            ByteBuffer buffer = ByteBuffer.allocate(buffer_size);
 
             while(true) {
                 selector.select();
