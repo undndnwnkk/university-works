@@ -1,0 +1,10 @@
+/home/undndnwnkk/development/itmo/programming/university-works/lab_06/common/src/main/java/ru/lab06/command/Command.java
+/home/undndnwnkk/development/itmo/programming/university-works/lab_06/common/src/main/java/ru/lab06/command/CommandRequest.java
+/home/undndnwnkk/development/itmo/programming/university-works/lab_06/common/src/main/java/ru/lab06/command/CommandResponse.java
+/home/undndnwnkk/development/itmo/programming/university-works/lab_06/common/src/main/java/ru/lab06/model/Coordinates.java
+/home/undndnwnkk/development/itmo/programming/university-works/lab_06/common/src/main/java/ru/lab06/model/Flat.java
+/home/undndnwnkk/development/itmo/programming/university-works/lab_06/common/src/main/java/ru/lab06/model/Furnish.java
+/home/undndnwnkk/development/itmo/programming/university-works/lab_06/common/src/main/java/ru/lab06/model/House.java
+/home/undndnwnkk/development/itmo/programming/university-works/lab_06/common/src/main/java/ru/lab06/model/Transport.java
+/home/undndnwnkk/development/itmo/programming/university-works/lab_06/common/src/main/java/ru/lab06/model/View.java
+/home/undndnwnkk/development/itmo/programming/university-works/lab_06/common/src/main/java/ru/lab06/storage/StorageLike.java
