@@ -13,7 +13,7 @@ public class Help implements Command {
      * Displays all available commands and their descriptions.
      */
     @Override
-    public CommandResponse execute(StorageLike storage) {
+    public CommandResponse execute(StorageLike storage, String loginNew) {
         return new CommandResponse("Available commands:\n" +
                 "help -> List available commands\n"
         + "info -> Display collection information\n"

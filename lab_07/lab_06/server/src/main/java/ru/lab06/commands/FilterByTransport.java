@@ -6,43 +6,43 @@ import ru.lab06.model.Flat;
 import ru.lab06.model.Transport;
 import ru.lab06.storage.StorageLike;
 
-import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FilterByTransport implements Command {
-    private final Object[] commandArguments;
+    private final Object[] args;
 
-    public FilterByTransport(Object[] commandArguments) {
-        this.commandArguments = commandArguments;
+    public FilterByTransport(Object[] args) {
+        this.args = args;
     }
 
     @Override
-    public CommandResponse execute(StorageLike storage) {
-        if (commandArguments.length < 1) {
-            return new CommandResponse("Please provide a transport value.");
+    public CommandResponse execute(StorageLike storage, String login) {
+        if (args.length < 1 || !(args[0] instanceof String str)) {
+            return new CommandResponse("Error: transport value is missing");
         }
 
-        String userInput = commandArguments[0].toString().toUpperCase();
-        Transport[] validTransports = Transport.values();
-        Transport transport = Arrays.stream(validTransports).filter(t -> t.name().equals(userInput)).findFirst().orElse(null);
-
-        if (transport == null) {
-            String options = String.join(", ",
-                    Arrays.stream(validTransports)
-                            .map(Enum::name)
-                            .toArray(String[]::new)
-            );
-            return new CommandResponse("Invalid transport value. Available: " + options);
+        Transport transport;
+        try {
+            transport = Transport.valueOf(str.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return new CommandResponse("Error: unknown transport value");
         }
 
-        String result = storage.getFlatStorage().stream()
-                .filter(flat -> transport.equals(flat.getTransport()))
-                .map(Flat::toString)
-                .reduce("", (a, b) -> a + b + "\n");
+        List<Flat> result = storage.getFlatStorage().stream()
+                .filter(flat -> flat.getTransport() == transport)
+                .collect(Collectors.toList());
 
         if (result.isEmpty()) {
-            return new CommandResponse("No flats with specified transport.");
+            return new CommandResponse("No flats found with transport: " + transport);
         }
 
-        return new CommandResponse(result.trim());
+        StringBuilder out = new StringBuilder();
+        for (Flat flat : result) {
+            out.append("Flat ").append(flat.getId()).append(": ")
+                    .append(flat.getName()).append("\n");
+        }
+
+        return new CommandResponse(out.toString());
     }
 }

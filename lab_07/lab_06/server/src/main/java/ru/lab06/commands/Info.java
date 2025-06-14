@@ -14,7 +14,7 @@ public class Info implements Command {
      * @param storage the storage object containing flats
      */
     @Override
-    public CommandResponse execute(StorageLike storage) {
+    public CommandResponse execute(StorageLike storage, String loginNew) {
         String output = "Type of collection: " + storage.getClass().getSimpleName()
                 + "\nDate of initialization: " + storage.getInitializationDate()
                 + "\nCount of collections: " + storage.getFlatStorage().size();

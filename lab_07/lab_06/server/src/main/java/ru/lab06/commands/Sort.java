@@ -17,7 +17,7 @@ public class Sort implements Command {
      * @param storage the storage containing flats
      */
     @Override
-    public CommandResponse execute(StorageLike storage) {
+    public CommandResponse execute(StorageLike storage, String loginNew) {
         String result = storage.getFlatStorage().stream()
                 .sorted(Comparator.comparing(Flat::getName))
                 .map(Flat::toString)

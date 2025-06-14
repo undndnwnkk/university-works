@@ -3,53 +3,52 @@ package ru.lab06.commands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import ru.lab06.ServerApp;
+import ru.lab06.auth.UserManager;
 import ru.lab06.command.Command;
 import ru.lab06.command.CommandResponse;
-import ru.lab06.model.*;
+import ru.lab06.db.FlatDaoImpl;
+import ru.lab06.model.Flat;
 import ru.lab06.storage.StorageLike;
-import ru.lab06.core.Writer;
+
+import java.util.Vector;
 
 public class Update implements Command {
-
     private final Object[] commandArguments;
     private final Logger logger = (Logger) LogManager.getLogger(ServerApp.class);
+    private final FlatDaoImpl flatDao = new FlatDaoImpl();
 
     public Update(Object[] commandArguments) {
         this.commandArguments = commandArguments;
     }
 
     @Override
-    public CommandResponse execute(StorageLike storage) {
+    public CommandResponse execute(StorageLike storage, String login) {
         try {
-            int id = Integer.parseInt(commandArguments[0].toString());
-            Flat targetFlat = null;
-
-            for (Flat flat : storage.getFlatStorage()) {
-                if (flat.getId() == id) {
-                    targetFlat = flat;
-                    break;
-                }
+            if (commandArguments.length < 2 || !(commandArguments[0] instanceof Integer id) || !(commandArguments[1] instanceof Flat flat)) {
+                return new CommandResponse("Error: Expected arguments (Integer id, Flat object).");
             }
 
-            if (targetFlat == null) {
-                return new CommandResponse("This flat does not exist");
-            }
+            flat.setId(id);
 
-            targetFlat.setName((String) commandArguments[1]);
-            targetFlat.setCoordinates((Coordinates) commandArguments[2]);
-            targetFlat.setArea((Integer) commandArguments[3]);
-            targetFlat.setNumberOfRooms((Long) commandArguments[4]);
-            targetFlat.setFurnish((Furnish) commandArguments[5]);
-            targetFlat.setView((View) commandArguments[6]);
-            targetFlat.setTransport((Transport) commandArguments[7]);
-            targetFlat.setHouse((House) commandArguments[8]);
+            Integer ownerId = UserManager.getUserId(login);
+            if (ownerId == null) return new CommandResponse("Error: user not found");
 
-            Writer.writeJson(storage.getFilename(), storage.getFlatStorage());
-            logger.info("Flat with id={} updated successfully", id);
-            return new CommandResponse("Flat with ID " + id + " added successfully.");
+            Vector<Flat> flats = storage.getFlatStorage();
+            Flat existing = flats.stream().filter(f -> f.getId() == id).findFirst().orElse(null);
+            if (existing == null) return new CommandResponse("Update failed: no such flat.");
+            if (!existing.getOwner().equals(login)) return new CommandResponse("Update failed: you are not the owner of this flat.");
 
+            boolean success = flatDao.updateFlatById(id, flat, ownerId);
+            if (!success) return new CommandResponse("Update failed: database update failed.");
+
+            flats.remove(existing);
+            flat.setOwner(login);
+            flats.add(flat);
+
+            logger.info("Flat with ID " + id + " updated by user " + login);
+            return new CommandResponse("Flat updated successfully.");
         } catch (Exception e) {
-            return new CommandResponse("Error while updating:  " + e.getMessage());
+            return new CommandResponse("Error: " + e.getMessage());
         }
     }
 }

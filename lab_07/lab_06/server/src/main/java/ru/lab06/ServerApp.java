@@ -1,7 +1,7 @@
 package ru.lab06;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.Logger;
 import ru.lab06.command.CommandRequest;
 import ru.lab06.command.CommandResponse;
 import ru.lab06.core.Storage;
@@ -13,97 +13,83 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Iterator;
+import java.util.concurrent.*;
 
 public class ServerApp {
-    private static final int port = 8080;
-    private static final int buffer_size = 65536;
-    private static final Logger logger = (Logger) LogManager.getLogger(ServerApp.class);
+    private static final int PORT = 8080;
+    private static final int BUFFER_SIZE = 65536;
+    private static final Logger logger = LogManager.getLogger(ServerApp.class);
+
+    private static final ExecutorService requestHandlerPool = Executors.newFixedThreadPool(4);
+    private static final ForkJoinPool responseSenderPool = new ForkJoinPool();
 
     public static void main(String[] args) {
-        logger.info("Server has starting...");
+        logger.info("Server is starting...");
+
         try (Connection conn = DatabaseConnector.connect()) {
-            System.out.println("Connected to database!");
+            logger.info("Connected to database!");
         } catch (SQLException e) {
-            System.out.println("Failed: " + e.getMessage());
-        }
-        if (args.length == 0) {
-            logger.fatal("You didn't wrote a path to file :(");
+            logger.fatal("Failed to connect to database: " + e.getMessage());
             return;
         }
 
-        File file = new File(args[0]);
-
-        if (!file.exists()) {
-            logger.fatal("File not found: " + args[0]);
-            return;
-        }
-
-        if (file.isDirectory()) {
-            logger.fatal("You wrote path to folder " + args[0]);
-            return;
-        }
-
-        if (!file.canRead() || !file.canWrite()) {
-            logger.fatal("Permission denied on file " +  args[0]);
-            return;
-        }
-
-        Storage storage = new Storage(args[0], logger);
+        Storage storage = new Storage();
 
         try (DatagramChannel channel = DatagramChannel.open()) {
-            channel.bind(new InetSocketAddress(port));
+            channel.bind(new InetSocketAddress(PORT));
             channel.configureBlocking(false);
+            logger.info("Server is ready on port " + PORT);
 
-            Selector selector = Selector.open();
-            channel.register(selector, SelectionKey.OP_READ);
+            while (true) {
+                ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
+                SocketAddress clientAddress = channel.receive(buffer);
 
-            logger.info("Server started on port " + port);
-            ByteBuffer buffer = ByteBuffer.allocate(buffer_size);
+                if (clientAddress == null) continue;
 
-            while(true) {
-                selector.select();
-                Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
-
-                while(iterator.hasNext()) {
-                    SelectionKey key = iterator.next();
-                    iterator.remove();
-
-                    if (key.isReadable()) {
-                        buffer.clear();
-                        SocketAddress clientAdress = channel.receive(buffer);
+                new Thread(() -> {
+                    try {
                         buffer.flip();
-
-                        try (ObjectInputStream ois = new ObjectInputStream(
+                        ObjectInputStream ois = new ObjectInputStream(
                                 new ByteArrayInputStream(buffer.array(), 0, buffer.limit())
-                        )) {
-                            CommandRequest commandRequest = (CommandRequest) ois.readObject();
-                            logger.info("Server received command: " + commandRequest.getCommandName());
+                        );
+                        CommandRequest commandRequest = (CommandRequest) ois.readObject();
+                        logger.info("Received command: " + commandRequest.getCommandName());
 
-                            CommandResponse commandResponse = CommandExecutor.execute(commandRequest, storage);
+                        storage.setLastLogin(commandRequest.getLogin());
 
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            ObjectOutputStream oos = new ObjectOutputStream(baos);
-                            oos.writeObject(commandResponse);
-                            oos.flush();
+                        requestHandlerPool.submit(() -> {
+                            try {
+                                CommandResponse response = CommandExecutor.execute(commandRequest, storage);
 
-                            ByteBuffer responseBuffer = ByteBuffer.wrap(baos.toByteArray());
-                            channel.send(responseBuffer, clientAdress);
+                                responseSenderPool.execute(() -> {
+                                    try {
+                                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                        ObjectOutputStream oos = new ObjectOutputStream(baos);
+                                        oos.writeObject(response);
+                                        oos.flush();
 
-                            logger.info("Server sent command: " + commandRequest.getCommandName());
+                                        ByteBuffer responseBuffer = ByteBuffer.wrap(baos.toByteArray());
+                                        channel.send(responseBuffer, clientAddress);
+                                        logger.info("Sent response for command: " + commandRequest.getCommandName());
+                                    } catch (IOException e) {
+                                        logger.error("Sending response failed: " + e.getMessage());
+                                    }
+                                });
 
-                        } catch (ClassNotFoundException | IOException e) {
-                            logger.fatal("Error in request handling");
-                        }
+                            } catch (Exception e) {
+                                logger.error("Request processing failed: " + e.getMessage());
+                            }
+                        });
+
+                    } catch (IOException | ClassNotFoundException e) {
+                        logger.error("Receiving request failed: " + e.getMessage());
                     }
-                }
+                }).start();
             }
         } catch (IOException e) {
-            logger.fatal("Error in launching server :(");
+            logger.fatal("Server launch error: " + e.getMessage());
         }
     }
 }

@@ -10,5 +10,4 @@ public interface StorageLike {
     Integer getCurrentId();
     void setCurrentId(Integer id);
     Date getInitializationDate();
-    String getFilename();
 }

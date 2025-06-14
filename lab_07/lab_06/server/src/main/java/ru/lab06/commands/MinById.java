@@ -19,7 +19,7 @@ public class MinById implements Command {
      * @param storage the storage object containing flats
      */
     @Override
-    public CommandResponse execute(StorageLike storage) {
+    public CommandResponse execute(StorageLike storage, String loginNew) {
         return storage.getFlatStorage().stream()
                 .min(Comparator.comparingInt(Flat::getId))
                 .map(flat -> new CommandResponse(flat.toString()))

@@ -17,7 +17,7 @@ public class Reorder implements Command {
      */
 
     @Override
-    public CommandResponse execute(StorageLike storage) {
+    public CommandResponse execute(StorageLike storage, String loginNew) {
         if (storage.getFlatStorage().isEmpty()) {
             return new CommandResponse("Storage is empty, nothing to reverse :(");
         } else {

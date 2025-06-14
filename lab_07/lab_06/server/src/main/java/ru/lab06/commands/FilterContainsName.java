@@ -23,7 +23,7 @@ public class FilterContainsName implements Command {
     }
 
     @Override
-    public CommandResponse execute(StorageLike storage) {
+    public CommandResponse execute(StorageLike storage, String login) {
         if (commandArguments.length < 1) return new CommandResponse("You must provide a name substring");
 
         String substring = commandArguments[0].toString().toLowerCase();

@@ -17,7 +17,7 @@ public class ExecuteScript implements Command {
     }
 
     @Override
-    public CommandResponse execute(StorageLike storage) {
+    public CommandResponse execute(StorageLike storage, String loginNew) {
         if (args.length < 1) {
             return new CommandResponse("Error: script filename was not provided");
         }
@@ -45,8 +45,8 @@ public class ExecuteScript implements Command {
                     continue;
                 }
 
-                CommandResponse response = command.execute(storage);
-                result.append(response.getMessage()).append("\n");
+//                CommandResponse response = command.execute(storage);
+//                result.append(response.getMessage()).append("\n");
             }
 
         } catch (FileNotFoundException e) {

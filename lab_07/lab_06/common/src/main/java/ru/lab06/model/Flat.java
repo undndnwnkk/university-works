@@ -92,6 +92,17 @@ public class Flat implements Comparable<Flat>, Serializable {
         this.house = house;
     }
 
+    private String owner;
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+
     // Natural order: first by name, then by id
     @Override
     public int compareTo(Flat other) {

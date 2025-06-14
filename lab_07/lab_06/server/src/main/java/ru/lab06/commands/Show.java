@@ -19,7 +19,7 @@ public class Show implements Command {
      */
 
     @Override
-    public CommandResponse execute(StorageLike storage) {
+    public CommandResponse execute(StorageLike storage, String loginNew) {
         String result = storage.getFlatStorage().stream()
                 .sorted(Comparator.comparing(Flat::getName))
                 .map(Flat::toString)
