@@ -1,6 +1,6 @@
 const yInput = document.querySelector(".y");
 const xInput = document.querySelector(".x");
-const rRadioButtons = document.querySelectorAll('.r-radio');
+const rRadioButtons = document.querySelectorAll(".r-radio");
 const form = document.querySelector(".input-form");
 const errorOutput = document.querySelector(".form-error");
 const tbody = document.querySelector(".history-body");
@@ -8,7 +8,7 @@ const tbody = document.querySelector(".history-body");
 const validateYInput = () => {
     const inputValue = yInput.value.trim();
 
-    if(inputValue === '') {
+    if (inputValue === "") {
         alert("Поле Y не может быть пустым");
         return false;
     }
@@ -16,17 +16,17 @@ const validateYInput = () => {
     let isNumber = true;
     let startIndex = 0;
 
-    if(inputValue[0] == '-') {
+    if (inputValue[0] == "-") {
         startIndex = 1;
 
-        if(inputValue.length == 1) {
+        if (inputValue.length == 1) {
             isNumber = false;
         }
     }
 
-    for(let i = startIndex; i < inputValue.length; i++) {
+    for (let i = startIndex; i < inputValue.length; i++) {
         const currentLetter = inputValue[i];
-        if(currentLetter < '0' || currentLetter > '9') {
+        if (currentLetter < "0" || currentLetter > "9") {
             isNumber = false;
             break;
         }
@@ -35,23 +35,23 @@ const validateYInput = () => {
     if (isNumber == false) {
         alert("Пишите в поле Y только числа");
         return false;
-    } 
+    }
 
-    if(parseInt(inputValue) < -5 || parseInt(inputValue) > 3) {
+    if (parseInt(inputValue) < -5 || parseInt(inputValue) > 3) {
         alert("Напишите число в поле Y в промежутке {-5, ..., 3}");
         return false;
     }
 
     return true;
-}
+};
 
 const validateRInput = () => {
     let isSelected = false;
-    rRadioButtons.forEach(button => {
-        if(button.checked) {
+    rRadioButtons.forEach((button) => {
+        if (button.checked) {
             isSelected = true;
         }
-    })
+    });
 
     if (!isSelected) {
         alert("Выберите значение R");
@@ -59,7 +59,7 @@ const validateRInput = () => {
     }
 
     return true;
-}
+};
 
 const renderHistoryTable = (data) => {
     tbody.innerHTML = "";
@@ -74,56 +74,48 @@ const renderHistoryTable = (data) => {
             <td>${row.hit ? "да" : "нет"}</td>
             <td>${row.elapsedMs ?? ""}</td>
         `;
-        tbody.prepend(tr)
-    })
-}
+        tbody.appendChild(tr);
+    });
+};
 
 form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    errorOutput.textContent = "";
 
-  if (validateYInput() && validateRInput()) {
-    const dataFromForm = {
-      x: xInput.value,
-      y: yInput.value,
-      r: document.querySelector("input[name='r']:checked")?.value
-    };
+    if (validateYInput() && validateRInput()) {
 
-    try {
-      const response = await fetch(form.action, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json" 
-        },
-        body: JSON.stringify(dataFromForm)
-      });
+        try {
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+                method: "POST",
+                body: formData
+            });
 
-      let data;
-      const text = await response.text();
-      try { 
-        data = JSON.parse(text); 
-    } catch { 
-        data = null; 
-    }
+            let data;
+            const text = await response.text();
+            try {
+                data = JSON.parse(text);
+            } catch {
+                data = null;
+            }
 
-      if (!data) {
-        console.log("Ответ сервера (HTML):", text);
-        return;
-      }
+            if (!data) {
+                console.log("Ответ сервера (HTML):", text);
+                return;
+            }
 
-      if (!data.ok) {
-        if (errorOutput) 
-            errorOutput.textContent = data.error || "Ошибка";
-        } else {
-            if (errorOutput) 
-                errorOutput.textContent = "";
-            if (Array.isArray(data.history)) 
-                renderHistoryTable(data.history);
+            if (!data.ok) {
+                if (errorOutput) errorOutput.textContent = data.error || "Ошибка";
+            } else {
+                if (errorOutput) errorOutput.textContent = "";
+                if (Array.isArray(data.history)) renderHistoryTable(data.history);
+            }
+        } catch (error) {
+            console.error(error);
+            if (errorOutput) errorOutput.textContent = "Сеть/сервер недоступны";
         }
-    } catch (error) {
-      console.error(error);
-      if (errorOutput) errorOutput.textContent = "Сеть/сервер недоступны";
+    } else {
+        errorOutput.textContent = "Неверно введены данные";
+        return;
     }
-  } else {
-    alert("Произошла ошибка, проверьте корректность ввода");
-  }
 });
