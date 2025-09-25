@@ -1,12 +1,12 @@
 package org.example;
 
-public record RequestEntity(
+public record ResponseEntity(
         int number,
         String time,
         double x,
         double y,
         double r,
         boolean hit,
-        String elapsedMs
+        Long elapsedMs
 ) {
 }
