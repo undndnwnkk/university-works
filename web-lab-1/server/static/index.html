@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <p class="header-name">Быков Лев</p>
+            <p class="header-group">Группа Р3219</p>
+            <p class="header-variant">Вариант 489889</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <form method="post" action="/calculate" class="input-form">
+                <table class="input-table">
+                    <tr>
+                        <th>
+                            <p>X</p>
+                        </th>
+
+                        <th>
+                            <p>Y</p>
+                        </th>
+
+                        <th>
+                            <p>R</p>
+                        </th>
+
+                        <th></th>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <select name="x" id="" class="x">
+                                <option value="-3">-3</option>
+                                <option value="-2">-2</option>
+                                <option value="-1">-1</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            <input name="y" type="text" class="y" placeholder="{-5, ..., 3}">
+                        </td>
+
+                        <td>
+                            <div class="r">
+                                <div class="r-value-choice">
+                                    <input value="1" type="radio" name="r" id="r-1" class="r-radio">
+                                    <label for="r-1">1</label>
+                                </div>
+
+                                <div class="r-value-choice">
+                                    <input value="1.5" type="radio" name="r" id="r-1-5" class="r-radio">
+                                    <label for="r-1-5">1.5</label>
+                                </div>
+
+                                <div class="r-value-choice">
+                                    <input value="2" type="radio" name="r" id="r-2" class="r-radio">
+                                    <label for="r-2">2</label>
+                                </div>
+
+                                <div class="r-value-choice">
+                                    <input value="2.5" type="radio" name="r" id="r-2-5" class="r-radio">
+                                    <label for="r-2-5">2.5</label>
+                                </div>
+
+                                <div class="r-value-choice">
+                                    <input value="3" type="radio" name="r" id="r-3" class="r-radio">
+                                    <label for="r-3">3</label>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <input type="submit" value="Проверить" class="input-form-button">
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="form-error"></div>
+            </form>
+        </div>
+
+        <div class="container">
+            <table class="response-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <p>№</p>
+                    </th>
+
+                        <th>
+                            <p>Время</p>
+                    </th>
+
+                        <th>
+                            <p>X</p>
+                    </th>
+
+                        <th>
+                            <p>Y</p>
+                    </th>
+
+                        <th>
+                            <p>R</p>
+                    </th>
+
+                        <th>
+                            <p>Попадание</p>
+                    </th>
+
+                        <th>
+                            <p>Время обработки(мс)</p>
+                    </th>
+                    </tr>
+                </thead>
+                <tbody class="history-body"></tbody>                
+            </table>
+        </div>
+    </main>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .header {
+            width: 100%;
+        }
+
+        .header-content {
+            width: 100%;
+            display: flex;
+            position: relative;
+            justify-content: space-around;
+            background-color: red;
+            padding: 10px 0;
+        }
+
+        .header-content p {
+            font-family: "Libertinus Serif", serif;
+            font-weight: 700;
+            color: rgb(64, 1, 64);
+            font-size: 24px;
+        }
+
+        .header-content::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background-color: black;
+            margin-top: 5px;
+        }
+
+        .main {
+            width: 100%;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .input-form {
+            margin-top: 50px;
+        }
+
+        .input-table {
+            border: 1px solid #000;
+            border-collapse: collapse;
+        }
+
+        .input-table tr,
+        .input-table td,
+        .input-table th {
+            padding: 0;
+            margin: 0;
+            border: 1px solid #000;
+        }
+
+        .input-table tr td p {
+            display: flex;
+            justify-content: center;
+        }
+
+        select {
+            margin: 0 10px;
+        }
+
+        input[type = "text"] {
+            padding: 2px;
+            margin: 0 10px;
+        }
+
+        .r {
+            padding: 10px;
+            display: flex;
+            gap: 20px;
+
+        }
+
+        .r-value-choice {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type = "submit"] {
+            margin: 0 10px;
+            padding: 5px;   
+        }
+
+        .form-error {
+            min-height: 1.2em;
+            margin-top: 8px;
+            color: red;
+            font-size: 14px;
+        }
+
+        .response-table {
+            margin-top: 50px;
+            border: 1px solid #000;
+            border-collapse: collapse;
+        }
+
+        .response-table tr,
+        .response-table td,
+        .response-table th {
+            padding: 0;
+            margin: 0;
+            border: 1px solid #000;
+        }
+
+        .response-table tr th p {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+    </style>
+
+    <script src="main.js"></script>
+</body>
+</html>
