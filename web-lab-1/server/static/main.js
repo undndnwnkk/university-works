@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const yValue = formData.get('y').replace(',', '.');
         const rValue = formData.get('r');
 
-        if (!yValue || isNaN(yValue) || parseFloat(yValue) <= -5 || parseFloat(yValue) >= 3) {
+        if (!yValue || isNaN(yValue) || parseFloat(yValue) < -5 || parseFloat(yValue) > 3) {
             formError.textContent = 'Y должен быть числом в диапазоне (-5 ... 3).';
             return;
         }
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
 
-            const newRow = historyBody.insertRow(0);
+            const newRow = historyBody.insertRow(-1);
             newRow.innerHTML = `
                 <td><p>${data.number}</p></td>
                 <td><p>${data.time}</p></td>

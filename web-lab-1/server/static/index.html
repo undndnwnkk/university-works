@@ -16,123 +16,127 @@
             <p class="header-variant">Вариант 489889</p>
         </div>
     </header>
+    <section class="main-img">
+        <main class="main">
+            <div class="container">
+                <form method="post" action="/calculate" class="input-form">
+                    <table class="input-table">
+                        <tr>
+                            <th>
+                                <p>X</p>
+                            </th>
 
-    <main class="main">
-        <div class="container">
-            <form method="post" action="/calculate" class="input-form">
-                <table class="input-table">
-                    <tr>
-                        <th>
-                            <p>X</p>
+                            <th>
+                                <p>Y</p>
+                            </th>
+
+                            <th>
+                                <p>R</p>
+                            </th>
+
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <select name="x" id="" class="x">
+                                    <option value="-3">-3</option>
+                                    <option value="-2">-2</option>
+                                    <option value="-1">-1</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <input name="y" type="text" class="y" placeholder="{-5, ..., 3}">
+                            </td>
+
+                            <td>
+                                <div class="r">
+                                    <div class="r-value-choice">
+                                        <input value="1" type="radio" name="r" id="r-1" class="r-radio">
+                                        <label for="r-1">1</label>
+                                    </div>
+
+                                    <div class="r-value-choice">
+                                        <input value="1.5" type="radio" name="r" id="r-1-5" class="r-radio">
+                                        <label for="r-1-5">1.5</label>
+                                    </div>
+
+                                    <div class="r-value-choice">
+                                        <input value="2" type="radio" name="r" id="r-2" class="r-radio">
+                                        <label for="r-2">2</label>
+                                    </div>
+
+                                    <div class="r-value-choice">
+                                        <input value="2.5" type="radio" name="r" id="r-2-5" class="r-radio">
+                                        <label for="r-2-5">2.5</label>
+                                    </div>
+
+                                    <div class="r-value-choice">
+                                        <input value="3" type="radio" name="r" id="r-3" class="r-radio">
+                                        <label for="r-3">3</label>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <input type="submit" value="Проверить" class="input-form-button">
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="form-error"></div>
+                </form>
+            </div>
+
+            <div class="container">
+                <table class="response-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <p>№</p>
                         </th>
 
-                        <th>
-                            <p>Y</p>
+                            <th>
+                                <p>Время</p>
                         </th>
 
-                        <th>
-                            <p>R</p>
+                            <th>
+                                <p>X</p>
                         </th>
 
-                        <th></th>
-                    </tr>
+                            <th>
+                                <p>Y</p>
+                        </th>
 
-                    <tr>
-                        <td>
-                            <select name="x" id="" class="x">
-                                <option value="-3">-3</option>
-                                <option value="-2">-2</option>
-                                <option value="-1">-1</option>
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </td>
+                            <th>
+                                <p>R</p>
+                        </th>
 
-                        <td>
-                            <input name="y" type="text" class="y" placeholder="{-5, ..., 3}">
-                        </td>
+                            <th>
+                                <p>Попадание</p>
+                        </th>
 
-                        <td>
-                            <div class="r">
-                                <div class="r-value-choice">
-                                    <input value="1" type="radio" name="r" id="r-1" class="r-radio">
-                                    <label for="r-1">1</label>
-                                </div>
-
-                                <div class="r-value-choice">
-                                    <input value="1.5" type="radio" name="r" id="r-1-5" class="r-radio">
-                                    <label for="r-1-5">1.5</label>
-                                </div>
-
-                                <div class="r-value-choice">
-                                    <input value="2" type="radio" name="r" id="r-2" class="r-radio">
-                                    <label for="r-2">2</label>
-                                </div>
-
-                                <div class="r-value-choice">
-                                    <input value="2.5" type="radio" name="r" id="r-2-5" class="r-radio">
-                                    <label for="r-2-5">2.5</label>
-                                </div>
-
-                                <div class="r-value-choice">
-                                    <input value="3" type="radio" name="r" id="r-3" class="r-radio">
-                                    <label for="r-3">3</label>
-                                </div>
-                            </div>
-                        </td>
-
-                        <td>
-                            <input type="submit" value="Проверить" class="input-form-button">
-                        </td>
-                    </tr>
+                            <th>
+                                <p>Время обработки(мс)</p>
+                        </th>
+                        </tr>
+                    </thead>
+                    <tbody class="history-body"></tbody>                
                 </table>
+            </div>
+        </main>
 
-                <div class="form-error"></div>
-            </form>
+        <div class="task-img">
+            <img src="areas.png" alt="">
         </div>
-
-        <div class="container">
-            <table class="response-table">
-                <thead>
-                    <tr>
-                        <th>
-                            <p>№</p>
-                    </th>
-
-                        <th>
-                            <p>Время</p>
-                    </th>
-
-                        <th>
-                            <p>X</p>
-                    </th>
-
-                        <th>
-                            <p>Y</p>
-                    </th>
-
-                        <th>
-                            <p>R</p>
-                    </th>
-
-                        <th>
-                            <p>Попадание</p>
-                    </th>
-
-                        <th>
-                            <p>Время обработки(мс)</p>
-                    </th>
-                    </tr>
-                </thead>
-                <tbody class="history-body"></tbody>                
-            </table>
-        </div>
-    </main>
-
+    </section>
     <style>
         * {
             padding: 0;
@@ -169,6 +173,13 @@
             height: 2px;
             background-color: black;
             margin-top: 5px;
+        }
+
+        .main-img {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 50px;
         }
 
         .main {
@@ -255,6 +266,11 @@
             justify-content: center;
             padding: 10px;
         }
+
+        /* .task-img img{
+            width: 250px;
+            height: 200px;
+        } */
     </style>
 
     <script src="main.js"></script>
