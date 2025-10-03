@@ -7,23 +7,36 @@ public class RequestChecker implements Command{
     private final String method;
     private final String contentType;
     private final String length;
+    private final String uri;
     private final Logger logger = Logger.getLogger(Server.class.getName());
 
     private boolean isValid = true;
 
-    public RequestChecker(String method, String type, String length) {
+    public RequestChecker(String method, String type, String length, String uri) {
         this.method = method;
         this.contentType = type;
         this.length = length;
+        this.uri = uri;
     }
 
     @Override
     public void execute() {
         logger.log(Level.INFO, "Starting request checker");
+        logger.log(Level.INFO, "Method: " + method);
+        logger.log(Level.INFO, "Content-Type: " + contentType);
+        logger.log(Level.INFO, "Length: " + length);
+        logger.log(Level.INFO, "URI: " + uri);
+
+        if (!"/calculate".equals(uri) && !"/calculate/".equals(uri)) {
+            ExceptionHandler exceptionHandler = new ExceptionHandler(404, "Not found");
+            exceptionHandler.execute();
+            isValid = false;
+        }
+
         if (method == null || !method.equalsIgnoreCase("POST")) {
             ExceptionHandler exceptionHandler = new ExceptionHandler(405, "Only POST required");
             exceptionHandler.execute();
-            logger.log(Level.INFO, "Not post");
+        logger.log(Level.INFO, "Not post");
             isValid = false;
         }
 

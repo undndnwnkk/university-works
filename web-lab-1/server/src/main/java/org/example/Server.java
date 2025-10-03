@@ -19,7 +19,6 @@ public class Server {
         FCGIInterface fcgi = new FCGIInterface();
         while(fcgi.FCGIaccept() >= 0) {
             handleRequest();
-            id++;
         }
     }
 
@@ -29,7 +28,11 @@ public class Server {
 
         try {
 
-            RequestChecker requestChecker = new RequestChecker(System.getProperty("REQUEST_METHOD"), System.getProperty("CONTENT_TYPE"), System.getProperty("CONTENT_LENGTH"));
+            RequestChecker requestChecker = new RequestChecker(
+                    System.getProperty("REQUEST_METHOD"),
+                    System.getProperty("CONTENT_TYPE"),
+                    System.getProperty("CONTENT_LENGTH"),
+                    System.getProperty("REQUEST_URI"));
             requestChecker.execute();
             boolean canStart = requestChecker.isValid();
 
@@ -51,10 +54,11 @@ public class Server {
                     ResponseGenerator responseGenerator = new ResponseGenerator(id, request, elapsedMs, gson);
                     responseGenerator.execute();
                     logger.log(Level.INFO, "Response: \n" +  responseGenerator.toString());
-
+                    id++;
                 } else {
                     ExceptionHandler exceptionHandler = new ExceptionHandler(400, "Invalid data");
                     exceptionHandler.execute();
+
                 }
             } else {
                 return;

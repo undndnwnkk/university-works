@@ -1,2 +1,10 @@
+/home/undndnwnkk-arch/development/study/university-works/web-lab-1/server/src/main/java/org/example/Command.java
+/home/undndnwnkk-arch/development/study/university-works/web-lab-1/server/src/main/java/org/example/ExceptionHandler.java
+/home/undndnwnkk-arch/development/study/university-works/web-lab-1/server/src/main/java/org/example/HitChecker.java
+/home/undndnwnkk-arch/development/study/university-works/web-lab-1/server/src/main/java/org/example/Request.java
+/home/undndnwnkk-arch/development/study/university-works/web-lab-1/server/src/main/java/org/example/RequestChecker.java
+/home/undndnwnkk-arch/development/study/university-works/web-lab-1/server/src/main/java/org/example/RequestParser.java
 /home/undndnwnkk-arch/development/study/university-works/web-lab-1/server/src/main/java/org/example/ResponseEntity.java
+/home/undndnwnkk-arch/development/study/university-works/web-lab-1/server/src/main/java/org/example/ResponseGenerator.java
 /home/undndnwnkk-arch/development/study/university-works/web-lab-1/server/src/main/java/org/example/Server.java
+/home/undndnwnkk-arch/development/study/university-works/web-lab-1/server/src/main/java/org/example/Validation.java

@@ -1,2 +1,10 @@
+org/example/Command.class
 org/example/Server.class
+org/example/Request.class
+org/example/RequestChecker.class
 org/example/ResponseEntity.class
+org/example/ExceptionHandler.class
+org/example/HitChecker.class
+org/example/RequestParser.class
+org/example/ResponseGenerator.class
+org/example/Validation.class
