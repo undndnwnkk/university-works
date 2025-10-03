@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formError.textContent = '';
 
         const formData = new FormData(form);
+        const xValue = formData.get('x');
         const yValue = formData.get('y').replace(',', '.');
         const rValue = formData.get('r');
 
@@ -22,18 +23,22 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const body = new URLSearchParams();
-        body.append('x', formData.get('x'));
-        body.append('y', yValue);
-        body.append('r', rValue);
+        const body = {
+            "x": xValue,
+            "y": yValue,
+            "r": rValue
+        };
+
+        const jsonBody = JSON.stringify(body);
+
 
         try {
             const response = await fetch('/calculate', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: body.toString(),
+                body: jsonBody
             });
 
             const data = await response.json();
