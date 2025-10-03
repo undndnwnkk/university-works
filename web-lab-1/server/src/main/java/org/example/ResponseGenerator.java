@@ -4,12 +4,15 @@ import com.google.gson.Gson;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ResponseGenerator implements Command{
     private final int currentId;
     private final Request request;
     private final long elapsedMs;
     private final Gson gson;
+    private final Logger logger =  Logger.getLogger(ResponseGenerator.class.getName());
 
     private boolean isValid;
 
@@ -31,6 +34,7 @@ public class ResponseGenerator implements Command{
         String timeToResponse =  formatter.format(now);
 
         String response = generateResponse(currentId, timeToResponse, request, isValid, elapsedMs, gson);
+        logger.log(Level.INFO, "Final JSON response: " + response);
 
         System.out.print("Content-type: application/json\r\n");
         System.out.print("\r\n");
@@ -49,5 +53,16 @@ public class ResponseGenerator implements Command{
         );
 
         return gson.toJson(response);
+    }
+
+    @Override
+    public String toString() {
+        return "ResponseGenerator{" +
+                "currentId=" + currentId +
+                ", request=" + request +
+                ", elapsedMs=" + elapsedMs +
+                ", gson=" + gson +
+                ", isValid=" + isValid +
+                '}';
     }
 }

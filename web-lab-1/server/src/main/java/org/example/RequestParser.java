@@ -3,14 +3,16 @@ package org.example;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 public class RequestParser implements Command {
+    private static final Logger log = LoggerFactory.getLogger(RequestParser.class);
     private final InputStream in;
     private final Gson gson;
     private Request parsedRequest;
@@ -30,8 +32,9 @@ public class RequestParser implements Command {
                 sb.append((char)  charRead);
             }
         } catch(IOException e) {
-            ExceptionHandler exceptionHandler = new ExceptionHandler(400, "Bad Request");
-            exceptionHandler.execute();
+//            ExceptionHandler exceptionHandler = new ExceptionHandler(400, "Bad Request");
+//            exceptionHandler.execute();
+            log.info("Just got an IOException");
         }
 
 

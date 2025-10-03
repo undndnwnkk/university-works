@@ -38,4 +38,12 @@ public class Request {
         this.r = r;
     }
 
+    @Override
+    public String toString() {
+        return "Request{" +
+                "x=" + x +
+                ", y=" + y +
+                ", r=" + r +
+                '}';
+    }
 }
