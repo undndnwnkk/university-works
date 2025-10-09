@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.input-form');
     const formError = document.querySelector('.form-error');
     const historyBody = document.querySelector('.history-body');
+    const clearHistoryButton = document.querySelector('.clear-storage');
 
     let historyData = [];
 
@@ -91,4 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Fetch error:', error);
         }
     });
+
+    clearHistoryButton.addEventListener('click', () => {
+        historyData = [];
+        localStorage.clear();
+        location.reload();
+        console.log("clicked")
+    })
 });
