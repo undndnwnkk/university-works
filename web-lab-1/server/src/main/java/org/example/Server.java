@@ -35,12 +35,14 @@ public class Server {
                     System.getProperty("REQUEST_URI"));
             requestChecker.execute();
             boolean canStart = requestChecker.isValid();
+            if(!canStart) return;
 
             if (canStart) {
                 logger.log(Level.INFO, "Request is valid");
                 RequestParser requestParser = new RequestParser(System.in, gson);
                 requestParser.execute();
                 Request request = requestParser.getParsedRequest();
+                if(request == null) return;
                 logger.log(Level.INFO, "Parsed request:\n" + request.toString());
 
                 Validation validation = new Validation(request);
@@ -58,10 +60,8 @@ public class Server {
                 } else {
                     ExceptionHandler exceptionHandler = new ExceptionHandler(400, "Invalid data");
                     exceptionHandler.execute();
-
+                    return;
                 }
-            } else {
-                return;
             }
 
         } catch (Exception e) {

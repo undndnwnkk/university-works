@@ -23,37 +23,51 @@ public class RequestParser implements Command {
 
     @Override
     public void execute() {
-        StringBuilder sb = new StringBuilder();
+        int len;
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            int charRead;
-
-            while ((charRead = br.read()) != -1) {
-                sb.append((char)  charRead);
-            }
-        } catch(IOException e) {
-//            ExceptionHandler exceptionHandler = new ExceptionHandler(400, "Bad Request");
-//            exceptionHandler.execute();
-            log.info("Just got an IOException");
+            String cls = System.getProperty("CONTENT_LENGTH");
+            if (cls == null) { new ExceptionHandler(411, "Length Required").execute(); return; }
+            len = Integer.parseInt(cls.trim());
+            if (len <= 0) { new ExceptionHandler(411, "Empty body").execute(); return; }
+        } catch (Exception e) {
+            new ExceptionHandler(400, "Bad Request").execute(); return;
         }
 
+        byte[] buf = new byte[len];
+        int off = 0;
+        try {
+            while (off < len) {
+                int r = in.read(buf, off, len - off);
+                if (r <= 0) break;
+                off += r;
+            }
+        } catch (IOException e) {
+            new ExceptionHandler(400, "Bad Request").execute(); return;
+        }
+        String body = new String(buf, 0, off, java.nio.charset.StandardCharsets.UTF_8);
 
-        String body = sb.toString();
-
-        JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
+        JsonObject jsonObject;
+        try {
+            jsonObject = com.google.gson.JsonParser.parseString(body).getAsJsonObject();
+        } catch (Exception ex) {
+            new ExceptionHandler(400, "Invalid JSON").execute(); return;
+        }
 
         if (jsonObject.size() > 3) {
-            ExceptionHandler exceptionHandler = new ExceptionHandler(400, "Too much arguments");
-            exceptionHandler.execute();
+            new ExceptionHandler(400, "Too much arguments").execute(); return;
         }
 
         parsedRequest = gson.fromJson(jsonObject, Request.class);
-
-        if(parsedRequest.getX() == null || parsedRequest.getY() == null || parsedRequest.getR() == null) {
-            ExceptionHandler exceptionHandler = new ExceptionHandler(400, "Not enough arguments");
-            exceptionHandler.execute();
+        if (parsedRequest == null ||
+                parsedRequest.getX() == null ||
+                parsedRequest.getY() == null ||
+                parsedRequest.getR() == null) {
+            new ExceptionHandler(400, "Not enough arguments").execute();
+            parsedRequest = null;
+            return;
         }
     }
+
 
     public Request getParsedRequest() {
         return parsedRequest;
