@@ -40,7 +40,7 @@ public class Server {
 
             String contentType = System.getProperty("CONTENT_TYPE");
             if (contentType == null || !contentType.toLowerCase().startsWith("application/x-www-form-urlencoded")) {
-                sendErrorResponse(415, "Неподдерживаемый Content-Type, должен быть: application/x-www-form-urlencoded.");
+                sendErrorResponse(415, "ЭТО НОВАЯ ВЕРСИЯ JAR-ФАЙЛА, ОШИБКА ТИПА КОНТЕНТА");
                 return;
             }
 
@@ -90,7 +90,7 @@ public class Server {
         }
 
         return new String(buffer, StandardCharsets.UTF_8);
-    }    
+    }
 
     private Map<String, String> parseFromRequest(String body) throws UnsupportedEncodingException {
         Map<String, String> dataFromRequest = new HashMap<>();

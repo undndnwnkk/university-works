@@ -2,6 +2,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.input-form');
     const formError = document.querySelector('.form-error');
     const historyBody = document.querySelector('.history-body');
+    const clearHistoryButton = document.querySelector('.clear-storage');
+
+    let historyData = [];
+
+    const savedHistory = localStorage.getItem('history');
+    if (savedHistory) {
+        try {
+            historyData = JSON.parse(savedHistory);
+            historyData.forEach((data) => {
+                const newRow = historyBody.insertRow(-1);
+                newRow.innerHTML = `
+                    <td><p>${data.number}</p></td>
+                    <td><p>${data.time}</p></td>
+                    <td><p>${data.x}</p></td>
+                    <td><p>${data.y}</p></td>
+                    <td><p>${data.r}</p></td>
+                    <td><p>${data.hit ? 'Да' : 'Нет'}</p></td>
+                    <td><p>${data.elapsedMs}</p></td>
+                `;
+            });
+        } catch (e) {
+            console.error('Ошибка загрузки истории: ' + e.message);
+            localStorage.removeItem('history');
+        }
+    }
+
+    window.addEventListener('beforeunload', () => {
+        localStorage.setItem('history', JSON.stringify(historyData));
+    });
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -42,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
 
-            const newRow = historyBody.insertRow(0);
+            const newRow = historyBody.insertRow(-1);
             newRow.innerHTML = `
                 <td><p>${data.number}</p></td>
                 <td><p>${data.time}</p></td>
@@ -53,9 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><p>${data.elapsedMs}</p></td>
             `;
 
+            historyData.push(data);
+            localStorage.setItem('history', JSON.stringify(historyData));
+
         } catch (error) {
             formError.textContent = `Ошибка: ${error.message}`;
             console.error('Fetch error:', error);
         }
+    });
+
+    clearHistoryButton.addEventListener('click', () => {
+        historyData = [];
+        localStorage.clear();
+        location.reload();
     });
 });

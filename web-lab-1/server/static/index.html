@@ -9,14 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <p class="header-name">Быков Лев</p>
-            <p class="header-group">Группа Р3219</p>
-            <p class="header-variant">Вариант 489889</p>
-        </div>
-    </header>
-
+<header class="header">
+    <div class="header-content">
+        <p class="header-name">Быков Лев</p>
+        <p class="header-group">Группа Р3219</p>
+        <p class="header-variant">Вариант 489889</p>
+    </div>
+</header>
+<section class="main-img">
     <main class="main">
         <div class="container">
             <form method="post" action="/calculate" class="input-form">
@@ -98,165 +98,187 @@
         <div class="container">
             <table class="response-table">
                 <thead>
-                    <tr>
-                        <th>
-                            <p>№</p>
+                <tr>
+                    <th>
+                        <p>№</p>
                     </th>
 
-                        <th>
-                            <p>Время</p>
+                    <th>
+                        <p>Время</p>
                     </th>
 
-                        <th>
-                            <p>X</p>
+                    <th>
+                        <p>X</p>
                     </th>
 
-                        <th>
-                            <p>Y</p>
+                    <th>
+                        <p>Y</p>
                     </th>
 
-                        <th>
-                            <p>R</p>
+                    <th>
+                        <p>R</p>
                     </th>
 
-                        <th>
-                            <p>Попадание</p>
+                    <th>
+                        <p>Попадание</p>
                     </th>
 
-                        <th>
-                            <p>Время обработки(мс)</p>
+                    <th>
+                        <p>Время обработки(мс)</p>
                     </th>
-                    </tr>
+                </tr>
                 </thead>
-                <tbody class="history-body"></tbody>                
+                <tbody class="history-body"></tbody>
             </table>
         </div>
+
+        <button class="clear-storage">Очистить историю</button>
     </main>
 
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
+    <div class="task-img">
+        <img src="dow.png" alt="">
+    </div>
+</section>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
 
-        .header {
-            width: 100%;
-        }
+    .header {
+        width: 100%;
+    }
 
-        .header-content {
-            width: 100%;
-            display: flex;
-            position: relative;
-            justify-content: space-around;
-            background-color: red;
-            padding: 10px 0;
-        }
+    .header-content {
+        width: 100%;
+        display: flex;
+        position: relative;
+        justify-content: space-around;
+        background-color: red;
+        padding: 10px 0;
+    }
 
-        .header-content p {
-            font-family: "Libertinus Serif", serif;
-            font-weight: 700;
-            color: rgb(64, 1, 64);
-            font-size: 24px;
-        }
+    .header-content p {
+        font-family: "Libertinus Serif", serif;
+        font-weight: 700;
+        color: rgb(64, 1, 64);
+        font-size: 24px;
+    }
 
-        .header-content::after {
-            content: "";
-            display: block;
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 2px;
-            background-color: black;
-            margin-top: 5px;
-        }
+    .header-content::after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background-color: black;
+        margin-top: 5px;
+    }
 
-        .main {
-            width: 100%;
-        }
+    .main-img {
+        display: flex;
+        justify-content: space-around;
+        gap: 20px;
+        margin-top: 50px;
+    }
 
-        .container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
+    .main {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
 
-        .input-form {
-            margin-top: 50px;
-        }
+    .container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
 
-        .input-table {
-            border: 1px solid #000;
-            border-collapse: collapse;
-        }
+    .input-form {
+        margin-top: 50px;
+    }
 
-        .input-table tr,
-        .input-table td,
-        .input-table th {
-            padding: 0;
-            margin: 0;
-            border: 1px solid #000;
-        }
+    .input-table {
+        border: 1px solid #000;
+        border-collapse: collapse;
+    }
 
-        .input-table tr td p {
-            display: flex;
-            justify-content: center;
-        }
+    .input-table tr,
+    .input-table td,
+    .input-table th {
+        padding: 0;
+        margin: 0;
+        border: 1px solid #000;
+    }
 
-        select {
-            margin: 0 10px;
-        }
+    .input-table tr td p {
+        display: flex;
+        justify-content: center;
+    }
 
-        input[type = "text"] {
-            padding: 2px;
-            margin: 0 10px;
-        }
+    select {
+        margin: 0 10px;
+    }
 
-        .r {
-            padding: 10px;
-            display: flex;
-            gap: 20px;
+    input[type = "text"] {
+        padding: 2px;
+        margin: 0 10px;
+    }
 
-        }
+    .r {
+        padding: 10px;
+        display: flex;
+        gap: 20px;
 
-        .r-value-choice {
-            display: flex;
-            flex-direction: column;
-        }
+    }
 
-        input[type = "submit"] {
-            margin: 0 10px;
-            padding: 5px;   
-        }
+    .r-value-choice {
+        display: flex;
+        flex-direction: column;
+    }
 
-        .form-error {
-            min-height: 1.2em;
-            margin-top: 8px;
-            color: red;
-            font-size: 14px;
-        }
+    input[type = "submit"] {
+        margin: 0 10px;
+        padding: 5px;
+    }
 
-        .response-table {
-            margin-top: 50px;
-            border: 1px solid #000;
-            border-collapse: collapse;
-        }
+    .form-error {
+        min-height: 1.2em;
+        margin-top: 8px;
+        color: red;
+        font-size: 14px;
+    }
 
-        .response-table tr,
-        .response-table td,
-        .response-table th {
-            padding: 0;
-            margin: 0;
-            border: 1px solid #000;
-        }
+    .response-table {
+        margin-top: 50px;
+        border: 1px solid #000;
+        border-collapse: collapse;
+    }
 
-        .response-table tr th p {
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-        }
-    </style>
+    .response-table tr,
+    .response-table td,
+    .response-table th {
+        padding: 0;
+        margin: 0;
+        border: 1px solid #000;
+    }
 
-    <script src="main.js"></script>
+    .response-table tr th p {
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    /* .task-img img{
+        width: 250px;
+        height: 200px;
+    } */
+</style>
+
+<script src="main.js"></script>
 </body>
 </html>
