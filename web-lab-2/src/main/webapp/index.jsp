@@ -3,11 +3,16 @@
 <%@ page import="com.example.weblab.model.CheckResult" %>
 <%@ page import="java.util.Collections" %>
 
+<%
+    List<CheckResult> results = (List<CheckResult>) session.getAttribute("results");
+%>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Lab 2</title>
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 
 <body>
@@ -18,44 +23,51 @@
     </header>
 
     <main class="main">
-        <form action="controller" id="check-form" method="post">
-            <div class="form-content">
-                <label for="x-select">Выберите X</label>
-                <select name="x_value" id="x-select" required>
-                    <option value="-4">-4</option>
-                    <option value="-3">-3</option>
-                    <option value="-2">-2</option>
-                    <option value="-1">-1</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-            </div>
+        <div class="main-content">
+            <form action="controller" id="check-form" method="post">
+                <div class="form-content">
+                    <label for="x-select">Выберите X</label>
+                    <select name="x_value" id="x-select" required>
+                        <option value="-4">-4</option>
+                        <option value="-3">-3</option>
+                        <option value="-2">-2</option>
+                        <option value="-1">-1</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
 
-            <div class="form-content">
-                <label for="y-text">Выберите Y</label>
-                <input type="text" name="y_value" id="y-text" placeholder="{-3, ..., 5}" required>
-            </div>
+                <div class="form-content">
+                    <label for="y-text">Выберите Y</label>
+                    <input type="text" name="y_value" id="y-text" placeholder="{-3, ..., 5}" required>
+                </div>
 
-            <div class="form-content">
-                <label>Выберите R:</label>
-                <button type="submit" name="r_value" value="1">1</button>
-                <button type="submit" name="r_value" value="2">2</button>
-                <button type="submit" name="r_value" value="3">3</button>
-                <button type="submit" name="r_value" value="4">4</button>
-                <button type="submit" name="r_value" value="5">5</button>
-            </div>
-        </form>
+                <div class="form-content" id="r-radios">
+                    <label>Выберите R:</label><br>
+                        <input type="radio" name="r_value" value="1" id="r1" required checked><label for="r1">1</label>
+                        <input type="radio" name="r_value" value="2" id="r2"><label for="r2">2</label>
+                        <input type="radio" name="r_value" value="3" id="r3"><label for="r3">3</label>
+                        <input type="radio" name="r_value" value="4" id="r4"><label for="r4">4</label>
+                        <input type="radio" name="r_value" value="5" id="r5"><label for="r5">5</label>
+                </div>
 
-        <div class="graphik-container">
-            <p>Todo graphik</p>
+                <div class="form-content">
+                    <button type="submit">Проверить</button>
+                </div>
+
+                <div class="form-content">
+                    <button id="clear-button">Очистить таблицу</button>
+                </div>
+
+            </form>
+
+            <div class="graphik-container">
+                <%@include file="WEB-INF/fragments/graphik.jspf"  %>
+            </div>
         </div>
-
-        <hr>
-
-        <h2>История проверок</h2>
         <table id="results_table" border="1">
             <thead>
                 <tr>
@@ -70,7 +82,6 @@
 
             <tbody>
                 <% 
-                    List<CheckResult> results = (List<CheckResult>) session.getAttribute("results");
                     if (results != null) {
                         Collections.reverse(results);
                         for (CheckResult result : results) {

@@ -16,22 +16,24 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.30</version>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>4.0.1</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>5.0.0</version>
       <scope>provided</scope>
     </dependency>
 
   </dependencies>
   <build>
-    <finalName>web-lab-2</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <release>11</release>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>

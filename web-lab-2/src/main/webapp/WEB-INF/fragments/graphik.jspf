@@ -1,0 +1,39 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.weblab.model.CheckResult" %>
+
+<svg id="graphik" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="300" fill="#f4f4f4" stroke="black" />
+    <path d="M 150 150 L 150 75 A 75 75 0 0 1 225 150 Z" fill="#3399ff" stroke="#3377ff" />
+    <rect x="150" y="150" width="150" height="150" fill="#3399ff" stroke="#3377ff" />
+    <path d="M 150 150 L 112.5 150 L 150 300 Z" fill="#3399ff" stroke="#3377ff" />
+
+    <line x1="0" y1="150" x2="300" y2="150" stroke="black" />
+    <line x1="150" y1="0" x2="150" y2="300" stroke="black" />
+    <text x="290" y="140">X</text>
+    <text x="160" y="15">Y</text>
+
+    <text id="label-x-r" x="295" y="140">R</text>
+    <text id="label-x-r-half" x="225" y="140">R/2</text>
+    <text id="label-x-neg-r" x="5" y="140">-R</text>
+    <text id="label-x-neg-r-half" x="112.5" y="140">-R/2</text>
+
+    <text id="label-y-r" x="160" y="15">R</text>
+    <text id="label-y-r-half" x="160" y="75">R/2</text>
+    <text id="label-y-neg-r" x="160" y="300">-R</text>
+    <text id="label-y-neg-r-half" x="160" y="225">-R/2</text>
+
+    <%
+        results = (List<CheckResult>) session.getAttribute("results");
+        if (results != null) {
+            for (CheckResult res : results) {
+                double rForPoint = res.getR();
+                double svgX = 150 + (res.getX() / rForPoint) * 150;
+                double svgY = 150 - (res.getY() / rForPoint) * 150;
+                String color = res.isHit() ? "green" : "red";
+    %>
+    <circle cx="<%= svgX %>" cy="<%= svgY %>" r="3" fill="<%= color %>" />
+    <%
+            }
+        }
+    %>
+</svg>

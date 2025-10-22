@@ -24,6 +24,15 @@
     <url-pattern>/area_check</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>clearHistory</servlet-name>
+    <servlet-class>com.example.weblab.servlets.ClearHistoryServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>clearHistory</servlet-name>
+    <url-pattern>/clear_history</url-pattern>
+  </servlet-mapping>
+
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
