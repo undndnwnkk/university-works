@@ -28,6 +28,7 @@ public class AreaCheckServlet extends HttpServlet {
 
             if (y < -3 || y > 5 || x < -4 || x > 4 || r < 1 || r > 5) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect data in request");
+                return;
             }
 
             boolean hit = PointChecker.checkHit(x, y, r);
