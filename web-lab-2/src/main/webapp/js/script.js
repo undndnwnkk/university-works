@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         shapeRectangle.setAttribute('x', 150);
         shapeRectangle.setAttribute('y', 150);
-        shapeRectangle.setAttribute('width', rHalfInPixels);
+        shapeRectangle.setAttribute('width', rInPixels);
         shapeRectangle.setAttribute('height', rInPixels);
 
-        shapeTriangle.setAttribute('d', `M 150 150 L ${150 - rHalfInPixels} 150 L 150 ${150 + rInPixels} Z`);
+        shapeTriangle.setAttribute('d', `M 150 150 L ${150 - rInPixels} 150 L 150 ${150 + rInPixels} Z`);
     };
 
 
@@ -57,10 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const mathX = (svgX - 150) / PIXELS_PER_UNIT;
         const mathY = (150 - svgY) / PIXELS_PER_UNIT;
 
-        const xValues = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
-        const closestX = xValues.reduce((p, c) => (Math.abs(c - mathX) < Math.abs(p - mathX) ? c : p));
-
-        xSelect.value = closestX;
         xHiddenInput.value = mathX.toFixed(3);
         yInput.value = mathY.toFixed(3);
 
@@ -81,9 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateY = () => {
         const yValue = yInput.value.trim().replace(',', '.');
         yInput.value = yValue;
-        if (isNaN(yValue) || yValue === "") { alert('Введите число в Y'); return false; }
+        if (isNaN(yValue) || yValue === "") { 
+            alert('Введите число в Y'); 
+            return false; 
+        }
         const yNumber = parseFloat(yValue);
-        if (yNumber <= -3 || yNumber >= 5) { alert('Y должен быть в диапазоне (-3 ... 5)'); return false; }
+        if (yNumber <= -3 || yNumber >= 5) { 
+            alert('Y должен быть в диапазоне (-3 ... 5)'); 
+            return false; 
+        }
         return true;
     };
 
