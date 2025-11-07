@@ -19,32 +19,19 @@ public class ControllerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getContentType() != null && request.getContentType().startsWith("application/json")) {
-            try {
-                PointRequest pointRequest = gson.fromJson(request.getReader(), PointRequest.class);
+        PointRequest pointRequest = (PointRequest) request.getAttribute("pointRequest");
 
-                if (pointRequest == null || pointRequest.getX_value() == null || pointRequest.getY_value() == null || pointRequest.getR_value() == null) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data: one or more parameters are missing.");
-                    return;
-                }
+        try {
+            request.setAttribute("x_value", pointRequest.getX_value());
+            request.setAttribute("y_value", pointRequest.getY_value());
+            request.setAttribute("r_value", pointRequest.getR_value());
 
-                double x = pointRequest.getX_value();
-                double y = pointRequest.getY_value();
-                double r = pointRequest.getR_value();
+            request.setAttribute("fromController", true);
 
-                request.setAttribute("x_value", x);
-                request.setAttribute("y_value", y);
-                request.setAttribute("r_value", r);
-
-                request.setAttribute("fromController", true);
-
-                request.getServletContext().getRequestDispatcher("/area_check").forward(request, response);
-                } catch (Exception e) {
-                e.printStackTrace();
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JSON or  you something didn't wrote");
-            }
-        } else {
-            response.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, "Content type not supported");
+            request.getServletContext().getRequestDispatcher("/area_check").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error :(");
         }
     }
 }

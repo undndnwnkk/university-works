@@ -3,6 +3,7 @@ package com.example.weblab.servlets;
 import com.example.weblab.model.CheckResult;
 import com.example.weblab.model.PointChecker;
 
+import com.example.weblab.model.PointRequest;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,14 +29,11 @@ public class AreaCheckServlet extends HttpServlet {
         long startTime = System.nanoTime();
 
         try {
-            double x = (Double) request.getAttribute("x_value");
-            double y = (Double) request.getAttribute("y_value");
-            double r = (Double) request.getAttribute("r_value");
+            PointRequest pointRequest = (PointRequest) request.getAttribute("pointRequest");
 
-            if (y <= -3 || y > 5 || x < -4 || x > 4 || r < 1 || r > 5) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect data in request");
-                return;
-            }
+            double x = pointRequest.getX_value();
+            double y = pointRequest.getY_value();
+            double r = pointRequest.getR_value();
 
             boolean hit = PointChecker.checkHit(x, y, r);
             long executionTime = System.nanoTime() - startTime;
