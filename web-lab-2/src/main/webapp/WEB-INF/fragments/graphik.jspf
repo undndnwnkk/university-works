@@ -35,7 +35,14 @@
                 double svgY = 150 - (res.getY() / maxR) * 150;
                 String color = res.isHit() ? "green" : "red";
     %>
-    <circle cx="<%= svgX %>" cy="<%= svgY %>" r="3" fill="<%= color %>" />
+    <circle class = "result-point"
+            cx="<%= svgX %>"
+            cy="<%= svgY %>"
+            r="3"
+            fill="<%= color %>"
+            data-math-x="<%= res.getX() %>"
+            data-math-y="<%= res.getY() %>"
+    />
     <%
             }
         }

@@ -10,6 +10,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const MAX_R = 5;
     const PIXELS_PER_UNIT = 150 / MAX_R;
 
+    const checkHit = (x, y, r) => {
+        if (x >= 0 && y >= 0) {
+            return (x * x + y * y) <= ((r / 2) * (r / 2));
+        }
+        if (x >= 0 && y <= 0) {
+            return x <= r && y >= -r;
+        }
+        if (x <= 0 && y <= 0) {
+            return y >= (-x - r);
+        }
+        return false;
+    };
+
+    const updatePointsColor = (r) => {
+        const points = document.querySelectorAll('.result-point');
+        points.forEach(point => {
+            const x = parseFloat(point.dataset.mathX);
+            const y = parseFloat(point.dataset.mathY);
+
+            if (checkHit(x, y, r)) {
+                point.setAttribute('fill', 'green');
+            } else {
+                point.setAttribute('fill', 'red');
+            }
+        });
+    };
+
+
     const redrawShapes = (r) => {
         if (!r) return;
 
@@ -32,7 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     rRadiosContainer.addEventListener('change', (e) => {
-        redrawShapes(e.target.value);
+        const newR = e.target.value;
+        redrawShapes(newR);
+        updatePointsColor(newR);
     });
 
     const initialR = document.querySelector('input[name="r_value"]:checked');
@@ -77,14 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateY = () => {
         const yValue = yInput.value.trim().replace(',', '.');
         yInput.value = yValue;
-        if (isNaN(yValue) || yValue === "") { 
-            alert('Введите число в Y'); 
-            return false; 
+        if (isNaN(yValue) || yValue === "") {
+            alert('Введите число в Y');
+            return false;
         }
         const yNumber = parseFloat(yValue);
-        if (yNumber <= -3 || yNumber >= 5) { 
-            alert('Y должен быть в диапазоне (-3 ... 5)'); 
-            return false; 
+        if (yNumber <= -3 || yNumber >= 5) {
+            alert('Y должен быть в диапазоне (-3 ... 5)');
+            return false;
         }
         return true;
     };
