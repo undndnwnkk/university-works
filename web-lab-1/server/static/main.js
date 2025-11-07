@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
             formError.textContent = 'Y должен быть числом в диапазоне (-5 ... 3).';
             return;
         }
-        if (!Number.isFinite(x)) {
-            formError.textContent = 'X должен быть числом.';
+        if (!Number.isFinite(x) || x < -3 || x > 5) {
+            formError.textContent = 'X должен быть числом в диапазоне {-3, ..., 5}';
             return;
         }
         if (!Number.isFinite(r)) {
@@ -80,7 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(response.headers.get('Content-Type'));
             console.log(text);
             let data;
-            try { data = JSON.parse(text); } catch { data = { error: text || 'Invalid JSON' }; }
+            try { data = JSON.parse(text); }
+            catch { data = { error: text || 'Invalid JSON' }; }
 
             if (!response.ok) {
                 throw new Error(data.error || `HTTP ${response.status}`);

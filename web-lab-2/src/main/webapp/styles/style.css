@@ -1,0 +1,138 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+.header {
+    display: flex;
+    justify-content: space-around;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 15px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.main {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+.main-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+#check-form {
+    flex-basis: 45%;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+#x-select, #y-text {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+#x-select:focus, #y-text:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+#r-radios label {
+    display: inline-block;
+    margin-right: 15px;
+    font-weight: normal;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+button[type="submit"] {
+    background-color: #27ae60;
+    margin-bottom: 10px;
+}
+
+#clear-button {
+    background-color: #c0392b;
+}
+
+
+.graphik-container {
+    flex-basis: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#results_table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: #ffffff;
+}
+
+#results_table thead {
+    background-color: #34495e;
+    color: #ecf0f1;
+    font-weight: bold;
+}
+
+#results_table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+#results_table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
