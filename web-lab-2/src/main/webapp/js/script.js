@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const validateY = () => {
-        const yValue = yInput.value.trim().replace(',', '.');
+        const yValue = yInput.value;
         yInput.value = yValue;
         if (isNaN(yValue) || yValue === "") {
             alert('Введите число в Y');
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const x = parseFloat(xSelect.value);
-        const y = parseFloat(yInput.value.trim().replace(',', '.'));
+        const y = parseFloat(yInput.value);
         const r = parseFloat(document.querySelector('input[name="r_value"]:checked').value);
 
         sendCheckRequest(x, y, r);
