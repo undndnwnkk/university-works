@@ -24,6 +24,8 @@ public class BadRequestFilter implements Filter {
             return;
         }
 
+        // MVVM
+
         if (httpRequest.getContentType() == null || !httpRequest.getContentType().startsWith("application/json")) {
             httpResponse.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, "Content-type must be application/json");
             return;
