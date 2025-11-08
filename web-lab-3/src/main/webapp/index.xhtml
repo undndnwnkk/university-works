@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+    <title>Стартовая страница</title>
+</h:head>
+<h:body>
+    <header>
+        <h1>ФИО: Быков Лев</h1>
+        <p>Группа: P3219</p>
+        <p>Вариант: 55687</p>
+    </header>
+
+    <div id="clock"></div>
+
+    <h:link outcome="main" value="Перейти к приложению" />
+
+    <script>
+        function updateTime() {
+            document.getElementById('clock').innerText = new Date().toLocaleString();
+        }
+        setInterval(updateTime, 10000);
+        updateTime();
+    </script>
+</h:body>
+</html>

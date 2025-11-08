@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ace="http://www.icefaces.org/icefaces/components"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Основная страница</title>
+</h:head>
+<h:body>
+    <h:form>
+        <p>Изменение X:</p>
+        <ace:sliderEntry min="-2" max="2" step="1" value="#{pointBean.x}" />
+
+        <p>Изменение Y:</p>
+        <h:inputText value="#{pointBean.y}">
+            <f:validateDoubleRange minimum="-5" maximum="3" />
+        </h:inputText>
+
+        <p>Изменение R:</p>
+        <h:inputText value="#{pointBean.r}">
+            <f:validateDoubleRange minimum="1" maximum="4" />
+        </h:inputText>
+
+        <h:commandButton value="Проверить" action="#{pointBean.checkHit}" />
+    </h:form>
+
+    <div>
+        <!-- TODO image -->
+    </div>
+
+    <h:dataTable value="#{resultsBean.results}" var="res">
+    </h:dataTable>
+
+    <h:link outcome="index" value="На стартовую страницу" />
+</h:body>
+</html>
