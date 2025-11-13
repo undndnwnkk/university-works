@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21c6ce8-84a8-4bc0-aa02-fe82688852b1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/start.xhtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/styles/start.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/beans/PointBean.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/beans/ResultsManagerBean.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/model/CheckResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +21,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="jsf" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -63,7 +66,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1763010182550</updated>
-      <workItem from="1763010184823" duration="2394000" />
+      <workItem from="1763010184823" duration="5714000" />
     </task>
     <servers />
   </component>
