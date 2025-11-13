@@ -5,13 +5,15 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Data;
 
-import javax.faces.view.ViewScoped;
+import jakarta.faces.view.ViewScoped;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Named
 @ViewScoped
 @Data
-public class PointBean {
+public class PointBean implements Serializable {
     private Double x;
     private Double y;
     private Double r;
@@ -22,15 +24,17 @@ public class PointBean {
     public void checkHit() {
         long startTime = System.nanoTime();
         boolean isHit = true;
-        if (x > 0 && y > 0) {
-            isHit = (x <= r / 2) && (y <= r / 2) && (x*x + y*y <= (r/2) * (r/2));
-        } else if(x < 0 && y < 0) {
-            isHit = (x >= -r) && (y >= -r) && (y >= -2 * x - r);
-        } else if (x > 0 && y < 0) {
-            isHit = (x <= r) && (y >= -r);
-        } else {
-            isHit = false;
+
+        if (x <= 0 && y >= 0) {
+            isHit = (y <= (x / 2 + r / 2));
         }
+        else if (x <= 0 && y <= 0) {
+            isHit = (x >= -r) && (y >= -r);
+        }
+        else if (x >= 0 && y <= 0) {
+            isHit = (x * x + y * y <= (r / 2) * (r / 2));
+        }
+
         long executionTime = System.nanoTime() - startTime;
 
         CheckResult checkResult = CheckResult.builder()
