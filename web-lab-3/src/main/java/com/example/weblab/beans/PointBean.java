@@ -3,7 +3,6 @@ package com.example.weblab.beans;
 import com.example.weblab.model.CheckResult;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import lombok.Data;
 
 import jakarta.faces.view.ViewScoped;
 
@@ -12,7 +11,6 @@ import java.time.LocalDateTime;
 
 @Named
 @ViewScoped
-@Data
 public class PointBean implements Serializable {
     private Double x;
     private Double y;
@@ -37,14 +35,14 @@ public class PointBean implements Serializable {
 
         long executionTime = System.nanoTime() - startTime;
 
-        CheckResult checkResult = CheckResult.builder()
-                .x(this.x)
-                .y(this.y)
-                .r(this.r)
-                .hitResult(isHit)
-                .executionTime(executionTime)
-                .checkTimestamp(LocalDateTime.now())
-                .build();
+        CheckResult checkResult = new CheckResult(
+                this.x,
+                this.y,
+                this.r,
+                isHit,
+                LocalDateTime.now(),
+                executionTime
+        );
 
         resultsManagerBean.addResult(checkResult);
     }

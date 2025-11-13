@@ -7,13 +7,11 @@ import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import lombok.Getter;
 
 import java.util.List;
 
 @Named
 @ApplicationScoped
-@Getter
 public class ResultsManagerBean {
 
     @PersistenceContext
@@ -29,5 +27,13 @@ public class ResultsManagerBean {
     public void addResult(CheckResult result) {
         entityManager.persist(result);
         results.add(0, result);
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public List<CheckResult> getResults() {
+        return results;
     }
 }

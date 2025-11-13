@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21c6ce8-84a8-4bc0-aa02-fe82688852b1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/graph.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/styles/main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/weblab/beans/PointBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/beans/PointBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/weblab/beans/ResultsManagerBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/beans/ResultsManagerBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/weblab/model/CheckResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/model/CheckResult.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +21,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="jsf" />
         <option value="Class" />
+        <option value="jsf" />
       </list>
     </option>
   </component>
@@ -62,7 +67,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1763010182550</updated>
-      <workItem from="1763010184823" duration="6065000" />
+      <workItem from="1763010184823" duration="10018000" />
     </task>
     <servers />
   </component>
