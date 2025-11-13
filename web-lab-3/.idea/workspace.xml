@@ -4,9 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d2ca91c-9bd9-4c86-aeb9-3483833afaf0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../lab.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../web-lab-2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../web-lab-2/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="f21c6ce8-84a8-4bc0-aa02-fe82688852b1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.xhtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/main.xhtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-lab-3/.idea/workspace.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,12 +22,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
+  "associatedIndex": 3
 }]]></component>
-  <component name="ProjectId" id="35D5EHg3aYIuHMl1O9GbEejqC6k" />
+  <component name="ProjectId" id="35PSOSeqa7uwzrbbzpMRERDL1Cr" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -29,9 +37,11 @@
     "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "web-lab-3",
-    "last_opened_file_path": "/home/undndnwnkk-arch/development/study/university-works/web-lab-3",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -46,12 +56,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="8d2ca91c-9bd9-4c86-aeb9-3483833afaf0" name="Changes" comment="" />
-      <created>1762631690418</created>
+      <changelist id="f21c6ce8-84a8-4bc0-aa02-fe82688852b1" name="Changes" comment="" />
+      <created>1763010182550</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1762631690418</updated>
-      <workItem from="1762631691586" duration="69000" />
+      <updated>1763010182550</updated>
+      <workItem from="1763010184823" duration="698000" />
     </task>
     <servers />
   </component>
