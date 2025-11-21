@@ -46,4 +46,36 @@ public class PointBean implements Serializable {
 
         resultsManagerBean.addResult(checkResult);
     }
+
+    public Double getX() {
+        return x;
+    }
+
+    public void setX(Double x) {
+        this.x = x;
+    }
+
+    public Double getY() {
+        return y;
+    }
+
+    public void setY(Double y) {
+        this.y = y;
+    }
+
+    public Double getR() {
+        return r;
+    }
+
+    public void setR(Double r) {
+        this.r = r;
+    }
+
+    public ResultsManagerBean getResultsManagerBean() {
+        return resultsManagerBean;
+    }
+
+    public void setResultsManagerBean(ResultsManagerBean resultsManagerBean) {
+        this.resultsManagerBean = resultsManagerBean;
+    }
 }
