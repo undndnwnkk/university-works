@@ -3,10 +3,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
->
-
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
     <title>Main page</title>
@@ -44,8 +41,10 @@
 
                     <div class="form-group">
                         <h:outputLabel for="r-slider-component" value="Выберите R (2 ... 5):"/>
-                        <p:slider id="r-slider-component" for="r-text" minValue="2" maxValue="5" step="0.1">
-                            <p:ajax event="slideEnd" process="r-text" update="graphik-group r-value-display"/>
+                        <p:slider id="r-slider-component" for="r-text" minValue="2" maxValue="5" step="0.1"
+                                  widgetVar="rSliderWidget" onSlide="updateGraph(ui.value)">
+                            <p:ajax event="slideEnd" process="r-text" update="graphik-group r-value-display"
+                                    oncomplete="updateGraph(PF('rSliderWidget').getValue())"/>
                         </p:slider>
                         <h:inputHidden id="r-text" value="#{pointBean.r}" />
                         <h:outputText id="r-value-display" value="#{pointBean.r}" styleClass="slider-value"/>
@@ -53,19 +52,25 @@
 
                     <div class="form-buttons">
                         <p:commandButton value="Проверить" action="#{pointBean.checkHit}"
-                                         update="results-table graphik-group messages" process="check-form @this"/>
+                                         update="results-table graphik-group messages" process="check-form @this"
+                                         oncomplete="updateGraph(PF('rSliderWidget').getValue())"/>
                     </div>
 
                     <h:inputHidden id="graph-x" value="#{pointBean.x}" />
                     <h:inputHidden id="graph-y" value="#{pointBean.y}" />
 
-                    <p:remoteCommand name="sendPointFromGraph" actionListener="#{pointBean.checkHit}" update="results-table graphik-group messages" process="@this graph-x graph-y r-text"/>
+                    <p:remoteCommand name="sendPointFromGraph" actionListener="#{pointBean.checkHit}"
+                                     update="results-table graphik-group messages"
+                                     process="@this graph-x graph-y r-text"
+                                     oncomplete="updateGraph(PF('rSliderWidget').getValue())"/>
                 </h:form>
             </div>
 
             <div class="right-panel">
                 <h:panelGroup id="graphik-group" layout="block">
-                    <svg id="graphik" width="300" height="300" xmlns="http://www.w3.org/2000/svg" onclick="handleGraphClick(event, #{pointBean.r})">
+                    <svg id="graphik" width="300" height="300" xmlns="http://www.w3.org/2000/svg"
+                         onclick="handleGraphClick(event)">
+
                         <rect width="300" height="300" fill="white" stroke="black" />
                         <line x1="0" y1="150" x2="300" y2="150" stroke="black" />
                         <line x1="150" y1="0" x2="150" y2="300" stroke="black" />
@@ -74,17 +79,34 @@
                         <text x="285" y="140">X</text>
                         <text x="160" y="15">Y</text>
 
-                        <polygon points="150,150 #{150 - pointBean.r * 30},150 150,#{150 - pointBean.r*15}" fill="#3399ff" fill-opacity="0.7"/>
-                        <rect x="#{150 - pointBean.r * 30}" y="150" width="#{pointBean.r * 30}" height="#{pointBean.r * 30}" fill="#3399ff" fill-opacity="0.7"/>
-                        <path d="M 150,150 L #{150 + pointBean.r * 15},150 A #{pointBean.r * 15},#{pointBean.r * 15} 0 0 0 150,#{150 + pointBean.r * 15} Z" fill="#3399ff" fill-opacity="0.7"/>
+                        <polygon id="shape-triangle"
+                                 points="150,150 #{150 - pointBean.r * 30},150 150,#{150 - pointBean.r * 15}"
+                                 fill="#3399ff" fill-opacity="0.7"/>
+
+                        <rect id="shape-rect"
+                              x="#{150 - pointBean.r * 30}" y="150"
+                              width="#{pointBean.r * 30}" height="#{pointBean.r * 30}"
+                              fill="#3399ff" fill-opacity="0.7"/>
+
+                        <path id="shape-arc"
+                              d="M 150,150 L #{150 + pointBean.r * 15},150 A #{pointBean.r * 15},#{pointBean.r * 15} 0 0 1 150,#{150 + pointBean.r * 15} Z"
+                              fill="#3399ff" fill-opacity="0.7"/>
 
                         <ui:repeat value="#{resultsManagerBean.results}" var="point">
-                            <circle cx="#{150 + (point.x / point.r) * (point.r * 30)}"
-                                    cy="#{150 - (point.y / point.r) * (point.r * 30)}"
+                            <circle class="result-point"
+                                    cx="#{150 + point.x * 30}"
+                                    cy="#{150 - point.y * 30}"
                                     r="3"
+                                    data-x="#{point.x}"
+                                    data-y="#{point.y}"
                                     fill="#{point.hitResult ? 'green' : 'red'}" />
                         </ui:repeat>
                     </svg>
+                    <script>
+                        if (typeof updateGraph === 'function' &amp;&amp; PF('rSliderWidget')) {
+                            updateGraph(PF('rSliderWidget').getValue());
+                        }
+                    </script>
                 </h:panelGroup>
             </div>
         </div>
