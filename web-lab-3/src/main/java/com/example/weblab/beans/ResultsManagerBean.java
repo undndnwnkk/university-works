@@ -20,7 +20,9 @@ public class ResultsManagerBean {
 
     @PostConstruct
     public void init() {
-        results = entityManager.createQuery("SELECT r FROM CheckResult r ORDER BY r.checkTimestamp DESC", CheckResult.class).getResultList();
+        results = entityManager.createQuery(
+                "SELECT r FROM CheckResult r ORDER BY r.checkTimestamp DESC", CheckResult.class)
+                .getResultList();
     }
 
     @Transactional

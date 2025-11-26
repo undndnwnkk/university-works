@@ -2,9 +2,7 @@
 <jboss-deployment-structure>
     <deployment>
         <dependencies>
-            <!-- Добавляем зависимость от модуля JSP API -->
             <module name="jakarta.servlet.jsp.api"/>
-            <!-- Добавляем зависимость от модуля Servlet API (для большей надежности) -->
             <module name="jakarta.servlet.api"/>
         </dependencies>
     </deployment>
