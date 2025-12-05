@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'weblab-3'
+    metrics_path: /weblab-jsf/metrics
+    static_configs:
+      - targets: ['wildfly:8080']

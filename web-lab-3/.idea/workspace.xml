@@ -5,18 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21c6ce8-84a8-4bc0-aa02-fe82688852b1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/dto/CheckResultDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/dto/CoordinatesDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/dto/Mapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/repository/CheckResultDatabaseRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/repository/CheckResultRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/service/AreaCheckService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/aws.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prometheus.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/metrics/PrometheusServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/weblab/beans/NavigationBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/controller/NavigationBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/weblab/beans/PointBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/controller/PointBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/weblab/beans/ResultsManagerBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/controller/ResultsManagerBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/main.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/main.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/weblab/service/AreaCheckService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/service/AreaCheckService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +106,7 @@
       <workItem from="1764227741650" duration="9000" />
       <workItem from="1764912125157" duration="2941000" />
       <workItem from="1764956833205" duration="35000" />
-      <workItem from="1764962613672" duration="639000" />
+      <workItem from="1764962613672" duration="3214000" />
     </task>
     <servers />
   </component>

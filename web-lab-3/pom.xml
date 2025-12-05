@@ -63,17 +63,21 @@
       <classifier>jakarta</classifier>
     </dependency>
 
-<!--    <dependency>-->
-<!--      <groupId>org.icefaces</groupId>-->
-<!--      <artifactId>icefaces</artifactId>-->
-<!--      <version>${icefaces.version}</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.icefaces</groupId>-->
-<!--      <artifactId>icefaces-ace</artifactId>-->
-<!--      <version>${icefaces.version}</version>-->
-<!--    </dependency>-->
-
+          <dependency>
+              <groupId>io.prometheus</groupId>
+              <artifactId>simpleclient</artifactId>
+              <version>0.16.0</version>
+          </dependency>
+          <dependency>
+              <groupId>io.prometheus</groupId>
+              <artifactId>simpleclient_servlet_jakarta</artifactId>
+              <version>0.16.0</version>
+          </dependency>
+          <dependency>
+              <groupId>io.prometheus</groupId>
+              <artifactId>simpleclient_hotspot</artifactId>
+              <version>0.16.0</version>
+          </dependency>
 
     <dependency>
       <groupId>org.postgresql</groupId>
