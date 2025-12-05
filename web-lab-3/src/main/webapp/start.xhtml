@@ -22,7 +22,11 @@
             </div>
 
             <div class="navigation-link">
-                <h:button value="Перейти к проверке" outcome="main" styleClass="main-button"/>
+                <h:form>
+                    <h:commandButton value="Перейти к проверке"
+                                     action="#{navigationBean.goToMain()}"
+                                     styleClass="main-button" />
+                </h:form>
             </div>
         </main>
     </div>
