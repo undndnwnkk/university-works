@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="form-buttons">
-                        <p:commandButton value="Проверить" action="#{pointBean.checkHit}"
+                        <p:commandButton id="btn-check" value="Проверить" action="#{pointBean.checkHit}"
                                          update="results-table graphik-group messages" process="check-form @this"
                                          oncomplete="updateGraph(PF('rSliderWidget').getValue())"/>
                     </div>

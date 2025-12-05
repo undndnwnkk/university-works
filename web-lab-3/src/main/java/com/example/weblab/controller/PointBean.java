@@ -1,6 +1,9 @@
-package com.example.weblab.beans;
+package com.example.weblab.controller;
 
+import com.example.weblab.dto.CheckResultDto;
+import com.example.weblab.dto.CoordinatesDto;
 import com.example.weblab.model.CheckResult;
+import com.example.weblab.service.AreaCheckService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
@@ -17,34 +20,17 @@ public class PointBean implements Serializable {
     private Double r;
 
     @Inject
-    private ResultsManagerBean resultsManagerBean;
+    private AreaCheckService service;
+
+    @Inject
+    private ResultsManagerBean managerBean;
 
     public void checkHit() {
-        long startTime = System.nanoTime();
-        boolean isHit = true;
-
-        if (x <= 0 && y >= 0) {
-            isHit = (y <= (x / 2 + r / 2));
+        if (x != null || y != null || r != null) {
+            CoordinatesDto input = new CoordinatesDto(x, y, r);
+            CheckResultDto checkResultDto = service.checkPoint(input);
+            managerBean.addResult(checkResultDto);
         }
-        else if (x <= 0 && y <= 0) {
-            isHit = (x >= -r) && (y >= -r);
-        }
-        else if (x >= 0 && y <= 0) {
-            isHit = (x * x + y * y <= (r / 2) * (r / 2));
-        }
-
-        long executionTime = System.nanoTime() - startTime;
-
-        CheckResult checkResult = new CheckResult(
-                this.x,
-                this.y,
-                this.r,
-                isHit,
-                LocalDateTime.now(),
-                executionTime
-        );
-
-        resultsManagerBean.addResult(checkResult);
     }
 
     public Double getX() {
@@ -72,10 +58,10 @@ public class PointBean implements Serializable {
     }
 
     public ResultsManagerBean getResultsManagerBean() {
-        return resultsManagerBean;
+        return managerBean;
     }
 
     public void setResultsManagerBean(ResultsManagerBean resultsManagerBean) {
-        this.resultsManagerBean = resultsManagerBean;
+        this.managerBean = resultsManagerBean;
     }
 }

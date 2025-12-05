@@ -1,4 +1,4 @@
-package com.example.weblab.beans;
+package com.example.weblab.controller;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.FacesContext;
