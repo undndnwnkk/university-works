@@ -1,0 +1,136 @@
+.app-container {
+    font-family: sans-serif;
+    background: #f0f2f5;
+    min-height: 100vh;
+}
+
+.header {
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.content-body {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.interactive-panel {
+    flex: 0 0 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.table-panel {
+    flex: 1;
+}
+
+.text-input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+}
+
+.slider {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+button {
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.btn-check {
+    background: #3498db;
+    color: white;
+}
+
+.btn-exit {
+    background: #e74c3c;
+    color: white;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+@media screen and (min-width: 1259px) {
+    .header-content {
+        display: flex;
+        justify-content: space-around;
+    }
+}
+
+@media screen and (max-width: 1258px) and (min-width: 767px) {
+    .content-body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .interactive-panel {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .table-panel {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 766px) {
+    .content-body {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .interactive-panel {
+        width: 100%;
+        align-items: center;
+    }
+
+    .table-panel {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .header-content span {
+        display: block;
+        margin-bottom: 5px;
+    }
+}
+
+#graph {
+    border: 1px solid #ccc;
+    cursor: crosshair;
+}

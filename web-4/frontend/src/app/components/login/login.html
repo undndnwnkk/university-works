@@ -1,0 +1,30 @@
+<div class="page-container">
+  <header class="header">
+    <div class="header-info">
+      <div class="info-item"><b>ФИО:</b>Быков Лев</div>
+      <div class="info-item"><b>Группа:</b>P3219</div>
+      <div class="info-item"><b>Вариант:</b>9594</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="auth-box">
+      <h1>Лабораторная №4</h1>
+      
+      <div class="form-group">
+        <label for="login">Логин</label>
+        <input id="login" type="text" [(ngModel)]="credentials.username" placeholder="Введите логин">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Пароль</label>
+        <input id="password" type="password" [(ngModel)]="credentials.password" placeholder="Введите пароль">
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" (click)="onLogin()">Войти</button>
+        <button class="btn-secondary" (click)="onRegister()">Регистрация</button>
+      </div>
+    </div>
+  </main>
+</div>
