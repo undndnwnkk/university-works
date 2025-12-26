@@ -1,3 +1,20 @@
-import { Routes } from '@angular/router';
+import { Routes, Router } from '@angular/router';
+import { LoginComponent } from './components/login/login';
+import { Main } from './components/main/main';
+import { inject } from '@angular/core';
+import { AuthService } from './services/auth';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+    { path: 'login', component: LoginComponent },
+    {
+        path: 'main',
+        component: Main,
+        canActivate: [() => {
+            const auth = inject(AuthService);
+            const router = inject(Router);
+            return auth.isLoggedIn() ? true : router.createUrlTree(['/login']);
+        }]
+    },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '**', redirectTo: '/login' }
+];

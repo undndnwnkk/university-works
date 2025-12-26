@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae093b39-5aba-4178-93ee-f1ca7faa116d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../test/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../test/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../test/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../test/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../test/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../test/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../test/src/main/java/org/example/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web-lab-3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../web-lab-3/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../web-4/frontend/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/../web-4/frontend/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../web-4/frontend/src/app/app.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../web-4/frontend/src/app/app.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../web-4/frontend/src/app/app.html" beforeDir="false" afterPath="$PROJECT_DIR$/../web-4/frontend/src/app/app.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../web-4/frontend/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../web-4/frontend/src/app/app.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +60,7 @@
     "Tomcat Server.Tomcat 9.0.112.executor": "Run",
     "git-widget-placeholder": "web-lab-3",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/undndnwnkk-arch/development/study/university-works/web-4/web-lab-4",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -156,7 +154,8 @@
       <updated>1766697253797</updated>
       <workItem from="1766697255139" duration="4441000" />
       <workItem from="1766733844352" duration="1828000" />
-      <workItem from="1766736915001" duration="3420000" />
+      <workItem from="1766736915001" duration="3537000" />
+      <workItem from="1766742003465" duration="31000" />
     </task>
     <servers />
   </component>

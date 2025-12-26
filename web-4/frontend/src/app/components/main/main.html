@@ -1,0 +1,89 @@
+<div class="app-container">
+    <header class="header">
+        <div class="header-content">
+            <span><b>ФИО:</b> Быков Лев</span>
+            <span><b>Группа:</b> P3219</span>
+            <span><b>Вариант:</b> 9594</span>
+        </div>
+    </header>
+
+    <div class="content-body">
+        <div class="interactive-panel">
+            <div class="card graph-container">
+                <svg id="graph" width="300" height="300" (click)="onSvgClick($event)"
+                    style="background: white; border: 1px solid #ccc;">
+                    <rect width="300" height="300" fill="white" />
+
+                    <path [attr.d]="'M 150,150 L ' + (150 + numR*15) + ',150 A ' + (abs(numR)*15) + ',' + (abs(numR)*15) + 
+                    ' 0 0 ' + (numR >= 0 ? '0' : '1') + ' 150,' + (150 - numR*15) + ' Z'" fill="#3399ff"
+                        fill-opacity="0.7"></path>
+
+                    <polygon [attr.points]="'150,150 ' + (150 - numR*15) + ',150 150,' + (150 + numR*15)" fill="#3399ff"
+                        fill-opacity="0.7"></polygon>
+
+                    <rect [attr.x]="numR >= 0 ? 150 : (150 + numR*30)" [attr.y]="numR >= 0 ? 150 : (150 + numR*30)"
+                        [attr.width]="abs(numR)*30" [attr.height]="abs(numR)*30" fill="#3399ff" fill-opacity="0.7">
+                    </rect>
+
+                    <line x1="0" y1="150" x2="300" y2="150" stroke="black" />
+                    <line x1="150" y1="0" x2="150" y2="300" stroke="black" />
+                    <polygon points="300,150 290,145 290,155" fill="black" />
+                    <polygon points="150,0 145,10 155,10" fill="black" />
+                    <text x="285" y="140">X</text>
+                    <text x="160" y="15">Y</text>
+
+                    <circle *ngFor="let p of points" [attr.cx]="150 + p.x * 30" [attr.cy]="150 - p.y * 30" r="3"
+                        [attr.fill]="isHitClient(p.x, p.y, numR) ? '#2ecc71' : '#e74c3c'">
+                    </circle>
+                </svg>
+            </div>
+
+            <div class="card form-container">
+                <div class="input-block">
+                    <label class="slider-label">Координата X: <span>{{x}}</span></label>
+                    <input type="range" [(ngModel)]="x" min="-5" max="3" step="0.1" class="slider">
+                </div>
+
+                <div class="input-block">
+                    <label class="slider-label">Координата Y: <span>{{y}}</span></label>
+                    <input type="range" [(ngModel)]="y" min="-3" max="3" step="0.1" class="slider">
+                </div>
+
+                <div class="input-block">
+                    <label class="slider-label">Радиус R: <span>{{r}}</span></label>
+                    <input type="range" [(ngModel)]="r" min="-5" max="3" step="0.1" class="slider">
+                </div>
+
+                <div class="btns">
+                    <button (click)="onSend()" class="btn-check">Проверить</button>
+                    <button (click)="logout()" class="btn-exit">Выйти</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-panel">
+            <div class="card table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>X</th>
+                            <th>Y</th>
+                            <th>R</th>
+                            <th>Результат</th>
+                            <th>Время</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of points">
+                            <td>{{p.x}}</td>
+                            <td>{{p.y}}</td>
+                            <td>{{p.r}}</td>
+                            <td [style.color]="p.hit ? 'green' : 'red'">{{p.hit ? 'Да' : 'Нет'}}</td>
+                            <td>{{p.executionTime}} мкс</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
