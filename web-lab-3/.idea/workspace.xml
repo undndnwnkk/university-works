@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f21c6ce8-84a8-4bc0-aa02-fe82688852b1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/prometheus.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/metrics/PrometheusServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/weblab/service/AreaCheckService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/weblab/service/AreaCheckService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,20 +53,6 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager">
-    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" ALTERNATIVE_JRE_ENABLED="false">
-      <deployment />
-      <server-settings />
-      <predefined_log_file enabled="true" id="Tomcat" />
-      <predefined_log_file enabled="true" id="Tomcat Catalina" />
-      <predefined_log_file id="Tomcat Manager" />
-      <predefined_log_file id="Tomcat Host Manager" />
-      <predefined_log_file id="Tomcat Localhost Access" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -106,7 +87,9 @@
       <workItem from="1764227741650" duration="9000" />
       <workItem from="1764912125157" duration="2941000" />
       <workItem from="1764956833205" duration="35000" />
-      <workItem from="1764962613672" duration="3214000" />
+      <workItem from="1764962613672" duration="4805000" />
+      <workItem from="1765012188005" duration="1895000" />
+      <workItem from="1765174951106" duration="11000" />
     </task>
     <servers />
   </component>

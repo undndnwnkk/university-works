@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: web-lab-4
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: web-lab-4
+    container_name: wildfly_backend
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=web-lab-4
+      - DB_USER=postgres
+      - DB_PASS=password
+
+volumes:
+  pgdata:
