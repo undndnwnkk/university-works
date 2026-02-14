@@ -37,7 +37,13 @@ public class AuthController {
         User existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser != null) {
             return Response.status(Response.Status.CONFLICT)
-                    .entity(Collections.singletonMap("error", "User already exists"))
+                    .entity(Map.of("error", "User already exists"))
+                    .build();
+        }
+
+        if (user.getPassword().length() < 8) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(Map.of("error", "Password must be at least 8 symbols"))
                     .build();
         }
 
