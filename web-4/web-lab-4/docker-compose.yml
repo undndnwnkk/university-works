@@ -1,9 +1,0 @@
-services:
-  wildfly:
-    build: .
-    container_name: web-lab-4-wildfly
-    ports:
-      - "8080:8080"
-      - "9990:9990"
-
-# TODO: password < 8, errors on the page: not alerts, remove margins of the header
