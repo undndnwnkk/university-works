@@ -1,8 +1,0 @@
-com/example/weblab/model/PointChecker.class
-com/example/weblab/filters/NotFoundFilter.class
-com/example/weblab/filters/BadRequestFilter.class
-com/example/weblab/model/PointRequest.class
-com/example/weblab/servlets/AreaCheckServlet.class
-com/example/weblab/model/CheckResult.class
-com/example/weblab/servlets/ControllerServlet.class
-com/example/weblab/servlets/ClearHistoryServlet.class
