@@ -1,10 +1,12 @@
 package com.web.weblab4.controller;
 
+import com.web.weblab4.dto.PointDto;
 import com.web.weblab4.model.Point;
 import com.web.weblab4.model.User;
 import com.web.weblab4.repository.PointRepository;
 import com.web.weblab4.repository.UserRepository;
 import com.web.weblab4.service.AreaService;
+import com.web.weblab4.service.PointService;
 import com.web.weblab4.util.Secured;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -22,37 +24,18 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class PointController {
     @Inject
-    private UserRepository userRepository;
-
-    @Inject
-    private PointRepository pointRepository;
-
-    @Inject
-    private AreaService areaChecker;
-
-    @Context
-    private SecurityContext securityContext;
+    private PointService pointService;
 
     @POST
-    public Response addPoint(@Valid Point point) {
-        long startTime = System.nanoTime();
+    public Response addPoint(PointDto point) {
 
-        String username = securityContext.getUserPrincipal().getName();
-        User owner = userRepository.findByUsername(username);
-
-        point.setOwner(owner);
-        point.setHit(areaChecker.isHit(point.getX(), point.getY(), point.getR()));
-
-        point.setExecutionTime((System.nanoTime() - startTime) / 1000);
-
-        pointRepository.save(point);
-        return Response.ok(point).build();
+        Point response = pointService.addPoint(point);
+        return Response.ok(response).build();
     }
 
     @GET
-    public List<Point> getPoints() {
-        String username = securityContext.getUserPrincipal().getName();
-        User owner = userRepository.findByUsername(username);
-        return pointRepository.findByUserId(owner.getId());
+    public Response getPoints() {
+        List<Point> result = pointService.getAllPoints();
+        return Response.ok(result).build();
     }
 }

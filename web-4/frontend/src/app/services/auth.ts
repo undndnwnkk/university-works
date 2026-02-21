@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs'; 
 
 @Injectable({
   providedIn: 'root',
@@ -10,23 +11,26 @@ export class AuthService {
   private router = inject(Router);
 
   login(credentials: any) {
-    this.http.post<{ token: string }>('/api/auth/login', credentials).subscribe({
-      next: (res) => {
-        localStorage.setItem('jwt_token', res.token);
-        this.router.navigate(['/main']);
-      },
-      error: (err) => alert('Ошибка входа: ' + (err.error?.error || 'Неверный логин/пароль')),
-    });
+    return this.http.post<{ token: string }>('/api/auth/login', credentials).pipe(
+      tap({
+        next: (res) => {
+          localStorage.setItem('jwt_token', res.token);
+          this.router.navigate(['/main']);
+        },
+      }),
+    );
   }
 
   register(credentials: any) {
-    this.http.post<{ token: string }>('/api/auth/register', credentials).subscribe({
-      next: (res) => {
-        localStorage.setItem('jwt_token', res.token);
-        this.router.navigate(['/main']);
-      },
-      error: (err) => alert('Ошибка регистрации: ' + (err.error?.error || 'Логин занят')),
-    });
+
+    return this.http.post<{ token: string }>('/api/auth/register', credentials).pipe(
+      tap({
+        next: (res) => {
+          localStorage.setItem('jwt_token', res.token);
+          this.router.navigate(['/main']);
+        },
+      }),
+    );
   }
 
   logout() {

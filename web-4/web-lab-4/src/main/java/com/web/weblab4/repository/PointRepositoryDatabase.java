@@ -20,7 +20,7 @@ public class PointRepositoryDatabase implements PointRepository{
 
     @Override
     public List<Point> findByUserId(UUID userId) {
-        return em.createQuery("SELECT p FROM Point p WHERE p.owner.id = :userId", Point.class) // Добавь .id
+        return em.createQuery("SELECT p FROM Point p WHERE p.owner.id = :userId", Point.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }
