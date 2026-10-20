@@ -1,0 +1,6 @@
+embed-server --server-config=standalone.xml --std-out=echo
+
+/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-class-name=org.postgresql.Driver,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+data-source add --name=RouteDS --jndi-name=java:/jdbc/RouteDS --driver-name=postgresql --connection-url="jdbc:postgresql://${env.DB_HOST:db}:${env.DB_PORT:5432}/${env.DB_NAME:routes}" --user-name="${env.DB_USER:routes}" --password="${env.DB_PASSWORD:routes}" --min-pool-size=2 --max-pool-size=15 --validate-on-match=true --background-validation=true --background-validation-millis=5000
+
+stop-embedded-server

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/templates/app.xhtml">
+    <ui:define name="title">Маршруты</ui:define>
+    <ui:define name="content">
+        <h:form id="routesForm">
+            <div class="page-heading">
+                <div><h1>Маршруты</h1><p>Управление маршрутами и связанными локациями</p></div>
+                <h:commandButton value="＋  Новый маршрут" action="#{routeListBean.openCreate}" styleClass="button primary">
+                    <f:ajax execute="@this" render=":routesForm:modalArea"/>
+                </h:commandButton>
+            </div>
+
+            <h:messages id="messages" globalOnly="true" infoClass="toast success" errorClass="toast error"/>
+
+            <div class="toolbar">
+                <div class="search-wrap">
+                    <span aria-hidden="true">⌕</span>
+                    <h:inputText id="filter" value="#{routeListBean.filter}"
+                                 placeholder="Поиск по названию и локациям…" aria-label="Поиск маршрутов">
+                        <f:ajax event="keyup" delay="350" listener="#{routeListBean.applyFilter}" render="tablePanel pager"/>
+                    </h:inputText>
+                </div>
+                <span class="result-count">#{routeListBean.total} объектов</span>
+            </div>
+
+            <h:panelGroup id="tablePanel" layout="block" styleClass="table-frame">
+                <h:dataTable value="#{routeListBean.routes}" var="route" styleClass="data-table"
+                             headerClass="table-header" rowClasses="table-row">
+                    <h:column><f:facet name="header"><h:commandLink value="ID" action="#{routeListBean.sortBy('id')}" styleClass="sort-link"><f:ajax render=":routesForm:tablePanel"/></h:commandLink></f:facet><span class="id-cell">##{route.id}</span></h:column>
+                    <h:column><f:facet name="header"><h:commandLink value="Название" action="#{routeListBean.sortBy('name')}" styleClass="sort-link"><f:ajax render=":routesForm:tablePanel"/></h:commandLink></f:facet><h:link outcome="/route-view" value="#{route.name}" styleClass="name-link"><f:param name="id" value="#{route.id}"/></h:link></h:column>
+                    <h:column><f:facet name="header">Координаты</f:facet>#{route.coordinates.x}; #{route.coordinates.y}</h:column>
+                    <h:column><f:facet name="header"><h:commandLink value="Из" action="#{routeListBean.sortBy('from')}" styleClass="sort-link"><f:ajax render=":routesForm:tablePanel"/></h:commandLink></f:facet>#{route.from.displayName}</h:column>
+                    <h:column><f:facet name="header"><h:commandLink value="В" action="#{routeListBean.sortBy('to')}" styleClass="sort-link"><f:ajax render=":routesForm:tablePanel"/></h:commandLink></f:facet>#{route.to == null ? '—' : route.to.displayName}</h:column>
+                    <h:column><f:facet name="header"><h:commandLink value="Расстояние" action="#{routeListBean.sortBy('distance')}" styleClass="sort-link"><f:ajax render=":routesForm:tablePanel"/></h:commandLink></f:facet><h:outputText value="#{route.distance}"><f:convertNumber minFractionDigits="1" maxFractionDigits="2"/></h:outputText></h:column>
+                    <h:column><f:facet name="header"><h:commandLink value="Рейтинг" action="#{routeListBean.sortBy('rating')}" styleClass="sort-link"><f:ajax render=":routesForm:tablePanel"/></h:commandLink></f:facet><span class="rating">★ #{route.rating}</span></h:column>
+                    <h:column><f:facet name="header">Создан</f:facet><h:outputText value="#{route.creationDate}"><f:convertDateTime type="localDateTime" pattern="dd.MM.yyyy HH:mm"/></h:outputText></h:column>
+                    <h:column>
+                        <f:facet name="header">Действия</f:facet>
+                        <div class="row-actions">
+                            <h:link outcome="/route-view" value="Открыть" styleClass="action-link"><f:param name="id" value="#{route.id}"/></h:link>
+                            <h:commandLink value="Изменить" action="#{routeListBean.openEdit(route.id)}" styleClass="action-link"><f:ajax execute="@this" render=":routesForm:modalArea"/></h:commandLink>
+                            <h:commandLink value="Удалить" action="#{routeListBean.askDelete(route.id)}" styleClass="action-link danger"><f:ajax execute="@this" render=":routesForm:modalArea"/></h:commandLink>
+                        </div>
+                    </h:column>
+                </h:dataTable>
+                <h:panelGroup rendered="#{empty routeListBean.routes}" layout="block" styleClass="empty-state">
+                    <strong>Ничего не найдено</strong><span>Измените строку поиска или создайте маршрут.</span>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup id="pager" layout="block" styleClass="pager">
+                <div class="pager-controls">
+                    <h:commandButton value="← Назад" action="#{routeListBean.previousPage}" disabled="#{routeListBean.page == 0}" styleClass="button secondary"><f:ajax render="tablePanel pager"/></h:commandButton>
+                    <span class="page-number">#{routeListBean.page + 1} / #{routeListBean.pageCount}</span>
+                    <h:commandButton value="Вперёд →" action="#{routeListBean.nextPage}" disabled="#{routeListBean.page + 1 ge routeListBean.pageCount}" styleClass="button secondary"><f:ajax render="tablePanel pager"/></h:commandButton>
+                </div>
+                <div class="pager-summary">Записи #{routeListBean.firstRowNumber}–#{routeListBean.lastRowNumber} из #{routeListBean.total}</div>
+            </h:panelGroup>
+
+            <h:panelGroup id="modalArea" layout="block">
+                <ui:fragment rendered="#{routeListBean.editorOpen}"><div class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+                    <section class="modal drawer">
+                        <header class="modal-header"><div><span class="modal-kicker">#{routeListBean.editingId == null ? 'Новая запись' : 'Маршрут #'.concat(routeListBean.editingId)}</span><h2 id="editorTitle">#{routeListBean.editingId == null ? 'Создать маршрут' : 'Редактировать маршрут'}</h2></div><h:commandButton value="×" action="#{routeListBean.closeEditor}" styleClass="icon-button"><f:ajax render=":routesForm:modalArea"/></h:commandButton></header>
+                        <div class="modal-body">
+                            <h:messages styleClass="form-errors" errorClass="field-error"/>
+                            <fieldset><legend>Основная информация</legend>
+                                <label for="name">Название <b>*</b></label>
+                                <h:inputText id="name" value="#{routeListBean.draft.name}" required="true" requiredMessage="Введите название" maxlength="255"/>
+                                <div class="field-grid">
+                                    <div><label for="cx">Координата X <b>*</b></label><h:inputText id="cx" value="#{routeListBean.draft.coordinates.x}" required="true"/></div>
+                                    <div><label for="cy">Координата Y <b>*</b></label><h:inputText id="cy" value="#{routeListBean.draft.coordinates.y}" required="true"/></div>
+                                </div>
+                            </fieldset>
+                            <fieldset><legend>Пункты маршрута</legend>
+                                <label for="from">Откуда <b>*</b></label>
+                                <h:selectOneMenu id="from" value="#{routeListBean.fromId}" required="true">
+                                    <f:selectItems value="#{routeListBean.locations}" var="loc" itemValue="#{loc.id}" itemLabel="#{loc.displayName} · (#{loc.x}; #{loc.y}; #{loc.z})"/>
+                                </h:selectOneMenu>
+                                <label for="to">Куда <span class="optional">необязательно</span></label>
+                                <h:selectOneMenu id="to" value="#{routeListBean.toId}">
+                                    <f:selectItem itemValue="#{null}" itemLabel="Не выбрано" noSelectionOption="true"/>
+                                    <f:selectItems value="#{routeListBean.locations}" var="loc" itemValue="#{loc.id}" itemLabel="#{loc.displayName} · (#{loc.x}; #{loc.y}; #{loc.z})"/>
+                                </h:selectOneMenu>
+                            </fieldset>
+                            <fieldset><legend>Параметры</legend>
+                                <div class="field-grid">
+                                    <div><label for="distance">Расстояние <b>*</b></label><h:inputText id="distance" value="#{routeListBean.draft.distance}" required="true"><f:validateDoubleRange minimum="1.000001"/></h:inputText><small>Значение строго больше 1</small></div>
+                                    <div><label for="rating">Рейтинг <b>*</b></label><h:inputText id="rating" value="#{routeListBean.draft.rating}" required="true"><f:validateLongRange minimum="1"/></h:inputText><small>Положительное целое число</small></div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <footer class="modal-footer"><h:commandButton value="Отмена" action="#{routeListBean.closeEditor}" immediate="true" styleClass="button secondary"><f:ajax render=":routesForm:modalArea"/></h:commandButton><h:commandButton value="#{routeListBean.editingId == null ? 'Создать маршрут' : 'Сохранить изменения'}" action="#{routeListBean.save}" styleClass="button primary"><f:ajax execute="@form" render="@form"/></h:commandButton></footer>
+                    </section>
+                </div></ui:fragment>
+
+                <ui:fragment rendered="#{routeListBean.deleteOpen}"><div class="modal-layer" role="alertdialog" aria-modal="true">
+                    <section class="modal confirm-modal">
+                        <header class="modal-header"><div><span class="modal-kicker danger-text">Необратимое действие</span><h2>Удалить маршрут ##{routeListBean.deleteId}?</h2></div></header>
+                        <div class="modal-body"><p>Связи с удаляемым маршрутом можно перенести на другой объект.</p><label for="replacement">Маршрут-замена</label><h:selectOneMenu id="replacement" value="#{routeListBean.replacementId}"><f:selectItem itemValue="#{null}" itemLabel="Без замены (если нет связей)"/><f:selectItems value="#{routeListBean.allRoutes}" var="candidate" itemValue="#{candidate.id}" itemLabel="#{candidate.name}" itemDisabled="#{candidate.id eq routeListBean.deleteId}"/></h:selectOneMenu></div>
+                        <footer class="modal-footer"><h:commandButton value="Отмена" action="#{routeListBean.closeDelete}" styleClass="button secondary"><f:ajax render=":routesForm:modalArea"/></h:commandButton><h:commandButton value="Удалить" action="#{routeListBean.delete}" styleClass="button danger-button"><f:ajax execute="@form" render="@form"/></h:commandButton></footer>
+                    </section>
+                </div></ui:fragment>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

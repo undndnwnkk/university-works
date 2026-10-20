@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+<h:head>
+    <ui:insert name="metadata"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title><ui:insert name="title">Маршруты</ui:insert> · ИС</title>
+    <h:outputStylesheet library="css" name="app.css"/>
+</h:head>
+<h:body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="#{request.contextPath}/index.xhtml" aria-label="На главную">
+                <span class="brand-mark">R</span>
+                <span><strong>RouteHub</strong><small>информационная система</small></span>
+            </a>
+            <nav aria-label="Главное меню">
+                <h:link outcome="/index" styleClass="nav-link #{view.viewId eq '/index.xhtml' ? 'active' : ''}">
+                    <span class="nav-icon">↗</span><span>Маршруты</span>
+                </h:link>
+                <h:link outcome="/special" styleClass="nav-link #{view.viewId eq '/special.xhtml' ? 'active' : ''}">
+                    <span class="nav-icon">⌘</span><span>Спецоперации</span>
+                </h:link>
+            </nav>
+            <p class="sidebar-note">Java EE · Hibernate<br/>PostgreSQL</p>
+        </aside>
+        <main class="main-content">
+            <header class="topbar">
+                <div><span class="live-dot"></span> Данные синхронизируются</div>
+                <span>Учебная система</span>
+            </header>
+            <section class="page">
+                <ui:insert name="content"/>
+            </section>
+        </main>
+    </div>
+    <h:outputScript library="js" name="app.js" target="body"/>
+</h:body>
+</html>

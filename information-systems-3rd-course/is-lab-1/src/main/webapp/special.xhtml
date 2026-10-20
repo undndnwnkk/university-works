@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/templates/app.xhtml">
+    <ui:define name="title">Спецоперации</ui:define>
+    <ui:define name="content">
+        <h:form id="specialForm">
+            <div class="page-heading"><div><h1>Спецоперации</h1><p>Операции выполняются функциями PostgreSQL</p></div></div>
+            <h:messages id="specialMessages" globalOnly="true" infoClass="toast success" errorClass="toast error"/>
+            <div class="operations-layout">
+                <section class="operation-panel">
+                    <h2>Операции с рейтингом</h2>
+                    <p>Удалите один объект с заданным рейтингом или сформируйте выборку.</p>
+                    <label for="opRating">Рейтинг</label><h:inputText id="opRating" value="#{specialOperationsBean.rating}" required="true"><f:validateLongRange minimum="1"/></h:inputText>
+                    <div class="button-stack"><h:commandButton value="Показать с меньшим рейтингом" action="#{specialOperationsBean.showLessThan}" styleClass="button secondary"><f:ajax execute="opRating" render="results specialMessages"/></h:commandButton><h:commandButton value="Показать максимальный" action="#{specialOperationsBean.showMax}" styleClass="button secondary"><f:ajax render="results specialMessages"/></h:commandButton><h:commandButton value="Удалить один с таким рейтингом" action="#{specialOperationsBean.deleteByRating}" styleClass="button danger-button"><f:ajax execute="opRating" render="results specialMessages"/></h:commandButton></div>
+                </section>
+                <section class="operation-panel wide">
+                    <h2>Маршруты между локациями</h2><p>Найдите существующие или добавьте новый маршрут между выбранными точками.</p>
+                    <div class="field-grid"><div><label for="opFrom">Откуда</label><h:selectOneMenu id="opFrom" value="#{specialOperationsBean.fromId}" required="true"><f:selectItem itemValue="#{null}" itemLabel="Выберите локацию"/><f:selectItems value="#{specialOperationsBean.locations}" var="loc" itemValue="#{loc.id}" itemLabel="#{loc.displayName}"/></h:selectOneMenu></div><div><label for="opTo">Куда</label><h:selectOneMenu id="opTo" value="#{specialOperationsBean.toId}" required="true"><f:selectItem itemValue="#{null}" itemLabel="Выберите локацию"/><f:selectItems value="#{specialOperationsBean.locations}" var="loc" itemValue="#{loc.id}" itemLabel="#{loc.displayName}"/></h:selectOneMenu></div></div>
+                    <label for="opSort">Сортировка результата</label><h:selectOneMenu id="opSort" value="#{specialOperationsBean.sort}"><f:selectItem itemValue="name" itemLabel="По названию"/><f:selectItem itemValue="rating" itemLabel="По рейтингу"/><f:selectItem itemValue="distance" itemLabel="По расстоянию"/><f:selectItem itemValue="creation_date" itemLabel="По дате создания"/></h:selectOneMenu>
+                    <h:commandButton value="Найти маршруты" action="#{specialOperationsBean.findBetween}" styleClass="button primary full"><f:ajax execute="opFrom opTo opSort" render="results specialMessages"/></h:commandButton>
+                    <details><summary>Добавить новый маршрут</summary><div class="details-body"><label for="opName">Название</label><h:inputText id="opName" value="#{specialOperationsBean.name}" required="true"/><div class="field-grid"><div><label for="opCx">Координата X</label><h:inputText id="opCx" value="#{specialOperationsBean.coordinateX}" required="true"/></div><div><label for="opCy">Координата Y</label><h:inputText id="opCy" value="#{specialOperationsBean.coordinateY}" required="true"/></div><div><label for="opDistance">Расстояние</label><h:inputText id="opDistance" value="#{specialOperationsBean.distance}" required="true"><f:validateDoubleRange minimum="1.000001"/></h:inputText></div><div><label for="opNewRating">Рейтинг</label><h:inputText id="opNewRating" value="#{specialOperationsBean.newRating}" required="true"><f:validateLongRange minimum="1"/></h:inputText></div></div><h:commandButton value="Добавить маршрут" action="#{specialOperationsBean.addBetween}" styleClass="button primary full"><f:ajax execute="opFrom opTo opSort opName opCx opCy opDistance opNewRating" render="results specialMessages"/></h:commandButton></div></details>
+                </section>
+            </div>
+            <h:panelGroup id="results" layout="block" styleClass="results-section">
+                <h2>Результат <span>#{specialOperationsBean.results.size()}</span></h2>
+                <h:dataTable value="#{specialOperationsBean.results}" var="route" styleClass="data-table compact-table" rendered="#{not empty specialOperationsBean.results}">
+                    <h:column><f:facet name="header">ID</f:facet>##{route.id}</h:column><h:column><f:facet name="header">Название</f:facet><h:link outcome="/route-view" value="#{route.name}"><f:param name="id" value="#{route.id}"/></h:link></h:column><h:column><f:facet name="header">Из</f:facet>#{route.from.displayName}</h:column><h:column><f:facet name="header">В</f:facet>#{route.to == null ? '—' : route.to.displayName}</h:column><h:column><f:facet name="header">Расстояние</f:facet>#{route.distance}</h:column><h:column><f:facet name="header">Рейтинг</f:facet><span class="rating">★ #{route.rating}</span></h:column>
+                </h:dataTable>
+                <div class="empty-state" jsf:rendered="#{empty specialOperationsBean.results}" xmlns:jsf="jakarta.faces">Результаты появятся здесь</div>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

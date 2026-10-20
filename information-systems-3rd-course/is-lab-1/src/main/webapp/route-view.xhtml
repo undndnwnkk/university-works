@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/templates/app.xhtml">
+    <ui:define name="metadata"><f:metadata>
+        <f:viewParam name="id" value="#{routeDetailBean.id}" required="true"/>
+        <f:viewAction action="#{routeDetailBean.load}"/>
+    </f:metadata></ui:define>
+    <ui:define name="title">Карточка маршрута</ui:define>
+    <ui:define name="content">
+        <h:form id="detailForm">
+            <div class="page-heading compact">
+                <div><h:link outcome="/index" value="← Все маршруты" styleClass="back-link"/><h1>Карточка маршрута</h1></div>
+                <h:commandButton value="Изменить" action="#{routeDetailBean.openEdit}" styleClass="button primary" disabled="#{routeDetailBean.route == null}"><f:ajax render="detailModal"/></h:commandButton>
+            </div>
+            <h:messages globalOnly="true" infoClass="toast success" errorClass="toast error"/>
+
+            <ui:fragment rendered="#{routeDetailBean.route != null}">
+                <article class="detail-card">
+                    <header><span class="object-id">Маршрут ##{routeDetailBean.route.id}</span><h2>#{routeDetailBean.route.name}</h2><span class="rating large">★ #{routeDetailBean.route.rating}</span></header>
+                    <div class="route-line" aria-label="Направление маршрута">
+                        <div class="location-node"><span class="node-dot"></span><small>ОТКУДА</small><strong>#{routeDetailBean.route.from.displayName}</strong><p>x #{routeDetailBean.route.from.x} · y #{routeDetailBean.route.from.y} · z #{routeDetailBean.route.from.z}</p></div>
+                        <div class="line"><span>#{routeDetailBean.route.distance}</span></div>
+                        <div class="location-node end"><span class="node-dot"></span><small>КУДА</small><strong>#{routeDetailBean.route.to == null ? 'Не указано' : routeDetailBean.route.to.displayName}</strong><p><ui:fragment rendered="#{routeDetailBean.route.to != null}">x #{routeDetailBean.route.to.x} · y #{routeDetailBean.route.to.y} · z #{routeDetailBean.route.to.z}</ui:fragment></p></div>
+                    </div>
+                    <dl class="attribute-grid">
+                        <div><dt>Координаты объекта</dt><dd>#{routeDetailBean.route.coordinates.x}; #{routeDetailBean.route.coordinates.y}</dd></div>
+                        <div><dt>Расстояние</dt><dd>#{routeDetailBean.route.distance}</dd></div>
+                        <div><dt>Рейтинг</dt><dd>#{routeDetailBean.route.rating}</dd></div>
+                        <div><dt>Создан</dt><dd><h:outputText value="#{routeDetailBean.route.creationDate}"><f:convertDateTime type="localDateTime" pattern="dd MMMM yyyy, HH:mm"/></h:outputText></dd></div>
+                    </dl>
+                </article>
+            </ui:fragment>
+            <ui:fragment rendered="#{routeDetailBean.route == null}"><div class="empty-state standalone"><strong>Маршрут не найден</strong><h:link outcome="/index" value="Вернуться к списку"/></div></ui:fragment>
+
+            <h:panelGroup id="detailModal" layout="block">
+                <ui:fragment rendered="#{routeDetailBean.editorOpen}"><div class="modal-layer" role="dialog" aria-modal="true"><section class="modal drawer">
+                    <header class="modal-header"><div><span class="modal-kicker">Маршрут ##{routeDetailBean.id}</span><h2>Редактировать маршрут</h2></div><h:commandButton value="×" action="#{routeDetailBean.closeEditor}" immediate="true" styleClass="icon-button"><f:ajax render="detailModal"/></h:commandButton></header>
+                    <div class="modal-body">
+                        <h:messages styleClass="form-errors" errorClass="field-error"/>
+                        <fieldset><legend>Основная информация</legend><label for="detailName">Название <b>*</b></label><h:inputText id="detailName" value="#{routeDetailBean.draft.name}" required="true" requiredMessage="Введите название"/>
+                            <div class="field-grid"><div><label for="detailCx">Координата X</label><h:inputText id="detailCx" value="#{routeDetailBean.draft.coordinates.x}" required="true"><f:convertNumber/></h:inputText></div><div><label for="detailCy">Координата Y</label><h:inputText id="detailCy" value="#{routeDetailBean.draft.coordinates.y}" required="true"><f:convertNumber integerOnly="true"/></h:inputText></div></div></fieldset>
+                        <fieldset><legend>Пункты маршрута</legend><label for="detailFrom">Откуда <b>*</b></label><h:selectOneMenu id="detailFrom" value="#{routeDetailBean.fromId}" required="true"><f:selectItems value="#{routeDetailBean.locations}" var="loc" itemValue="#{loc.id}" itemLabel="#{loc.displayName}"/></h:selectOneMenu><label for="detailTo">Куда</label><h:selectOneMenu id="detailTo" value="#{routeDetailBean.toId}"><f:selectItem itemValue="#{null}" itemLabel="Не выбрано"/><f:selectItems value="#{routeDetailBean.locations}" var="loc" itemValue="#{loc.id}" itemLabel="#{loc.displayName}"/></h:selectOneMenu></fieldset>
+                        <fieldset><legend>Параметры</legend><div class="field-grid"><div><label for="detailDistance">Расстояние</label><h:inputText id="detailDistance" value="#{routeDetailBean.draft.distance}" required="true"><f:validateDoubleRange minimum="1.000001"/></h:inputText></div><div><label for="detailRating">Рейтинг</label><h:inputText id="detailRating" value="#{routeDetailBean.draft.rating}" required="true"><f:validateLongRange minimum="1"/></h:inputText></div></div></fieldset>
+                    </div>
+                    <footer class="modal-footer"><h:commandButton value="Отмена" action="#{routeDetailBean.closeEditor}" immediate="true" styleClass="button secondary"><f:ajax render="detailModal"/></h:commandButton><h:commandButton value="Сохранить изменения" action="#{routeDetailBean.save}" styleClass="button primary"><f:ajax execute="@form" render="@form"/></h:commandButton></footer>
+                </section></div></ui:fragment>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>
