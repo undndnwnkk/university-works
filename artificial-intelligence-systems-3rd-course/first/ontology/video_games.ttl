@@ -1,0 +1,369 @@
+# Лабораторная работа 1, часть 2. Онтология видеоигр для Protege.
+#
+# Онтология является переводом базы знаний knowledge_base.pl в OWL 2:
+#   game/1                    -> класс Game и его экземпляры (индивиды);
+#   singleplayer/1, multiplayer/1, indie/1, story_driven/1,
+#   competitive/1, cozy/1     -> подклассы Game (принадлежность индивида классу);
+#   has_genre/2               -> объектное свойство hasGenre (Game -> Genre);
+#   developed_by/2            -> объектное свойство developedBy (Game -> Studio);
+#   правила Prolog            -> определённые (эквивалентные) классы,
+#                                обратное свойство и SWRL-правило.
+#
+# Открыть: Protege -> File -> Open -> video_games.ttl.
+# Для получения выводов: Reasoner -> HermiT -> Start reasoner.
+
+@prefix :     <http://www.semanticweb.org/undndnwnkk/ontologies/video-games#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@base         <http://www.semanticweb.org/undndnwnkk/ontologies/video-games> .
+
+<http://www.semanticweb.org/undndnwnkk/ontologies/video-games>
+    a owl:Ontology ;
+    rdfs:label "Онтология видеоигр"@ru ;
+    rdfs:comment "Перевод базы знаний Prolog о видеоиграх, жанрах и студиях в OWL 2."@ru .
+
+# =============================================================================
+# Базовые классы
+# =============================================================================
+
+# Game соответствует унарному предикату game/1.
+:Game a owl:Class ;
+    rdfs:label "Игра"@ru ;
+    rdfs:comment "Видеоигра. Соответствует предикату game/1."@ru .
+
+# Genre — область значений второго аргумента has_genre/2.
+:Genre a owl:Class ;
+    rdfs:label "Жанр"@ru ;
+    rdfs:comment "Жанр видеоигры. Второй аргумент has_genre/2."@ru .
+
+# Studio — область значений второго аргумента developed_by/2.
+:Studio a owl:Class ;
+    rdfs:label "Студия"@ru ;
+    rdfs:comment "Студия-разработчик. Второй аргумент developed_by/2."@ru .
+
+# Игра, жанр и студия — разные сущности: ни один индивид не может
+# одновременно принадлежать двум из этих классов.
+[] a owl:AllDisjointClasses ;
+    owl:members ( :Game :Genre :Studio ) .
+
+# =============================================================================
+# Подклассы Game: унарные свойства игр из Prolog
+# =============================================================================
+
+# singleplayer/1
+:SingleplayerGame a owl:Class ;
+    rdfs:subClassOf :Game ;
+    rdfs:label "Одиночная игра"@ru ;
+    rdfs:comment "В игре есть полноценный одиночный режим. Соответствует singleplayer/1."@ru .
+
+# multiplayer/1
+# Prolog работает в предположении замкнутого мира: если факта multiplayer(G)
+# нет, то \+ multiplayer(G) истинно. OWL работает в предположении открытого
+# мира, поэтому список многопользовательских игр явно «закрыт» перечислением
+# (owl:oneOf). Вместе с owl:AllDifferent это позволяет reasoner'у вывести,
+# что остальные игры НЕ являются многопользовательскими.
+:MultiplayerGame a owl:Class ;
+    rdfs:subClassOf :Game ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf ( :portal_2 :dota_2 :minecraft :counter_strike_2 :terraria
+                    :civilization_6 :among_us :rocket_league :dark_souls_3
+                    :red_dead_redemption_2 :baldurs_gate_3 )
+    ] ;
+    rdfs:label "Многопользовательская игра"@ru ;
+    rdfs:comment "Игра поддерживает совместную или соревновательную игру. Соответствует multiplayer/1."@ru .
+
+# indie/1
+:IndieGame a owl:Class ;
+    rdfs:subClassOf :Game ;
+    rdfs:label "Независимая игра"@ru ;
+    rdfs:comment "Игра создана независимой студией или небольшой командой. Соответствует indie/1."@ru .
+
+# story_driven/1
+:StoryDrivenGame a owl:Class ;
+    rdfs:subClassOf :Game ;
+    rdfs:label "Сюжетная игра"@ru ;
+    rdfs:comment "Сюжет — одна из основных составляющих игры. Соответствует story_driven/1."@ru .
+
+# competitive/1
+# Список закрыт перечислением по той же причине, что и у MultiplayerGame:
+# правило recommended_for_beginner/1 использует отрицание \+ competitive(G).
+:CompetitiveGame a owl:Class ;
+    rdfs:subClassOf :Game ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf ( :dota_2 :counter_strike_2 :among_us :rocket_league )
+    ] ;
+    rdfs:label "Соревновательная игра"@ru ;
+    rdfs:comment "Основной игровой процесс предполагает соревнование. Соответствует competitive/1."@ru .
+
+# cozy/1
+:CozyGame a owl:Class ;
+    rdfs:subClassOf :Game ;
+    rdfs:label "Спокойная игра"@ru ;
+    rdfs:comment "Игра подходит для спокойного, ненапряжённого прохождения. Соответствует cozy/1."@ru .
+
+# =============================================================================
+# Определённые классы: правила Prolog
+# Индивиды не относятся к этим классам явно — reasoner выводит
+# принадлежность по эквивалентным определениям.
+# =============================================================================
+
+# Правило 1. action_game(G) :- game(G), (has_genre(G, action) ; has_genre(G, action_rpg)).
+# Логическое «или» -> owl:unionOf.
+:ActionGame a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            :Game
+            [ a owl:Class ;
+              owl:unionOf (
+                  [ a owl:Restriction ; owl:onProperty :hasGenre ; owl:hasValue :action ]
+                  [ a owl:Restriction ; owl:onProperty :hasGenre ; owl:hasValue :action_rpg ]
+              ) ]
+        )
+    ] ;
+    rdfs:label "Экшен-игра"@ru ;
+    rdfs:comment "Игра жанра action ИЛИ action_rpg. Правило action_game/1."@ru .
+
+# Правило 2. social_game(G) :- game(G), multiplayer(G).
+# Логическое «и» -> owl:intersectionOf.
+:SocialGame a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf ( :Game :MultiplayerGame )
+    ] ;
+    rdfs:label "Социальная игра"@ru ;
+    rdfs:comment "Игра И поддержка мультиплеера. Правило social_game/1."@ru .
+
+# Правило 3. indie_singleplayer(G) :- game(G), indie(G), singleplayer(G).
+:IndieSingleplayerGame a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf ( :IndieGame :SingleplayerGame )
+    ] ;
+    rdfs:label "Независимая одиночная игра"@ru ;
+    rdfs:comment "Независимая И одиночная игра. Правило indie_singleplayer/1."@ru .
+
+# Правило 4. narrative_solo(G) :- game(G), story_driven(G), \+ multiplayer(G).
+# Логическое «не» -> owl:complementOf.
+:NarrativeSoloGame a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            :StoryDrivenGame
+            [ a owl:Class ; owl:complementOf :MultiplayerGame ]
+        )
+    ] ;
+    rdfs:label "Сюжетная игра без мультиплеера"@ru ;
+    rdfs:comment "Сюжетная игра И НЕ многопользовательская. Правило narrative_solo/1."@ru .
+
+# Правило 7. recommended_for_beginner(G) :-
+#     game(G), \+ competitive(G), (cozy(G) ; has_genre(G, puzzle)).
+# Одновременно используются «и», «или» и «не».
+:BeginnerFriendlyGame a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            :Game
+            [ a owl:Class ; owl:complementOf :CompetitiveGame ]
+            [ a owl:Class ;
+              owl:unionOf (
+                  :CozyGame
+                  [ a owl:Restriction ; owl:onProperty :hasGenre ; owl:hasValue :puzzle ]
+              ) ]
+        )
+    ] ;
+    rdfs:label "Игра для новичка"@ru ;
+    rdfs:comment "НЕ соревновательная игра, которая спокойная ИЛИ является головоломкой. Правило recommended_for_beginner/1."@ru .
+
+# =============================================================================
+# Объектные свойства: бинарные предикаты и правила над ними
+# =============================================================================
+
+# has_genre/2
+:hasGenre a owl:ObjectProperty ;
+    rdfs:domain :Game ;
+    rdfs:range :Genre ;
+    rdfs:label "имеет жанр"@ru ;
+    rdfs:comment "Игра относится к жанру. Соответствует has_genre/2."@ru .
+
+# Обратное к hasGenre: позволяет спрашивать «какие игры у жанра».
+:isGenreOf a owl:ObjectProperty ;
+    owl:inverseOf :hasGenre ;
+    rdfs:label "является жанром игры"@ru .
+
+# developed_by/2. Свойство функциональное: у каждой игры в базе ровно
+# одна студия-разработчик.
+:developedBy a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain :Game ;
+    rdfs:range :Studio ;
+    rdfs:label "разработана студией"@ru ;
+    rdfs:comment "Игра создана студией. Соответствует developed_by/2."@ru .
+
+# Правило 5. game_by_studio(G, S) :- game(G), developed_by(G, S).
+# В OWL то же отношение, но с другой стороны, — обратное свойство:
+# reasoner выводит valve develops portal_2 из portal_2 developedBy valve.
+:develops a owl:ObjectProperty ;
+    owl:inverseOf :developedBy ;
+    rdfs:domain :Studio ;
+    rdfs:range :Game ;
+    rdfs:label "разработала игру"@ru ;
+    rdfs:comment "Студия разработала игру. Правило game_by_studio/2."@ru .
+
+# Правило 6. same_developer(G1, G2) :-
+#     developed_by(G1, S), developed_by(G2, S), dif(G1, G2).
+# Значения свойства выводятся SWRL-правилом ниже.
+:sameDeveloperAs a owl:ObjectProperty , owl:SymmetricProperty , owl:IrreflexiveProperty ;
+    rdfs:domain :Game ;
+    rdfs:range :Game ;
+    rdfs:label "от того же разработчика, что и"@ru ;
+    rdfs:comment "Две разные игры одной студии. Правило same_developer/2."@ru .
+
+# SWRL: developedBy(?g1, ?s) ^ developedBy(?g2, ?s) ^ differentFrom(?g1, ?g2)
+#       -> sameDeveloperAs(?g1, ?g2)
+:g1 a swrl:Variable .
+:g2 a swrl:Variable .
+:s  a swrl:Variable .
+
+[] a swrl:Imp ;
+    rdfs:comment "Правило same_developer/2: разные игры одной студии."@ru ;
+    swrl:body (
+        [ a swrl:IndividualPropertyAtom ;
+          swrl:propertyPredicate :developedBy ;
+          swrl:argument1 :g1 ;
+          swrl:argument2 :s ]
+        [ a swrl:IndividualPropertyAtom ;
+          swrl:propertyPredicate :developedBy ;
+          swrl:argument1 :g2 ;
+          swrl:argument2 :s ]
+        [ a swrl:DifferentIndividualsAtom ;
+          swrl:argument1 :g1 ;
+          swrl:argument2 :g2 ]
+    ) ;
+    swrl:head (
+        [ a swrl:IndividualPropertyAtom ;
+          swrl:propertyPredicate :sameDeveloperAs ;
+          swrl:argument1 :g1 ;
+          swrl:argument2 :g2 ]
+    ) .
+
+# =============================================================================
+# Индивиды: жанры (второй аргумент has_genre/2)
+# =============================================================================
+
+:action_rpg  a owl:NamedIndividual , :Genre ; rdfs:label "Action RPG" .
+:action      a owl:NamedIndividual , :Genre ; rdfs:label "Action" .
+:puzzle      a owl:NamedIndividual , :Genre ; rdfs:label "Puzzle" .
+:moba        a owl:NamedIndividual , :Genre ; rdfs:label "MOBA" .
+:simulation  a owl:NamedIndividual , :Genre ; rdfs:label "Simulation" .
+:sandbox     a owl:NamedIndividual , :Genre ; rdfs:label "Sandbox" .
+:platformer  a owl:NamedIndividual , :Genre ; rdfs:label "Platformer" .
+
+# =============================================================================
+# Индивиды: студии (второй аргумент developed_by/2)
+# =============================================================================
+
+:cd_projekt_red     a owl:NamedIndividual , :Studio ; rdfs:label "CD Projekt Red" .
+:supergiant_games   a owl:NamedIndividual , :Studio ; rdfs:label "Supergiant Games" .
+:valve              a owl:NamedIndividual , :Studio ; rdfs:label "Valve" .
+:concernedape       a owl:NamedIndividual , :Studio ; rdfs:label "ConcernedApe" .
+:mojang             a owl:NamedIndividual , :Studio ; rdfs:label "Mojang" .
+:extremely_ok_games a owl:NamedIndividual , :Studio ; rdfs:label "Extremely OK Games" .
+
+# =============================================================================
+# Индивиды: игры (факты game/1)
+# Типы индивида — унарные факты Prolog, значения свойств — бинарные факты.
+# =============================================================================
+
+:the_witcher_3 a owl:NamedIndividual , :Game , :SingleplayerGame , :StoryDrivenGame ;
+    rdfs:label "The Witcher 3" ;
+    :hasGenre :action_rpg ;
+    :developedBy :cd_projekt_red .
+
+:hades a owl:NamedIndividual , :Game , :SingleplayerGame , :IndieGame , :StoryDrivenGame ;
+    rdfs:label "Hades" ;
+    :hasGenre :action ;
+    :developedBy :supergiant_games .
+
+:portal_2 a owl:NamedIndividual , :Game , :SingleplayerGame , :MultiplayerGame , :StoryDrivenGame ;
+    rdfs:label "Portal 2" ;
+    :hasGenre :puzzle ;
+    :developedBy :valve .
+
+:dota_2 a owl:NamedIndividual , :Game , :MultiplayerGame , :CompetitiveGame ;
+    rdfs:label "Dota 2" ;
+    :hasGenre :moba ;
+    :developedBy :valve .
+
+:stardew_valley a owl:NamedIndividual , :Game , :SingleplayerGame , :IndieGame , :CozyGame ;
+    rdfs:label "Stardew Valley" ;
+    :hasGenre :simulation ;
+    :developedBy :concernedape .
+
+:minecraft a owl:NamedIndividual , :Game , :SingleplayerGame , :MultiplayerGame , :CozyGame ;
+    rdfs:label "Minecraft" ;
+    :hasGenre :sandbox ;
+    :developedBy :mojang .
+
+:celeste a owl:NamedIndividual , :Game , :SingleplayerGame , :IndieGame , :StoryDrivenGame ;
+    rdfs:label "Celeste" ;
+    :hasGenre :platformer ;
+    :developedBy :extremely_ok_games .
+
+:half_life_2 a owl:NamedIndividual , :Game , :SingleplayerGame , :StoryDrivenGame ;
+    rdfs:label "Half-Life 2" ;
+    :developedBy :valve .
+
+:disco_elysium a owl:NamedIndividual , :Game , :SingleplayerGame , :IndieGame , :StoryDrivenGame ;
+    rdfs:label "Disco Elysium" .
+
+:hollow_knight a owl:NamedIndividual , :Game , :SingleplayerGame , :IndieGame , :StoryDrivenGame ;
+    rdfs:label "Hollow Knight" .
+
+:outer_wilds a owl:NamedIndividual , :Game , :SingleplayerGame , :IndieGame , :StoryDrivenGame ;
+    rdfs:label "Outer Wilds" .
+
+:undertale a owl:NamedIndividual , :Game , :SingleplayerGame , :IndieGame , :StoryDrivenGame ;
+    rdfs:label "Undertale" .
+
+:counter_strike_2 a owl:NamedIndividual , :Game , :MultiplayerGame , :CompetitiveGame ;
+    rdfs:label "Counter-Strike 2" .
+
+:terraria a owl:NamedIndividual , :Game , :SingleplayerGame , :MultiplayerGame , :IndieGame ;
+    rdfs:label "Terraria" .
+
+:civilization_6 a owl:NamedIndividual , :Game , :SingleplayerGame , :MultiplayerGame ;
+    rdfs:label "Civilization VI" .
+
+:among_us a owl:NamedIndividual , :Game , :MultiplayerGame , :IndieGame , :CompetitiveGame ;
+    rdfs:label "Among Us" .
+
+:rocket_league a owl:NamedIndividual , :Game , :MultiplayerGame , :CompetitiveGame ;
+    rdfs:label "Rocket League" .
+
+:dark_souls_3 a owl:NamedIndividual , :Game , :SingleplayerGame , :MultiplayerGame ;
+    rdfs:label "Dark Souls III" .
+
+:red_dead_redemption_2 a owl:NamedIndividual , :Game , :SingleplayerGame , :MultiplayerGame , :StoryDrivenGame ;
+    rdfs:label "Red Dead Redemption 2" .
+
+:baldurs_gate_3 a owl:NamedIndividual , :Game , :SingleplayerGame , :MultiplayerGame , :StoryDrivenGame ;
+    rdfs:label "Baldur's Gate 3" .
+
+# Prolog считает разные атомы разными объектами (уникальность имён).
+# В OWL это нужно заявить явно, иначе reasoner допускает, что два имени
+# обозначают один объект. Это необходимо для owl:oneOf и differentFrom в SWRL.
+[] a owl:AllDifferent ;
+    owl:distinctMembers (
+        :the_witcher_3 :hades :portal_2 :dota_2 :stardew_valley :minecraft
+        :celeste :half_life_2 :disco_elysium :hollow_knight :outer_wilds
+        :undertale :counter_strike_2 :terraria :civilization_6 :among_us
+        :rocket_league :dark_souls_3 :red_dead_redemption_2 :baldurs_gate_3
+        :action_rpg :action :puzzle :moba :simulation :sandbox :platformer
+        :cd_projekt_red :supergiant_games :valve :concernedape :mojang
+        :extremely_ok_games
+    ) .

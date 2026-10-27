@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Отчёт по лабораторной работе №1</title>
+<style>
+  @page { size: A4; margin: 20mm 15mm 20mm 25mm; }
+  @page :first { margin: 15mm 15mm 15mm 25mm; }
+  body {
+    font-family: "Liberation Serif", "Times New Roman", serif;
+    font-size: 13pt; line-height: 1.45; color: #000; background: #fff;
+    text-align: justify; hyphens: auto;
+  }
+  p { margin: 0 0 6pt; text-indent: 1.25cm; }
+  p.noindent, li p { text-indent: 0; }
+  h1 { font-size: 15pt; text-align: center; margin: 0 0 12pt; page-break-before: always; }
+  h2 { font-size: 13.5pt; margin: 14pt 0 6pt; page-break-after: avoid; }
+  ul, ol { margin: 0 0 6pt; padding-left: 1.6cm; }
+  li { margin-bottom: 2pt; }
+  code, pre { font-family: "Liberation Mono", monospace; font-size: 10pt; }
+  code { background: #f2f2f2; padding: 0 2px; }
+  pre {
+    background: #f6f6f6; border: 1px solid #ccc; padding: 6pt 8pt;
+    white-space: pre-wrap; text-align: left; line-height: 1.3;
+    page-break-inside: avoid; margin: 4pt 0 8pt;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 4pt 0 10pt; font-size: 11pt; page-break-inside: avoid; text-align: left; }
+  th, td { border: 1px solid #000; padding: 3pt 5pt; vertical-align: top; }
+  th { background: #eee; }
+  .caption { text-align: center; font-size: 11.5pt; margin: 2pt 0 10pt; text-indent: 0; }
+  .figure { text-align: center; page-break-inside: avoid; margin: 6pt 0; }
+
+  /* Титульный лист */
+  .title { height: 257mm; display: flex; flex-direction: column; text-align: center; }
+  .title p { text-indent: 0; text-align: center; margin: 0; }
+  .title .top { font-size: 13pt; line-height: 1.5; }
+  .title .mid { margin-top: 55mm; }
+  .title .mid .kind { font-size: 15pt; font-weight: bold; margin-bottom: 8pt; }
+  .title .mid .subj { font-size: 13pt; margin-bottom: 6pt; }
+  .title .mid .name { font-size: 16pt; font-weight: bold; }
+  .title .people { margin-top: auto; margin-left: auto; width: 85mm; text-align: left; }
+  .title .people p { text-align: left; }
+  .title .bottom { margin-top: 45mm; }
+
+  .toc { list-style: none; padding-left: 0; }
+  .toc li { display: flex; }
+  .toc li span.dots { flex: 1; border-bottom: 1px dotted #000; margin: 0 4pt 5pt; }
+  .toc li.sub { padding-left: 1cm; }
+</style>
+</head>
+<body>
+
+<!-- ====================== Титульный лист ====================== -->
+<section class="title">
+  <div class="top">
+    <p>Министерство науки и высшего образования Российской Федерации</p>
+    <p>Федеральное государственное автономное образовательное учреждение высшего образования</p>
+    <p><b>«Национальный исследовательский университет ИТМО»</b></p>
+    <p>Факультет программной инженерии и компьютерной техники</p>
+  </div>
+  <div class="mid">
+    <p class="kind">Отчёт по лабораторной работе №1</p>
+    <p class="subj">по дисциплине «Системы искусственного интеллекта»</p>
+    <p class="name">Модуль 1. Базы знаний и онтологии</p>
+    <p class="subj" style="margin-top:8pt">Тема: «Видеоигры: свойства, жанры и разработчики»</p>
+  </div>
+  <div class="people">
+    <p><b>Выполнил:</b></p>
+    <p>студент группы P3319</p>
+    <p>Быков Лев</p>
+    <p style="margin-top:10pt"><b>Преподаватель:</b></p>
+    <p>Болдырева Елена Александровна</p>
+  </div>
+  <div class="bottom">
+    <p>г. Санкт-Петербург</p>
+    <p>2026</p>
+  </div>
+</section>
+
+<!-- ====================== Содержание ====================== -->
+<h1>Содержание</h1>
+<ul class="toc">
+  <li>1. Введение</li>
+  <li>2. Анализ требований</li>
+  <li>3. Изучение основных концепций и инструментов</li>
+  <li>4. Реализация системы искусственного интеллекта</li>
+  <li class="sub">4.1. База знаний на Prolog</li>
+  <li class="sub">4.2. Онтология в Protege</li>
+  <li class="sub">4.3. Тестирование и отладка</li>
+  <li>5. Оценка и интерпретация результатов</li>
+  <li>6. Заключение</li>
+  <li>Приложение А. Структура проекта</li>
+</ul>
+
+<!-- ====================== 1. Введение ====================== -->
+<h1>1. Введение</h1>
+
+<p><b>Цель работы</b> — освоить два способа представления знаний: логическое
+программирование на языке Prolog и онтологическое моделирование в среде Protege.
+Для этого на одной предметной области (видеоигры) построены база знаний на
+Prolog и эквивалентная ей онтология OWL 2, и на обеих реализованы запросы
+различной сложности.</p>
+
+<p>Разработанная система решает прикладную задачу поддержки выбора видеоигры.
+Пользователь может узнать, какие игры подходят под набор условий: одиночный
+или многопользовательский режим, сюжетность, независимая разработка, жанр,
+студия. Отдельные правила выводят новые знания, которых нет в исходных
+фактах: например, рекомендацию игры для начинающего игрока или пары игр,
+созданных одной студией.</p>
+
+<p><b>Значимость работы.</b> Базы знаний и онтологии лежат в основе экспертных
+систем, рекомендательных сервисов, семантического веба и графов знаний.
+Prolog показывает, как знания описываются фактами и правилами, а ответы
+получаются автоматическим логическим выводом. Онтологии решают ту же задачу
+стандартизированным способом (W3C OWL), удобным для обмена знаниями между
+системами и проверки их непротиворечивости автоматическими reasoner'ами.
+Сравнение двух подходов на одних данных показывает их сильные стороны и
+принципиальные различия — прежде всего различие между предположениями о
+замкнутом и открытом мире.</p>
+
+<p><b>Задачи работы:</b></p>
+<ol>
+  <li>разработать базу знаний на Prolog: не менее 20 унарных фактов, 10–15
+      бинарных фактов и 5–7 правил;</li>
+  <li>составить запросы разной сложности, включая логические «и», «или», «не»,
+      запросы с переменными и запросы, использующие правила;</li>
+  <li>перевести базу знаний в онтологию в Protege: классы, свойства,
+      иерархию, индивиды и правила;</li>
+  <li>протестировать обе реализации и сравнить результаты.</li>
+</ol>
+
+<!-- ====================== 2. Анализ требований ====================== -->
+<h1>2. Анализ требований</h1>
+
+<h2>2.1. Требования к системе поддержки принятия решений</h2>
+
+<p>Система должна помогать пользователю выбрать видеоигру по его предпочтениям.
+Из этого вытекают функциональные требования:</p>
+<ul>
+  <li><b>Поиск по свойствам.</b> Найти все игры с заданным свойством
+      (одиночные, многопользовательские, сюжетные, независимые и т.д.).</li>
+  <li><b>Комбинирование условий.</b> Поддержать конъюнкцию («сюжетная И
+      одиночная»), дизъюнкцию («спокойная ИЛИ головоломка») и отрицание
+      («без мультиплеера»).</li>
+  <li><b>Поиск по отношениям.</b> Найти игры заданной студии или жанра и,
+      наоборот, студию по игре.</li>
+  <li><b>Вывод новых знаний.</b> Формулировать рекомендации по правилам,
+      а не только возвращать сохранённые факты.</li>
+  <li><b>Проверяемость.</b> Результаты должны быть воспроизводимы и
+      подтверждаться автоматическими тестами.</li>
+</ul>
+<p>Нефункциональные требования: понятность кода и наличие комментариев,
+возможность расширения базы новыми играми без изменения правил, корректность
+логического вывода.</p>
+
+<h2>2.2. Требования к базе знаний</h2>
+<table>
+  <tr><th>Требование задания</th><th>Реализация</th></tr>
+  <tr><td>Не менее 20 фактов с одним аргументом</td>
+      <td>20 фактов <code>game/1</code> и ещё 53 унарных факта-свойства:
+      <code>singleplayer/1</code> (16), <code>multiplayer/1</code> (11),
+      <code>indie/1</code> (9), <code>story_driven/1</code> (11),
+      <code>competitive/1</code> (4), <code>cozy/1</code> (2)</td></tr>
+  <tr><td>10–15 фактов с двумя аргументами</td>
+      <td>15 фактов: <code>has_genre/2</code> (7), <code>developed_by/2</code> (8)</td></tr>
+  <tr><td>5–7 правил</td><td>7 правил</td></tr>
+  <tr><td>Запросы с «и», «или», «не»</td><td>Операторы <code>,</code> <code>;</code> <code>\+</code> в запросах и правилах</td></tr>
+  <tr><td>Комментарии</td><td>Каждый предикат и правило описаны комментарием</td></tr>
+</table>
+
+<h2>2.3. Требования к онтологии</h2>
+<ul>
+  <li>Каждому предикату Prolog должен соответствовать элемент онтологии:
+      класс, объектное свойство или индивид.</li>
+  <li>Должна быть построена иерархия классов.</li>
+  <li>Правила Prolog должны быть выражены средствами OWL так, чтобы reasoner
+      выводил те же результаты, что и Prolog.</li>
+  <li>Онтология должна быть непротиворечивой (consistent).</li>
+  <li>Должна быть продемонстрирована функциональность: визуализация и
+      выполнение запросов (DL Query, SPARQL).</li>
+</ul>
+
+<!-- ====================== 3. Концепции и инструменты ====================== -->
+<h1>3. Изучение основных концепций и инструментов</h1>
+
+<h2>3.1. Базы знаний и онтологии</h2>
+
+<p><b>База знаний</b> — совокупность формально записанных сведений о
+предметной области и правил, по которым из этих сведений выводятся новые.
+В отличие от обычной базы данных, база знаний содержит не только данные, но
+и логику: ответ на запрос может не храниться явно, а быть выведен.</p>
+
+<p><b>Онтология</b> — формальное явное описание понятий предметной области и
+отношений между ними. Её основные элементы:</p>
+<ul>
+  <li><b>классы</b> (концепты) — категории объектов: «Игра», «Жанр», «Студия»;</li>
+  <li><b>индивиды</b> (экземпляры) — конкретные объекты: Portal 2, Valve;</li>
+  <li><b>объектные свойства</b> — связи между индивидами: «разработана студией»;</li>
+  <li><b>свойства-данные</b> — связи индивида со значением (число, строка);</li>
+  <li><b>аксиомы</b> — утверждения о классах и свойствах: подкласс,
+      эквивалентность, непересекаемость, обратность, функциональность.</li>
+</ul>
+
+<p>Онтологии на языке <b>OWL 2</b> основаны на <b>дескрипционных логиках</b>
+(Description Logics) — разрешимых фрагментах логики первого порядка.
+Благодаря этому <b>reasoner</b> (машина вывода, например HermiT) может
+автоматически классифицировать классы, определять принадлежность индивидов
+классам и проверять непротиворечивость онтологии.</p>
+
+<p>Ключевое различие двух подходов — <b>предположение о мире</b>:</p>
+<ul>
+  <li><b>Замкнутый мир (CWA)</b>, Prolog: всё, что нельзя доказать, считается
+      ложным (отрицание как неудача).</li>
+  <li><b>Открытый мир (OWA)</b>, OWL: отсутствие утверждения означает
+      «неизвестно», а не «ложно».</li>
+</ul>
+<p>Кроме того, в Prolog действует <b>предположение об уникальности имён</b>
+(разные атомы — разные объекты), а в OWL два разных имени могут обозначать
+один объект, если не заявлено обратное.</p>
+
+<h2>3.2. Prolog</h2>
+
+<p>Prolog — декларативный язык логического программирования. Программа на
+Prolog описывает <i>что</i> известно, а не <i>как</i> вычислять ответ.
+Основные конструкции:</p>
+<ul>
+  <li><b>факт</b> — безусловное утверждение: <code>game(portal_2).</code>;</li>
+  <li><b>правило</b> — условное утверждение «голова истинна, если истинно
+      тело»: <code>social_game(G) :- game(G), multiplayer(G).</code>;</li>
+  <li><b>запрос</b> — вопрос к базе: <code>?- developed_by(G, valve).</code></li>
+</ul>
+<p>Ответ на запрос ищется механизмом <b>SLD-резолюции</b>: интерпретатор
+сопоставляет цель с фактами и головами правил с помощью <b>унификации</b>,
+перебирает варианты в порядке записи и при неудаче выполняет <b>откат</b>
+(backtracking) к последней точке выбора. Логические связки: запятая
+<code>,</code> — «и», точка с запятой <code>;</code> — «или», <code>\+</code> —
+«не» (отрицание как неудача).</p>
+
+<p>Prolog применяется в экспертных системах, обработке естественного языка,
+планировании, проверке правил и прототипировании систем ИИ: правила легко
+читаются человеком, а механизм вывода встроен в язык.</p>
+
+<h2>3.3. Инструменты</h2>
+<table>
+  <tr><th>Инструмент</th><th>Назначение в работе</th></tr>
+  <tr><td>SWI-Prolog 10.0.2</td><td>Интерпретатор Prolog: выполнение базы знаний, запросов и тестов</td></tr>
+  <tr><td>plunit (входит в SWI-Prolog)</td><td>Модульные тесты базы знаний</td></tr>
+  <tr><td>Protege 5.6.9</td><td>Редактор онтологий от Стэнфордского университета</td></tr>
+  <tr><td>HermiT 1.4.3</td><td>Reasoner OWL 2 с поддержкой SWRL: классификация, вывод, проверка непротиворечивости</td></tr>
+  <tr><td>DL Query, SPARQL Query</td><td>Вкладки Protege для запросов к онтологии</td></tr>
+  <tr><td>OntoGraf, OWLViz</td><td>Визуализация иерархии классов и связей</td></tr>
+  <tr><td>SWRL</td><td>Язык правил поверх OWL, использован для правила <code>same_developer/2</code></td></tr>
+</table>
+<p>Для связи Prolog и онтологий существуют и библиотеки: модуль
+<code>semweb/rdf11</code> SWI-Prolog позволяет загружать RDF/OWL-файлы и
+обращаться к триплетам как к фактам Prolog, а <code>Thea</code> — работать
+с аксиомами OWL. В данной работе обе реализации построены независимо,
+чтобы сравнить подходы в чистом виде.</p>
+
+<!-- ====================== 4. Реализация ====================== -->
+<h1>4. Реализация системы искусственного интеллекта</h1>
+
+<h2>4.1. База знаний на Prolog</h2>
+
+<p>База знаний находится в файле <code>knowledge_base.pl</code>. Объекты
+предметной области — 20 видеоигр, 7 жанров и 6 студий. Свойства игр заданы
+унарными фактами, связи — бинарными:</p>
+<pre>% game(Game) — Game является видеоигрой.
+game(portal_2).
+% multiplayer(Game) — игра поддерживает совместную игру.
+multiplayer(portal_2).
+% has_genre(Game, Genre) — игра Game относится к жанру Genre.
+has_genre(portal_2, puzzle).
+% developed_by(Game, Studio) — игра Game создана студией Studio.
+developed_by(portal_2, valve).</pre>
+
+<p>Логика принятия решений реализована семью правилами:</p>
+<table>
+  <tr><th>Правило</th><th>Смысл</th><th>Операторы</th></tr>
+  <tr><td><code>action_game/1</code></td><td>жанр action или action_rpg</td><td>и, или</td></tr>
+  <tr><td><code>social_game/1</code></td><td>игра с мультиплеером</td><td>и</td></tr>
+  <tr><td><code>indie_singleplayer/1</code></td><td>независимая одиночная игра</td><td>и</td></tr>
+  <tr><td><code>narrative_solo/1</code></td><td>сюжетная игра без мультиплеера</td><td>и, не</td></tr>
+  <tr><td><code>game_by_studio/2</code></td><td>игры заданной студии</td><td>и</td></tr>
+  <tr><td><code>same_developer/2</code></td><td>разные игры одной студии</td><td>и, <code>dif/2</code></td></tr>
+  <tr><td><code>recommended_for_beginner/1</code></td><td>рекомендация новичку</td><td>и, или, не</td></tr>
+</table>
+
+<p>Наиболее показательное правило — рекомендация для начинающего игрока.
+Оно сочетает все три логические операции:</p>
+<pre>recommended_for_beginner(Game) :-
+    game(Game),
+    \+ competitive(Game),
+    (cozy(Game); has_genre(Game, puzzle)).</pre>
+<p>Цель <code>game(Game)</code> стоит первой, чтобы к моменту проверки
+<code>\+ competitive(Game)</code> переменная уже была связана. Отрицание
+как неудача корректно только для конкретного объекта: для несвязанной
+переменной <code>\+ competitive(X)</code> было бы ложно при наличии хотя бы
+одной соревновательной игры.</p>
+
+<p>Правило <code>same_developer/2</code> находит пары через общую
+переменную <code>Studio</code>, а <code>dif/2</code> исключает пару игры
+с самой собой:</p>
+<pre>same_developer(Game1, Game2) :-
+    developed_by(Game1, Studio),
+    developed_by(Game2, Studio),
+    dif(Game1, Game2).</pre>
+
+<h2>4.2. Онтология в Protege</h2>
+
+<p>Онтология хранится в файле <code>ontology/video_games.ttl</code>
+(синтаксис Turtle) и открывается в Protege. Перевод выполнен по правилам:</p>
+<table>
+  <tr><th>Prolog</th><th>OWL</th></tr>
+  <tr><td><code>game/1</code></td><td>класс <code>Game</code> и 20 именованных индивидов</td></tr>
+  <tr><td>второй аргумент <code>has_genre/2</code>, <code>developed_by/2</code></td><td>классы <code>Genre</code> (7 индивидов), <code>Studio</code> (6 индивидов)</td></tr>
+  <tr><td><code>singleplayer/1</code>, <code>indie/1</code>, <code>story_driven/1</code>, <code>cozy/1</code></td><td>подклассы <code>Game</code>; факт — утверждение о типе индивида</td></tr>
+  <tr><td><code>multiplayer/1</code>, <code>competitive/1</code></td><td>подклассы <code>Game</code>, закрытые перечислением <code>owl:oneOf</code></td></tr>
+  <tr><td><code>has_genre/2</code></td><td>объектное свойство <code>hasGenre</code>: Game → Genre; обратное <code>isGenreOf</code></td></tr>
+  <tr><td><code>developed_by/2</code></td><td>функциональное свойство <code>developedBy</code>: Game → Studio</td></tr>
+  <tr><td><code>action_game/1</code></td><td><code>ActionGame ≡ Game ⊓ (∃hasGenre.{action} ⊔ ∃hasGenre.{action_rpg})</code></td></tr>
+  <tr><td><code>social_game/1</code></td><td><code>SocialGame ≡ Game ⊓ MultiplayerGame</code></td></tr>
+  <tr><td><code>indie_singleplayer/1</code></td><td><code>IndieSingleplayerGame ≡ IndieGame ⊓ SingleplayerGame</code></td></tr>
+  <tr><td><code>narrative_solo/1</code></td><td><code>NarrativeSoloGame ≡ StoryDrivenGame ⊓ ¬MultiplayerGame</code></td></tr>
+  <tr><td><code>game_by_studio/2</code></td><td>обратное свойство <code>develops ≡ developedBy⁻</code></td></tr>
+  <tr><td><code>same_developer/2</code></td><td>свойство <code>sameDeveloperAs</code> (симметричное, иррефлексивное) и SWRL-правило</td></tr>
+  <tr><td><code>recommended_for_beginner/1</code></td><td><code>BeginnerFriendlyGame ≡ Game ⊓ ¬CompetitiveGame ⊓ (CozyGame ⊔ ∃hasGenre.{puzzle})</code></td></tr>
+</table>
+
+<p>Логические операторы переведены так: «и» — пересечение классов
+(<code>owl:intersectionOf</code>), «или» — объединение
+(<code>owl:unionOf</code>), «не» — дополнение (<code>owl:complementOf</code>).
+Правила, выраженные эквивалентными классами, работают как определения:
+индивиды не относятся к ним вручную, их принадлежность выводит reasoner.</p>
+
+<div class="figure">
+<svg width="620" height="300" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg" font-family="Liberation Sans, sans-serif" font-size="12">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs>
+  <g stroke="#000" fill="#fff">
+    <rect x="260" y="10" width="100" height="26" rx="4"/>
+    <rect x="60"  y="70" width="100" height="26" rx="4"/>
+    <rect x="260" y="70" width="100" height="26" rx="4"/>
+    <rect x="460" y="70" width="100" height="26" rx="4"/>
+  </g>
+  <g text-anchor="middle">
+    <text x="310" y="27">owl:Thing</text>
+    <text x="110" y="87">Genre</text>
+    <text x="310" y="87" font-weight="bold">Game</text>
+    <text x="510" y="87">Studio</text>
+  </g>
+  <g stroke="#000" marker-end="url(#a)">
+    <line x1="110" y1="70" x2="290" y2="36"/>
+    <line x1="310" y1="70" x2="310" y2="36"/>
+    <line x1="510" y1="70" x2="330" y2="36"/>
+  </g>
+  <g stroke="#000" stroke-dasharray="4 3" fill="none" marker-end="url(#a)">
+    <path d="M260,90 L160,90"/>
+    <path d="M360,90 L460,90"/>
+  </g>
+  <text x="210" y="105" text-anchor="middle" font-style="italic">hasGenre</text>
+  <text x="410" y="105" text-anchor="middle" font-style="italic">developedBy</text>
+  <!-- primitive subclasses -->
+  <g stroke="#000" fill="#fff">
+    <rect x="10" y="150" width="96" height="24" rx="3"/>
+    <rect x="110" y="150" width="96" height="24" rx="3"/>
+    <rect x="210" y="150" width="96" height="24" rx="3"/>
+    <rect x="310" y="150" width="96" height="24" rx="3"/>
+    <rect x="410" y="150" width="96" height="24" rx="3"/>
+    <rect x="510" y="150" width="96" height="24" rx="3"/>
+  </g>
+  <g text-anchor="middle" font-size="10.5">
+    <text x="58" y="166">SingleplayerGame</text>
+    <text x="158" y="166">MultiplayerGame</text>
+    <text x="258" y="166">IndieGame</text>
+    <text x="358" y="166">StoryDrivenGame</text>
+    <text x="458" y="166">CompetitiveGame</text>
+    <text x="558" y="166">CozyGame</text>
+  </g>
+  <g stroke="#000" marker-end="url(#a)">
+    <line x1="58" y1="150" x2="285" y2="96"/>
+    <line x1="158" y1="150" x2="295" y2="96"/>
+    <line x1="258" y1="150" x2="305" y2="96"/>
+    <line x1="358" y1="150" x2="315" y2="96"/>
+    <line x1="458" y1="150" x2="325" y2="96"/>
+    <line x1="558" y1="150" x2="335" y2="96"/>
+  </g>
+  <!-- defined classes -->
+  <text x="310" y="238" text-anchor="middle" font-size="11" font-style="italic">определённые классы — правила Prolog; reasoner сам выводит их место в иерархии и экземпляры</text>
+  <g stroke="#000" fill="#eee" stroke-dasharray="3 2">
+    <rect x="10" y="250" width="116" height="24" rx="3"/>
+    <rect x="131" y="250" width="116" height="24" rx="3"/>
+    <rect x="252" y="250" width="116" height="24" rx="3"/>
+    <rect x="373" y="250" width="116" height="24" rx="3"/>
+    <rect x="494" y="250" width="116" height="24" rx="3"/>
+  </g>
+  <g text-anchor="middle" font-size="10">
+    <text x="68" y="266">ActionGame</text>
+    <text x="189" y="266">SocialGame</text>
+    <text x="310" y="266">IndieSingleplayerGame</text>
+    <text x="431" y="266">NarrativeSoloGame</text>
+    <text x="552" y="266">BeginnerFriendlyGame</text>
+  </g>
+  <text x="310" y="294" text-anchor="middle" font-size="10.5">сплошная стрелка — подкласс; пунктир — объектное свойство; серые блоки — определённые классы (правила)</text>
+</svg>
+</div>
+<p class="caption">Рисунок 1 — Структура классов и свойств онтологии</p>
+
+<p><b>Перевод отрицания.</b> Правила <code>narrative_solo/1</code> и
+<code>recommended_for_beginner/1</code> используют отрицание как неудачу.
+Прямой перевод в <code>¬MultiplayerGame</code> не даёт результата: из-за
+предположения об открытом мире reasoner не может заключить, что Hades — не
+многопользовательская игра, ведь это нигде не сказано. Поэтому в онтологию
+добавлены две аксиомы, воспроизводящие допущения Prolog:</p>
+<ol>
+  <li>классы <code>MultiplayerGame</code> и <code>CompetitiveGame</code>
+      объявлены эквивалентными перечислению своих индивидов
+      (<code>owl:oneOf</code>) — «других таких игр нет», это аналог
+      замкнутого мира для конкретного предиката;</li>
+  <li>все индивиды объявлены попарно различными
+      (<code>owl:AllDifferent</code>) — аналог уникальности имён.</li>
+</ol>
+<pre>:MultiplayerGame owl:equivalentClass [ owl:oneOf ( :portal_2 :dota_2
+    :minecraft :counter_strike_2 :terraria :civilization_6 :among_us
+    :rocket_league :dark_souls_3 :red_dead_redemption_2 :baldurs_gate_3 ) ] .</pre>
+
+<p><b>Перевод <code>same_developer/2</code>.</b> Отношение между двумя
+переменными через третью (общую студию) не выражается классом, поэтому
+использовано правило SWRL. Атом <code>differentFrom</code> играет роль
+<code>dif/2</code>:</p>
+<pre>developedBy(?g1, ?s) ^ developedBy(?g2, ?s) ^ differentFrom(?g1, ?g2)
+    -> sameDeveloperAs(?g1, ?g2)</pre>
+
+<p>Дополнительно заданы аксиомы, которых не было в Prolog: классы
+<code>Game</code>, <code>Genre</code>, <code>Studio</code> попарно не
+пересекаются, у свойств указаны домен и диапазон, <code>developedBy</code>
+функционально. Они позволяют reasoner'у обнаруживать ошибки ввода,
+например, если студию по ошибке указать как жанр игры.</p>
+
+<h2>4.3. Тестирование и отладка</h2>
+
+<p><b>Prolog.</b> Файл <code>tests.pl</code> содержит 9 модульных тестов
+plunit: проверку известного и неизвестного факта, бинарного факта и
+каждого правила. Для правил проверяется полное множество ответов
+(<code>set(...)</code>), а не один ответ, — это ловит как пропущенные, так и
+лишние решения. Результат запуска:</p>
+<pre>$ swipl -q -s tests.pl -g run_tests,halt
+% [1/9] game_knowledge_base:known_game .............. passed
+% [2/9] game_knowledge_base:unknown_game ............ passed
+% [3/9] game_knowledge_base:binary_fact ............. passed
+% [4/9] game_knowledge_base:action_rule ............. passed
+% [5/9] game_knowledge_ba..e_singleplayer_rule ...... passed
+% [6/9] game_knowledge_ba.._solo_uses_negation ...... passed
+% [7/9] game_knowledge_base:valve_games ............. passed
+% [8/9] game_knowledge_ba..same_developer_rule ...... passed
+% [9/9] game_knowledge_ba..nner_recommendation ...... passed</pre>
+
+<p><b>Онтология.</b> Онтология загружена в Protege 5.6.9 и
+классифицирована reasoner'ом HermiT 1.4.3. Результат: онтология
+непротиворечива, содержит 252 аксиомы, включая одно SWRL-правило.
+Выведенные экземпляры определённых классов сопоставлены с ответами
+Prolog-тестов — совпадение полное (таблица 5.2). SPARQL-запросы из файла
+<code>ontology/queries.sparql</code> также дают те же ответы, что и
+соответствующие запросы Prolog.</p>
+
+<p><b>Отладка.</b> При первой проверке классы <code>NarrativeSoloGame</code>
+и <code>BeginnerFriendlyGame</code> могут оказаться пустыми — это
+ожидаемое проявление открытого мира, описанное в п. 4.2. Причина
+устраняется аксиомами <code>owl:oneOf</code> и <code>owl:AllDifferent</code>.
+Также установлено, что результат зависит от reasoner'а: HermiT корректно
+обрабатывает номиналы (<code>oneOf</code>) и SWRL, поэтому он рекомендован
+для демонстрации.</p>
+
+<!-- ====================== 5. Оценка ====================== -->
+<h1>5. Оценка и интерпретация результатов</h1>
+
+<h2>5.1. Примеры запросов к базе знаний и онтологии</h2>
+
+<p>В таблице 5.1 приведены одни и те же вопросы в трёх формах: запрос
+Prolog, запрос DL Query (Protege, с выводом reasoner'а) и запрос SPARQL
+(Protege, по явно заданным фактам).</p>
+
+<p class="caption">Таблица 5.1 — Один вопрос в трёх языках запросов</p>
+<table>
+  <tr><th>Вопрос</th><th>Prolog</th><th>DL Query</th><th>SPARQL</th></tr>
+  <tr><td>Portal 2 — игра?</td><td><code>game(portal_2).</code></td><td>—</td><td><code>ASK { :portal_2 a :Game }</code></td></tr>
+  <tr><td>Независимые игры</td><td><code>indie(G).</code></td><td><code>IndieGame</code></td><td><code>?g a :IndieGame</code></td></tr>
+  <tr><td>Одиночные И сюжетные</td><td><code>singleplayer(G), story_driven(G).</code></td><td><code>SingleplayerGame and StoryDrivenGame</code></td><td>два триплета подряд</td></tr>
+  <tr><td>Спокойные ИЛИ соревновательные</td><td><code>cozy(G) ; competitive(G).</code></td><td><code>CozyGame or CompetitiveGame</code></td><td><code>UNION</code></td></tr>
+  <tr><td>Без мультиплеера</td><td><code>game(G), \+ multiplayer(G).</code></td><td><code>Game and not MultiplayerGame</code></td><td><code>FILTER NOT EXISTS</code></td></tr>
+  <tr><td>Игры Valve</td><td><code>developed_by(G, valve).</code></td><td><code>developedBy value valve</code></td><td><code>?g :developedBy :valve</code></td></tr>
+  <tr><td>Игры той же студии, что Portal 2</td><td><code>same_developer(G, portal_2).</code></td><td><code>sameDeveloperAs value portal_2</code></td><td>два триплета + <code>FILTER(?a != ?b)</code></td></tr>
+  <tr><td>Рекомендации новичку</td><td><code>recommended_for_beginner(G).</code></td><td><code>BeginnerFriendlyGame</code></td><td><code>FILTER NOT EXISTS</code> + <code>UNION</code></td></tr>
+  <tr><td>Студии, выпустившие головоломку</td><td><code>developed_by(G, S), has_genre(G, puzzle).</code></td><td><code>Studio and develops some (hasGenre value puzzle)</code></td><td>два триплета</td></tr>
+</table>
+
+<p>Пример выполнения демонстрационного сценария <code>demo.pl</code>
+(фрагмент):</p>
+<pre>$ swipl -q -s demo.pl
+5. Игры БЕЗ мультиплеера:
+  [celeste,disco_elysium,hades,half_life_2,hollow_knight,outer_wilds,
+   stardew_valley,the_witcher_3,undertale]
+8. Сюжетные игры без мультиплеера (правило narrative_solo/1):
+  [celeste,disco_elysium,hades,half_life_2,hollow_knight,outer_wilds,
+   the_witcher_3,undertale]
+10. Рекомендации новичку (правило recommended_for_beginner/1):
+  [minecraft,portal_2,stardew_valley]</pre>
+
+<p class="caption">Таблица 5.2 — Сравнение результатов Prolog и онтологии (HermiT)</p>
+<table>
+  <tr><th>Правило / класс</th><th>Ответ</th><th>Prolog</th><th>OWL</th></tr>
+  <tr><td><code>action_game</code> / <code>ActionGame</code></td><td>hades, the_witcher_3</td><td>✓</td><td>✓</td></tr>
+  <tr><td><code>social_game</code> / <code>SocialGame</code></td><td>11 многопользовательских игр</td><td>✓</td><td>✓</td></tr>
+  <tr><td><code>indie_singleplayer</code> / <code>IndieSingleplayerGame</code></td><td>celeste, disco_elysium, hades, hollow_knight, outer_wilds, stardew_valley, terraria, undertale</td><td>✓</td><td>✓</td></tr>
+  <tr><td><code>narrative_solo</code> / <code>NarrativeSoloGame</code></td><td>celeste, disco_elysium, hades, half_life_2, hollow_knight, outer_wilds, the_witcher_3, undertale</td><td>✓</td><td>✓</td></tr>
+  <tr><td><code>game_by_studio(G, valve)</code> / <code>valve develops</code></td><td>dota_2, half_life_2, portal_2</td><td>✓</td><td>✓</td></tr>
+  <tr><td><code>same_developer</code> / <code>sameDeveloperAs</code></td><td>6 упорядоченных пар игр Valve</td><td>✓</td><td>✓</td></tr>
+  <tr><td><code>recommended_for_beginner</code> / <code>BeginnerFriendlyGame</code></td><td>minecraft, portal_2, stardew_valley</td><td>✓</td><td>✓</td></tr>
+</table>
+
+<h2>5.2. Сравнение реализаций</h2>
+<table>
+  <tr><th>Критерий</th><th>Prolog</th><th>OWL / Protege</th></tr>
+  <tr><td>Модель мира</td><td>Замкнутый: недоказуемое ложно</td><td>Открытый: неуказанное неизвестно</td></tr>
+  <tr><td>Уникальность имён</td><td>Есть по умолчанию</td><td>Нужно заявлять (<code>AllDifferent</code>)</td></tr>
+  <tr><td>Отрицание</td><td>Просто: <code>\+</code></td><td>Требует закрытия классов (<code>oneOf</code>)</td></tr>
+  <tr><td>Отношения через переменные</td><td>Естественно (<code>same_developer</code>)</td><td>Нужен SWRL</td></tr>
+  <tr><td>Иерархия и классификация</td><td>Описывается вручную правилами</td><td>Строится reasoner'ом автоматически</td></tr>
+  <tr><td>Проверка непротиворечивости</td><td>Нет</td><td>Есть (disjoint, domain/range, functional)</td></tr>
+  <tr><td>Обмен знаниями</td><td>Свой формат</td><td>Стандарт W3C, IRI, импорт других онтологий</td></tr>
+  <tr><td>Визуализация</td><td>Нет</td><td>OntoGraf, OWLViz</td></tr>
+  <tr><td>Произвольные вычисления</td><td>Да (полный язык программирования)</td><td>Нет (только логический вывод)</td></tr>
+</table>
+
+<h2>5.3. Оценка соответствия требованиям</h2>
+<p>Все требования задания выполнены: база знаний содержит 73 унарных факта
+(из них 20 — <code>game/1</code>), 15 бинарных фактов и 7 правил;
+запросы охватывают простой поиск, переменные, «и», «или», «не» и вывод по
+правилам; код прокомментирован. Онтология содержит 14 классов с иерархией,
+5 объектных свойств, 33 индивида и SWRL-правило; она непротиворечива,
+визуализируется и отвечает на запросы так же, как база знаний. Цель проекта
+— построить и сравнить два представления знаний — достигнута.</p>
+
+<h2>5.4. Интерпретация и возможности развития</h2>
+<p>Результаты показывают, что одна и та же логика выражается обоими
+средствами, но с разной ценой. Prolog удобнее для правил, связывающих
+несколько объектов через переменные, и для отрицания. OWL лучше подходит
+для описания структуры понятий: reasoner сам выстроил иерархию (например,
+вывел, что <code>SocialGame</code> эквивалентен <code>MultiplayerGame</code>,
+а <code>NarrativeSoloGame</code> — подкласс <code>StoryDrivenGame</code>) и
+может проверять корректность данных.</p>
+<p>Направления развития:</p>
+<ul>
+  <li>расширить базу: указать жанры и студии для всех 20 игр, добавить
+      платформы, год выпуска, рейтинг (свойства-данные OWL);</li>
+  <li>добавить профиль игрока (предпочтения, опыт) и правило подбора игр
+      под профиль с ранжированием;</li>
+  <li>связать реализации: загрузить онтологию в SWI-Prolog через
+      <code>semweb/rdf11</code> и выполнять правила Prolog над её данными;</li>
+  <li>импортировать данные из открытых источников (Wikidata) по SPARQL;</li>
+  <li>сделать пользовательский интерфейс для ввода предпочтений.</li>
+</ul>
+
+<!-- ====================== 6. Заключение ====================== -->
+<h1>6. Заключение</h1>
+
+<p>В ходе работы разработана система поддержки выбора видеоигр в двух
+представлениях: база знаний на Prolog и онтология OWL 2 в Protege. Обе
+реализации протестированы и дают совпадающие результаты на всех запросах.</p>
+
+<p><b>Преимущества разработанной системы:</b></p>
+<ul>
+  <li>знания отделены от механизма вывода: чтобы добавить игру, достаточно
+      дописать факты, правила менять не нужно;</li>
+  <li>правила читаются как утверждения на естественном языке, поэтому их
+      может проверить эксперт предметной области;</li>
+  <li>ответы выводятся автоматически и объяснимы: всегда можно указать
+      факты и правило, из которых получен результат (в Protege — кнопкой
+      Explanation);</li>
+  <li>онтология стандартизирована, непротиворечива и пригодна для
+      совместного использования другими системами.</li>
+</ul>
+
+<p><b>Потенциальные применения</b> подобных систем: рекомендательные сервисы
+в игровых магазинах, экспертные системы, каталоги и поиск по смыслу,
+графы знаний, проверка соответствия правилам (например, возрастным
+рейтингам), а также образовательные системы.</p>
+
+<p>Главный практический вывод работы — различие предположений о замкнутом и
+открытом мире. При переводе знаний из Prolog в OWL отрицание и уникальность
+имён нужно явно описывать аксиомами, иначе reasoner не выведет того, что
+Prolog считает очевидным. Понимание этого различия необходимо при
+проектировании любых интеллектуальных систем на основе знаний.</p>
+
+<!-- ====================== Приложение ====================== -->
+<h1>Приложение А. Структура проекта</h1>
+<table>
+  <tr><th>Файл</th><th>Содержание</th></tr>
+  <tr><td><code>knowledge_base.pl</code></td><td>База знаний Prolog: факты и 7 правил с комментариями</td></tr>
+  <tr><td><code>demo.pl</code></td><td>Демонстрационный сценарий из 10 запросов</td></tr>
+  <tr><td><code>tests.pl</code></td><td>9 модульных тестов plunit</td></tr>
+  <tr><td><code>ontology/video_games.ttl</code></td><td>Онтология OWL 2 для Protege</td></tr>
+  <tr><td><code>ontology/queries.sparql</code></td><td>10 SPARQL-запросов</td></tr>
+  <tr><td><code>ontology/README.md</code></td><td>Таблица перевода, DL-запросы, порядок демонстрации</td></tr>
+</table>
+<p class="noindent">Команды запуска:</p>
+<pre>swipl -q -s demo.pl                          # демонстрация запросов
+swipl -q -s tests.pl -g run_tests,halt       # тесты
+swipl -s knowledge_base.pl                   # интерактивный режим
+protege ontology/video_games.ttl             # онтология в Protege</pre>
+
+</body>
+</html>

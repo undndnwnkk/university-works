@@ -54,3 +54,22 @@
 На защите удобно сначала показать простой запрос и запрос с переменной, затем
 операторы «и/или/не», после чего объяснить вывод результатов через правила
 `narrative_solo/1`, `same_developer/2` и `recommended_for_beginner/1`.
+
+## Часть 2. Онтология в Protege
+
+База знаний переведена в онтологию OWL 2 `ontology/video_games.ttl`:
+
+- `game/1` → класс `Game` и 20 индивидов; классы `Genre` и `Studio` для
+  вторых аргументов бинарных предикатов;
+- унарные свойства (`singleplayer/1`, `indie/1` и др.) → подклассы `Game`;
+- `has_genre/2`, `developed_by/2` → объектные свойства `hasGenre`,
+  `developedBy`;
+- правила → определённые классы (`ActionGame`, `SocialGame`,
+  `IndieSingleplayerGame`, `NarrativeSoloGame`, `BeginnerFriendlyGame`),
+  обратное свойство `develops` и SWRL-правило для `sameDeveloperAs`.
+
+Отрицание из Prolog (замкнутый мир) воспроизведено в OWL (открытый мир) через
+перечисление `owl:oneOf` для `MultiplayerGame` и `CompetitiveGame` и аксиому
+`owl:AllDifferent`. Выводы reasoner'а HermiT и ответы SPARQL-запросов
+совпадают с результатами Prolog. Таблица соответствия, DL-запросы и порядок
+демонстрации — в `ontology/README.md`.

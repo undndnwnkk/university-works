@@ -1,0 +1,68 @@
+# SPARQL-запросы к онтологии video_games.ttl.
+# Protege: Window -> Tabs -> SPARQL Query. Каждый запрос выполняется отдельно,
+# блок PREFIX нужно оставлять в начале запроса.
+# Вкладка SPARQL Query работает с явно заданными (asserted) фактами,
+# поэтому правила здесь записаны прямо в запросе. Выводы reasoner'а
+# проверяются через DL Query (см. README.md).
+
+PREFIX :     <http://www.semanticweb.org/undndnwnkk/ontologies/video-games#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# --- 1. Простой запрос: является ли portal_2 игрой? (Prolog: game(portal_2))
+ASK { :portal_2 rdf:type :Game }
+
+# --- 2. Переменная: все независимые игры (Prolog: indie(Game))
+SELECT ?game WHERE { ?game rdf:type :IndieGame } ORDER BY ?game
+
+# --- 3. «И»: одиночные и сюжетные игры
+#        (Prolog: singleplayer(Game), story_driven(Game))
+SELECT ?game WHERE {
+  ?game rdf:type :SingleplayerGame .
+  ?game rdf:type :StoryDrivenGame .
+} ORDER BY ?game
+
+# --- 4. «ИЛИ»: спокойные или соревновательные игры
+#        (Prolog: cozy(Game) ; competitive(Game))
+SELECT DISTINCT ?game WHERE {
+  { ?game rdf:type :CozyGame } UNION { ?game rdf:type :CompetitiveGame }
+} ORDER BY ?game
+
+# --- 5. «НЕ»: игры без мультиплеера
+#        (Prolog: game(Game), \+ multiplayer(Game))
+SELECT ?game WHERE {
+  ?game rdf:type :Game .
+  FILTER NOT EXISTS { ?game rdf:type :MultiplayerGame }
+} ORDER BY ?game
+
+# --- 6. Бинарное отношение: игры студии Valve (Prolog: developed_by(Game, valve))
+SELECT ?game WHERE { ?game :developedBy :valve } ORDER BY ?game
+
+# --- 7. Правило same_developer/2: пары разных игр одного разработчика
+SELECT ?game1 ?game2 ?studio WHERE {
+  ?game1 :developedBy ?studio .
+  ?game2 :developedBy ?studio .
+  FILTER (?game1 != ?game2)
+} ORDER BY ?game1 ?game2
+
+# --- 8. Правило recommended_for_beginner/1: «и», «или», «не» вместе
+SELECT DISTINCT ?game WHERE {
+  ?game rdf:type :Game .
+  FILTER NOT EXISTS { ?game rdf:type :CompetitiveGame }
+  { ?game rdf:type :CozyGame } UNION { ?game :hasGenre :puzzle }
+} ORDER BY ?game
+
+# --- 9. Игры с жанром и студией, человекочитаемые названия
+SELECT ?title ?genre ?studio WHERE {
+  ?game rdf:type :Game ;
+        rdfs:label ?title ;
+        :hasGenre ?g ;
+        :developedBy ?s .
+  ?g rdfs:label ?genre .
+  ?s rdfs:label ?studio .
+} ORDER BY ?title
+
+# --- 10. Агрегация: сколько игр у каждой студии
+SELECT ?studio (COUNT(?game) AS ?games) WHERE {
+  ?game :developedBy ?studio .
+} GROUP BY ?studio ORDER BY DESC(?games) ?studio
