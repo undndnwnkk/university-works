@@ -8,7 +8,6 @@ services:
       TZ: Europe/Moscow
     volumes:
       - route-data:/var/lib/postgresql/data
-      - ./db/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U routes -d routes"]
       interval: 3s
