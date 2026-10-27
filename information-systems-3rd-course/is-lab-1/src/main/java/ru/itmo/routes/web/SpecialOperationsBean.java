@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import ru.itmo.routes.dto.LocationDto;
 import ru.itmo.routes.dto.RouteDto;
+import ru.itmo.routes.service.LocationService;
 import ru.itmo.routes.service.RouteService;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 @ViewScoped
 public class SpecialOperationsBean implements Serializable {
     @Inject private RouteService service;
+    @Inject private LocationService locationService;
     private List<LocationDto> locations;
     private List<RouteDto> results = new ArrayList<>();
     private Integer rating = 1;
@@ -29,7 +31,7 @@ public class SpecialOperationsBean implements Serializable {
     private float distance = 1.1f;
     private Integer newRating = 1;
 
-    @PostConstruct public void init() { locations = service.locations(); }
+    @PostConstruct public void init() { locations = locationService.all(); }
 
     public void deleteByRating() {
         Integer id = service.deleteOneByRating(rating);

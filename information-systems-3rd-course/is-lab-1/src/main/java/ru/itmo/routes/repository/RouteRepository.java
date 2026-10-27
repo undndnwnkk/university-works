@@ -4,7 +4,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import ru.itmo.routes.domain.Location;
 import ru.itmo.routes.domain.Route;
 import java.util.List;
 import java.util.Optional;
@@ -46,15 +45,10 @@ public class RouteRepository {
                 .getSingleResult();
     }
 
-    public List<Location> findLocations() {
-        return em.createQuery("select l from Location l order by coalesce(l.name, ''), l.id", Location.class).getResultList();
-    }
-
     public List<Route> findAll() {
         return em.createQuery("select r from Route r order by r.name, r.id", Route.class).getResultList();
     }
 
-    public Location locationReference(Integer id) { return id == null ? null : em.getReference(Location.class, id); }
     public Route save(Route route) { em.persist(route); return route; }
     public Route update(Route route) { return em.merge(route); }
 

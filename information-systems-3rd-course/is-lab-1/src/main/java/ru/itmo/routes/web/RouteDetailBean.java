@@ -8,6 +8,7 @@ import jakarta.inject.Named;
 import ru.itmo.routes.dto.LocationDto;
 import ru.itmo.routes.dto.RouteDto;
 import ru.itmo.routes.dto.RouteForm;
+import ru.itmo.routes.service.LocationService;
 import ru.itmo.routes.service.RouteService;
 import java.io.Serializable;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @ViewScoped
 public class RouteDetailBean implements Serializable {
     @Inject private RouteService service;
+    @Inject private LocationService locationService;
     private Integer id;
     private RouteDto route;
     private RouteForm draft;
@@ -24,7 +26,7 @@ public class RouteDetailBean implements Serializable {
 
     public void load() {
         if (FacesContext.getCurrentInstance().isPostback()) return;
-        locations = service.locations();
+        locations = locationService.all();
         route = service.find(id).orElse(null);
         if (route == null) {
             FacesContext.getCurrentInstance().addMessage(null,
