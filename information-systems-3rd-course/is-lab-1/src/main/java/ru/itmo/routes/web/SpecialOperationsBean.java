@@ -6,8 +6,8 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import ru.itmo.routes.domain.Location;
-import ru.itmo.routes.domain.Route;
+import ru.itmo.routes.dto.LocationDto;
+import ru.itmo.routes.dto.RouteDto;
 import ru.itmo.routes.service.RouteService;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,8 +17,8 @@ import java.util.List;
 @ViewScoped
 public class SpecialOperationsBean implements Serializable {
     @Inject private RouteService service;
-    private List<Location> locations;
-    private List<Route> results = new ArrayList<>();
+    private List<LocationDto> locations;
+    private List<RouteDto> results = new ArrayList<>();
     private Integer rating = 1;
     private Integer fromId;
     private Integer toId;
@@ -50,8 +50,8 @@ public class SpecialOperationsBean implements Serializable {
     private void info(String text) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, text, null));
     }
-    public List<Location> getLocations() { return locations; }
-    public List<Route> getResults() { return results; }
+    public List<LocationDto> getLocations() { return locations; }
+    public List<RouteDto> getResults() { return results; }
     public Integer getRating() { return rating; }
     public void setRating(Integer rating) { this.rating = rating; }
     public Integer getFromId() { return fromId; }

@@ -5,9 +5,9 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import ru.itmo.routes.domain.Coordinates;
-import ru.itmo.routes.domain.Location;
-import ru.itmo.routes.domain.Route;
+import ru.itmo.routes.dto.LocationDto;
+import ru.itmo.routes.dto.RouteDto;
+import ru.itmo.routes.dto.RouteForm;
 import ru.itmo.routes.service.RouteService;
 import java.io.Serializable;
 import java.util.List;
@@ -17,11 +17,9 @@ import java.util.List;
 public class RouteDetailBean implements Serializable {
     @Inject private RouteService service;
     private Integer id;
-    private Route route;
-    private Route draft;
-    private List<Location> locations;
-    private Integer fromId;
-    private Integer toId;
+    private RouteDto route;
+    private RouteForm draft;
+    private List<LocationDto> locations;
     private boolean editorOpen;
 
     public void load() {
@@ -35,18 +33,12 @@ public class RouteDetailBean implements Serializable {
     }
 
     public void openEdit() {
-        draft = new Route();
-        draft.setName(route.getName());
-        draft.setCoordinates(new Coordinates(route.getCoordinates().getX(), route.getCoordinates().getY()));
-        draft.setDistance(route.getDistance());
-        draft.setRating(route.getRating());
-        fromId = route.getFrom().getId();
-        toId = route.getTo() == null ? null : route.getTo().getId();
+        draft = RouteForm.of(route);
         editorOpen = true;
     }
 
     public void save() {
-        route = service.update(id, draft, fromId, toId);
+        route = service.update(id, draft);
         editorOpen = false;
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, "Изменения сохранены", null));
@@ -55,12 +47,8 @@ public class RouteDetailBean implements Serializable {
     public void closeEditor() { editorOpen = false; }
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
-    public Route getRoute() { return route; }
-    public Route getDraft() { return draft; }
-    public List<Location> getLocations() { return locations; }
-    public Integer getFromId() { return fromId; }
-    public void setFromId(Integer fromId) { this.fromId = fromId; }
-    public Integer getToId() { return toId; }
-    public void setToId(Integer toId) { this.toId = toId; }
+    public RouteDto getRoute() { return route; }
+    public RouteForm getDraft() { return draft; }
+    public List<LocationDto> getLocations() { return locations; }
     public boolean isEditorOpen() { return editorOpen; }
 }

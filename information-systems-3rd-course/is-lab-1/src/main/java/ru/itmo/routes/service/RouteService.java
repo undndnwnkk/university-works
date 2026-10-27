@@ -2,8 +2,10 @@ package ru.itmo.routes.service;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import ru.itmo.routes.domain.Location;
 import ru.itmo.routes.domain.Route;
+import ru.itmo.routes.dto.LocationDto;
+import ru.itmo.routes.dto.RouteDto;
+import ru.itmo.routes.dto.RouteForm;
 import ru.itmo.routes.repository.RouteRepository;
 import ru.itmo.routes.websocket.RouteEvents;
 import java.util.List;
@@ -13,31 +15,32 @@ import java.util.Optional;
 public class RouteService {
     @Inject private RouteRepository repository;
 
-    public List<Route> page(String filter, String sort, boolean ascending, int page, int pageSize) {
-        return repository.findPage(filter, sort, ascending, Math.max(0, page) * pageSize, pageSize);
+    public List<RouteDto> page(String filter, String sort, boolean ascending, int page, int pageSize) {
+        return RouteMapper.toRouteDtos(repository.findPage(filter, sort, ascending, Math.max(0, page) * pageSize, pageSize));
     }
     public long count(String filter) { return repository.count(filter); }
-    public Optional<Route> find(Integer id) { return id == null ? Optional.empty() : repository.findById(id); }
-    public List<Location> locations() { return repository.findLocations(); }
-    public List<Route> all() { return repository.findAll(); }
+    public Optional<RouteDto> find(Integer id) {
+        return id == null ? Optional.empty() : repository.findById(id).map(RouteMapper::toDto);
+    }
+    public List<LocationDto> locations() { return RouteMapper.toLocationDtos(repository.findLocations()); }
+    public List<RouteDto> all() { return RouteMapper.toRouteDtos(repository.findAll()); }
 
-    public Route create(Route route, Integer fromId, Integer toId) {
-        bindLocations(route, fromId, toId);
+    public RouteDto create(RouteForm form) {
+        Route route = new Route();
+        RouteMapper.copy(form, route);
+        bindLocations(route, form);
         Route saved = repository.save(route);
         RouteEvents.broadcast("created", saved.getId());
-        return saved;
+        return RouteMapper.toDto(saved);
     }
 
-    public Route update(Integer id, Route input, Integer fromId, Integer toId) {
+    public RouteDto update(Integer id, RouteForm form) {
         Route stored = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Маршрут не найден"));
-        stored.setName(input.getName());
-        stored.setCoordinates(input.getCoordinates());
-        stored.setDistance(input.getDistance());
-        stored.setRating(input.getRating());
-        bindLocations(stored, fromId, toId);
+        RouteMapper.copy(form, stored);
+        bindLocations(stored, form);
         Route updated = repository.update(stored);
         RouteEvents.broadcast("updated", updated.getId());
-        return updated;
+        return RouteMapper.toDto(updated);
     }
 
     public void delete(Integer id, Integer replacementId) {
@@ -51,9 +54,11 @@ public class RouteService {
         if (id != null) RouteEvents.broadcast("deleted", id);
         return id;
     }
-    public Optional<Route> maxRating() { return repository.maxRating(); }
-    public List<Route> ratingLessThan(int rating) { return repository.ratingLessThan(rating); }
-    public List<Route> findBetween(Integer from, Integer to, String sort) { return repository.findBetween(from, to, sort); }
+    public Optional<RouteDto> maxRating() { return repository.maxRating().map(RouteMapper::toDto); }
+    public List<RouteDto> ratingLessThan(int rating) { return RouteMapper.toRouteDtos(repository.ratingLessThan(rating)); }
+    public List<RouteDto> findBetween(Integer from, Integer to, String sort) {
+        return RouteMapper.toRouteDtos(repository.findBetween(from, to, sort));
+    }
 
     public Integer addBetween(String name, double cx, long cy, Integer from, Integer to, float distance, int rating) {
         Integer id = repository.addBetween(name.trim(), cx, cy, from, to, distance, rating);
@@ -61,9 +66,9 @@ public class RouteService {
         return id;
     }
 
-    private void bindLocations(Route route, Integer fromId, Integer toId) {
-        if (fromId == null) throw new IllegalArgumentException("Выберите начальную локацию");
-        route.setFrom(repository.locationReference(fromId));
-        route.setTo(repository.locationReference(toId));
+    private void bindLocations(Route route, RouteForm form) {
+        if (form.getFromId() == null) throw new IllegalArgumentException("Выберите начальную локацию");
+        route.setFrom(repository.locationReference(form.getFromId()));
+        route.setTo(repository.locationReference(form.getToId()));
     }
 }

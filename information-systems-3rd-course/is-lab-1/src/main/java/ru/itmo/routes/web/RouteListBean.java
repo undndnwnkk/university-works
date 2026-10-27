@@ -6,9 +6,9 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import ru.itmo.routes.domain.Coordinates;
-import ru.itmo.routes.domain.Location;
-import ru.itmo.routes.domain.Route;
+import ru.itmo.routes.dto.LocationDto;
+import ru.itmo.routes.dto.RouteDto;
+import ru.itmo.routes.dto.RouteForm;
 import ru.itmo.routes.service.RouteService;
 import java.io.Serializable;
 import java.util.List;
@@ -17,9 +17,9 @@ import java.util.List;
 @ViewScoped
 public class RouteListBean implements Serializable {
     @Inject private RouteService service;
-    private List<Route> routes;
-    private List<Location> locations;
-    private List<Route> allRoutes;
+    private List<RouteDto> routes;
+    private List<LocationDto> locations;
+    private List<RouteDto> allRoutes;
     private String filter = "";
     private String sort = "creationDate";
     private boolean ascending;
@@ -29,11 +29,9 @@ public class RouteListBean implements Serializable {
     private boolean editorOpen;
     private boolean deleteOpen;
     private Integer editingId;
-    private Integer fromId;
-    private Integer toId;
     private Integer deleteId;
     private Integer replacementId;
-    private Route draft;
+    private RouteForm draft;
 
     @PostConstruct
     public void init() {
@@ -62,25 +60,22 @@ public class RouteListBean implements Serializable {
 
     public void openCreate() {
         editingId = null;
-        draft = blankRoute();
-        fromId = locations.isEmpty() ? null : locations.get(0).getId();
-        toId = null;
+        draft = new RouteForm();
+        draft.setFromId(locations.isEmpty() ? null : locations.get(0).getId());
         editorOpen = true;
     }
 
     public void openEdit(Integer id) {
-        Route route = service.find(id).orElseThrow(() -> new IllegalArgumentException("Маршрут не найден"));
+        RouteDto route = service.find(id).orElseThrow(() -> new IllegalArgumentException("Маршрут не найден"));
         editingId = id;
-        draft = copy(route);
-        fromId = route.getFrom().getId();
-        toId = route.getTo() == null ? null : route.getTo().getId();
+        draft = RouteForm.of(route);
         editorOpen = true;
     }
 
     public void save() {
         try {
-            if (editingId == null) service.create(draft, fromId, toId);
-            else service.update(editingId, draft, fromId, toId);
+            if (editingId == null) service.create(draft);
+            else service.update(editingId, draft);
             editorOpen = false;
             allRoutes = service.all();
             reload();
@@ -115,23 +110,6 @@ public class RouteListBean implements Serializable {
     public long getFirstRowNumber() { return total == 0 ? 0 : (long) page * pageSize + 1; }
     public long getLastRowNumber() { return Math.min(total, (long) (page + 1) * pageSize); }
 
-    private Route blankRoute() {
-        Route route = new Route();
-        route.setCoordinates(new Coordinates(0.0, 0L));
-        route.setDistance(1.1f);
-        route.setRating(1);
-        return route;
-    }
-
-    private Route copy(Route source) {
-        Route route = new Route();
-        route.setName(source.getName());
-        route.setCoordinates(new Coordinates(source.getCoordinates().getX(), source.getCoordinates().getY()));
-        route.setDistance(source.getDistance());
-        route.setRating(source.getRating());
-        return route;
-    }
-
     private void message(FacesMessage.Severity severity, String text) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, text, null));
     }
@@ -142,9 +120,9 @@ public class RouteListBean implements Serializable {
         return current.getMessage() == null ? "Операция не выполнена" : current.getMessage();
     }
 
-    public List<Route> getRoutes() { return routes; }
-    public List<Location> getLocations() { return locations; }
-    public List<Route> getAllRoutes() { return allRoutes; }
+    public List<RouteDto> getRoutes() { return routes; }
+    public List<LocationDto> getLocations() { return locations; }
+    public List<RouteDto> getAllRoutes() { return allRoutes; }
     public String getFilter() { return filter; }
     public void setFilter(String filter) { this.filter = filter; }
     public String getSort() { return sort; }
@@ -156,12 +134,8 @@ public class RouteListBean implements Serializable {
     public boolean isEditorOpen() { return editorOpen; }
     public boolean isDeleteOpen() { return deleteOpen; }
     public Integer getEditingId() { return editingId; }
-    public Integer getFromId() { return fromId; }
-    public void setFromId(Integer fromId) { this.fromId = fromId; }
-    public Integer getToId() { return toId; }
-    public void setToId(Integer toId) { this.toId = toId; }
     public Integer getDeleteId() { return deleteId; }
     public Integer getReplacementId() { return replacementId; }
     public void setReplacementId(Integer replacementId) { this.replacementId = replacementId; }
-    public Route getDraft() { return draft; }
+    public RouteForm getDraft() { return draft; }
 }
