@@ -1,0 +1,21 @@
+Признак,Спирмен с рейтингом
+Interest_Rate,-0.4240038147429522
+Outstanding_Debt,-0.3891155793435761
+Delay_from_due_date,-0.3801015198317423
+Num_Credit_Inquiries,-0.3776916373554329
+Debt_to_Annual_Income,-0.3603571643736511
+Credit_History_Months,0.3548740812419414
+Num_Credit_Card,-0.33896804036366174
+Num_Bank_Accounts,-0.33792794308843327
+Num_of_Loan,-0.31724412147623315
+Num_of_Delayed_Payment,-0.3118387473457489
+EMI_to_Monthly_Income,-0.20592330531351477
+Monthly_Balance,0.20573490831286817
+Annual_Income,0.18931343921499408
+Monthly_Inhand_Salary,0.18615379287213227
+Changed_Credit_Limit,-0.13819782745180767
+Age,0.12739974452823355
+Amount_invested_monthly,0.1021640757721804
+Investment_to_Monthly_Income,-0.07702354801227301
+Total_EMI_per_month,-0.04007379002749437
+Credit_Utilization_Ratio,0.03361758712993672
