@@ -1,0 +1,1900 @@
+{
+  "info": {
+    "_postman_id": "c958c58d-b69b-44be-bc98-59db53328684",
+    "name": "IS lab 1 — Routes (JSF)",
+    "description": "Запросы к ИС «Маршруты» (ЛР1 «Информационные системы»).\n\nREST API в приложении нет: это Jakarta Faces, поэтому каждое действие — Ajax-POST формы с jakarta.faces.ViewState и id нажатой кнопки. Скрипты коллекции сами сохраняют ViewState, id кнопок (по их подписям) и ссылки «Изменить/Удалить» для каждого маршрута в таблице.\n\nПорядок: в каждой папке сначала GET-запрос «Открыть ...», затем действия. Для изменения/удаления сначала «Открыть форму ...», потом «Сохранить»/«Удалить», как в браузере.\n\nСервер: переменная baseUrl. Локально (Docker) — http://localhost:8080/routes, helios — http://localhost:18080/routes при открытом туннеле ssh -p 2222 -N -L 18080:127.0.0.1:17969 s489889@se.ifmo.ru.\n\nСессия держится на cookie JSESSIONID, Postman хранит его сам. Если запросы начали возвращать пустой ответ или ViewExpiredException, выполните GET «Открыть ...» заново.\n\nРезультат действий (сообщения, ошибки валидации, id найденных маршрутов) выводится во вкладке Test Results.\n\nWebSocket ws://localhost:8080/routes/ws/routes в коллекцию v2.1 не экспортируется: в Postman создайте New → WebSocket, подключитесь и выполняйте запросы коллекции — будут приходить сообщения {\"action\":\"created|updated|deleted\",\"id\":N}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Главная (index.xhtml)",
+      "description": "Таблица маршрутов. Начинайте с «Открыть главную»: она создаёт JSF-view и сохраняет ViewState и id кнопок. Действия с конкретным маршрутом берут routeId из переменных коллекции; маршрут должен быть на текущей странице таблицы.",
+      "item": [
+        {
+          "name": "Открыть главную",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "GET главной страницы. Сбрасывает сохранённые id и ViewState для index."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset('ids_index');",
+                  "pm.collectionVariables.unset('rows');",
+                  "pm.collectionVariables.unset('vs_index');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Поиск (фильтр)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "routesForm",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:filter",
+                  "value": "{{filter}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_index}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "routesForm:filter",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "keyup",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "routesForm:filter",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "routesForm:tablePanel routesForm:pager",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "keyup",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "Поиск по неполному совпадению в названии маршрута и названиях локаций. Строка поиска: переменная filter (пустая строка = сброс)."
+          }
+        },
+        {
+          "name": "Сортировка по {{sortLabel}}",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "routesForm",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_index}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "routesForm:tablePanel",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "Клик по заголовку колонки. Колонка — переменная sortLabel: ID, Название, Из, В, Расстояние, Рейтинг. Повторный вызов меняет направление."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_index') || '{}');",
+                  "const key = \"sort:{{sortLabel}}\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните запрос \\\"Главная → Открыть главную\\\"\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Следующая страница",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "routesForm",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_index}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "routesForm:tablePanel routesForm:pager",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "Пагинация вперёд (по 8 строк). Если страница последняя, ничего не меняется."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_index') || '{}');",
+                  "const key = \"Вперёд →\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните запрос \\\"Главная → Открыть главную\\\"\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Предыдущая страница",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "routesForm",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_index}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "routesForm:tablePanel routesForm:pager",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "Пагинация назад."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_index') || '{}');",
+                  "const key = \"← Назад\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните запрос \\\"Главная → Открыть главную\\\"\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Открыть форму создания",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "routesForm",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_index}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "routesForm:modalArea",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "Кнопка «Новый маршрут»: открывает модальное окно. Нужно перед «Создать маршрут»."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_index') || '{}');",
+                  "const key = \"＋ Новый маршрут\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните запрос \\\"Главная → Открыть главную\\\"\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Создать маршрут",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "routesForm",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:name",
+                  "value": "Маршрут из Postman",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:cx",
+                  "value": "59.9",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:cy",
+                  "value": "30",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:from",
+                  "value": "{{fromId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:to",
+                  "value": "{{toId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:distance",
+                  "value": "4.5",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:rating",
+                  "value": "6",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_index}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "Сохранение формы создания. Поля можно менять в Body. Для проверки валидации поставьте пустое имя, distance=1 или rating=0: ошибки появятся в результатах тестов как «Сообщение: ...»."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_index') || '{}');",
+                  "const key = \"Создать маршрут\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните «Открыть форму создания»\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Открыть форму изменения {{routeId}}",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "routesForm",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_index}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "routesForm:modalArea",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "Ссылка «Изменить» в строке маршрута routeId."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_index') || '{}');",
+                  "const rows = JSON.parse(pm.collectionVariables.get('rows') || '{}');",
+                  "const routeId = pm.variables.get('routeId') || pm.variables.get('createdId');",
+                  "if (!rows[routeId]) throw new Error('Маршрута ' + routeId + ' нет на текущей странице таблицы. Выполните \"Открыть главную\", пролистайте страницы или поменяйте routeId');",
+                  "pm.variables.set('source', rows[routeId].edit);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Сохранить изменения",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "routesForm",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:cx",
+                  "value": "59.9",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:cy",
+                  "value": "30",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:from",
+                  "value": "{{fromId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:to",
+                  "value": "{{toId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:distance",
+                  "value": "4.5",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:rating",
+                  "value": "6",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:name",
+                  "value": "Изменён из Postman",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_index}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "Сохранение формы изменения. Значения полей берутся из Body, а не из исходного маршрута."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_index') || '{}');",
+                  "const key = \"Сохранить изменения\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните «Открыть форму изменения»\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Открыть удаление {{deleteId}}",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "routesForm",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_index}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "routesForm:modalArea",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "Ссылка «Удалить» в строке маршрута deleteId: открывает окно подтверждения. Если deleteId пустой, удаляется маршрут, созданный последним запросом «Создать маршрут» (createdId)."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_index') || '{}');",
+                  "const rows = JSON.parse(pm.collectionVariables.get('rows') || '{}');",
+                  "const routeId = pm.variables.get('deleteId') || pm.variables.get('createdId');",
+                  "if (!rows[routeId]) throw new Error('Маршрута ' + routeId + ' нет на текущей странице таблицы. Выполните \"Открыть главную\", пролистайте страницы или поменяйте deleteId');",
+                  "pm.variables.set('source', rows[routeId].del);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Удалить маршрут",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "routesForm",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "routesForm:replacement",
+                  "value": "{{replacementId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_index}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "routesForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/index.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "index.xhtml"
+              ]
+            },
+            "description": "Подтверждение удаления. replacementId — маршрут-замена (пусто = без замены)."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_index') || '{}');",
+                  "const key = \"Удалить\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните «Открыть удаление»\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Карточка маршрута (route-view.xhtml)",
+      "description": "Просмотр маршрута routeId со связанными локациями.",
+      "item": [
+        {
+          "name": "Открыть карточку {{routeId}}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/route-view.xhtml?id={{routeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "route-view.xhtml"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{routeId}}"
+                }
+              ]
+            },
+            "description": "Карточка маршрута с локациями «Откуда» и «Куда»."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset('ids_detail');",
+                  "pm.collectionVariables.unset('vs_detail');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Открыть изменение в карточке",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "detailForm",
+                  "value": "detailForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_detail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "detailForm:detailModal",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/route-view.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "route-view.xhtml"
+              ]
+            },
+            "description": "Кнопка «Изменить» на карточке."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_detail') || '{}');",
+                  "const key = \"Изменить\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните «Открыть карточку»\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Сохранить из карточки",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "detailForm",
+                  "value": "detailForm",
+                  "type": "text"
+                },
+                {
+                  "key": "detailForm:detailName",
+                  "value": "Изменён из карточки",
+                  "type": "text"
+                },
+                {
+                  "key": "detailForm:detailCx",
+                  "value": "59.9",
+                  "type": "text"
+                },
+                {
+                  "key": "detailForm:detailCy",
+                  "value": "30",
+                  "type": "text"
+                },
+                {
+                  "key": "detailForm:detailFrom",
+                  "value": "{{fromId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "detailForm:detailTo",
+                  "value": "{{toId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "detailForm:detailDistance",
+                  "value": "4.5",
+                  "type": "text"
+                },
+                {
+                  "key": "detailForm:detailRating",
+                  "value": "6",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_detail}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "detailForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "detailForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/route-view.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "route-view.xhtml"
+              ]
+            },
+            "description": "Сохранение из карточки. В текущей версии падает с «Validation Error: Value is required» из-за required у f:viewParam (известный баг, см. GUIDE.md, раздел 4)."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_detail') || '{}');",
+                  "const key = \"Сохранить изменения\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните «Открыть изменение в карточке»\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Спецоперации (special.xhtml)",
+      "description": "Все 5 спецопераций, каждая вызывает функцию PL/pgSQL. Найденные id маршрутов видны в результатах тестов.",
+      "item": [
+        {
+          "name": "Открыть страницу",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/special.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "special.xhtml"
+              ]
+            },
+            "description": "GET страницы спецопераций."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset('ids_special');",
+                  "pm.collectionVariables.unset('vs_special');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Рейтинг меньше {{rating}}",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "specialForm",
+                  "value": "specialForm",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opRating",
+                  "value": "{{rating}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_special}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}} specialForm:opRating",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "specialForm:results specialForm:specialMessages",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/special.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "special.xhtml"
+              ]
+            },
+            "description": "routes_rating_less_than(rating)."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_special') || '{}');",
+                  "const key = \"Показать с меньшим рейтингом\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните «Спецоперации → Открыть страницу»\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Максимальный рейтинг",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "specialForm",
+                  "value": "specialForm",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_special}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "specialForm:results specialForm:specialMessages",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/special.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "special.xhtml"
+              ]
+            },
+            "description": "max_rating_route()."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_special') || '{}');",
+                  "const key = \"Показать максимальный\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните «Спецоперации → Открыть страницу»\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Удалить один с рейтингом {{rating}}",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "specialForm",
+                  "value": "specialForm",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opRating",
+                  "value": "{{rating}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_special}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}} specialForm:opRating",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "specialForm:results specialForm:specialMessages",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/special.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "special.xhtml"
+              ]
+            },
+            "description": "delete_one_route_by_rating(rating): удаляет один маршрут с таким рейтингом."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_special') || '{}');",
+                  "const key = \"Удалить один с таким рейтингом\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните «Спецоперации → Открыть страницу»\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Маршруты между {{fromId}} и {{toId}}",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "specialForm",
+                  "value": "specialForm",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opFrom",
+                  "value": "{{fromId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opTo",
+                  "value": "{{toId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opSort",
+                  "value": "{{sort}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_special}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}} specialForm:opFrom specialForm:opTo specialForm:opSort",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "specialForm:results specialForm:specialMessages",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/special.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "special.xhtml"
+              ]
+            },
+            "description": "find_routes_between(from, to, sort). sort: name, rating, distance, creation_date."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_special') || '{}');",
+                  "const key = \"Найти маршруты\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните «Спецоперации → Открыть страницу»\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Добавить маршрут между {{fromId}} и {{toId}}",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Faces-Request",
+                "value": "partial/ajax"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "specialForm",
+                  "value": "specialForm",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opFrom",
+                  "value": "{{fromId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opTo",
+                  "value": "{{toId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opSort",
+                  "value": "{{sort}}",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opName",
+                  "value": "Маршрут из спецоперации",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opCx",
+                  "value": "59.9",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opCy",
+                  "value": "30",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opDistance",
+                  "value": "2.5",
+                  "type": "text"
+                },
+                {
+                  "key": "specialForm:opNewRating",
+                  "value": "5",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.ViewState",
+                  "value": "{{vs_special}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.source",
+                  "value": "{{source}}",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.event",
+                  "value": "click",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.execute",
+                  "value": "{{source}} specialForm:opFrom specialForm:opTo specialForm:opSort specialForm:opName specialForm:opCx specialForm:opCy specialForm:opDistance specialForm:opNewRating",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.render",
+                  "value": "specialForm:results specialForm:specialMessages",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.behavior.event",
+                  "value": "action",
+                  "type": "text"
+                },
+                {
+                  "key": "jakarta.faces.partial.ajax",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/special.xhtml",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "special.xhtml"
+              ]
+            },
+            "description": "add_route_between(...): создаёт маршрут между локациями и показывает маршруты между ними."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const ids = JSON.parse(pm.collectionVariables.get('ids_special') || '{}');",
+                  "const key = \"Добавить маршрут\".replace('{{sortLabel}}', pm.variables.get('sortLabel'));",
+                  "if (!ids[key]) throw new Error(\"Сначала выполните «Спецоперации → Открыть страницу»\");",
+                  "pm.variables.set('source', ids[key]);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const body = pm.response.text();",
+          "const path = pm.request.url.getPath();",
+          "const page = path.includes('special') ? 'special' : path.includes('route-view') ? 'detail' : 'index';",
+          "const norm = s => s.replace(/&nbsp;/g, ' ').replace(/\\s+/g, ' ').trim();",
+          "",
+          "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+          "pm.test('Без ошибки JSF', () => pm.expect(body).to.not.match(/<partial-response>\\s*<error>|<error-name>/));",
+          "",
+          "const vs = body.match(/name=\"jakarta\\.faces\\.ViewState\"[^>]*value=\"([^\"]+)\"/) || body.match(/ViewState:0\"><!\\[CDATA\\[([^\\]]+)\\]\\]>/);",
+          "if (vs) pm.collectionVariables.set('vs_' + page, vs[1]);",
+          "",
+          "const ids = JSON.parse(pm.collectionVariables.get('ids_' + page) || '{}');",
+          "for (const m of body.matchAll(/<input id=\"([^\"]+)\" type=\"submit\" name=\"[^\"]+\" value=\"([^\"]+)\"/g)) ids[norm(m[2])] = m[1];",
+          "for (const m of body.matchAll(/<a id=\"([^\"]+)\"[^>]*class=\"sort-link\">([^<]+)<\\/a>/g)) ids['sort:' + norm(m[2])] = m[1];",
+          "pm.collectionVariables.set('ids_' + page, JSON.stringify(ids));",
+          "",
+          "if (page === 'index') {",
+          "    const previous = JSON.parse(pm.collectionVariables.get('rows') || '{}');",
+          "    const rows = {};",
+          "    const order = [];",
+          "    const re = /route-view\\.xhtml[^\"]*\\?id=(\\d+)\"[^>]*class=\"action-link\">[^<]*<\\/a>\\s*<a id=\"([^\"]+)\"[^>]*>Изменить<\\/a>\\s*<a id=\"([^\"]+)\"[^>]*>Удалить<\\/a>/g;",
+          "    for (const m of body.matchAll(re)) { rows[m[1]] = { edit: m[2], del: m[3] }; order.push(m[1]); }",
+          "    if (order.length) {",
+          "        pm.collectionVariables.set('rows', JSON.stringify(rows));",
+          "        pm.test('Маршруты на странице (по порядку): ' + order.join(', '), () => {});",
+          "        if (pm.info.requestName === 'Создать маршрут') {",
+          "            const created = order.filter(id => !previous[id]);",
+          "            if (created.length === 1) {",
+          "                pm.collectionVariables.set('createdId', created[0]);",
+          "                pm.test('Создан маршрут #' + created[0] + ' (сохранён в createdId)', () => {});",
+          "            }",
+          "        }",
+          "    }",
+          "}",
+          "",
+          "for (const m of body.matchAll(/<li[^>]*class=\"[^\"]*(toast|field-error)[^\"]*\"[^>]*>([\\s\\S]*?)<\\/li>/g)) {",
+          "    pm.test('Сообщение: ' + norm(m[2].replace(/<[^>]+>/g, '')), () => {});",
+          "}",
+          "if (page === 'special') {",
+          "    const results = body.match(/id=\"specialForm:results\"[\\s\\S]*?(<\\/table>|<\\/div>\\s*<\\/div>)/);",
+          "    if (results) {",
+          "        const found = [...results[0].matchAll(/route-view\\.xhtml[^\"]*\\?id=(\\d+)\"/g)].map(m => m[1]);",
+          "        pm.test('Результат спецоперации, id: ' + (found.length ? found.join(', ') : 'пусто'), () => {});",
+          "    }",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/routes",
+      "type": "string",
+      "description": "Локально: http://localhost:8080/routes, helios через туннель: http://localhost:18080/routes"
+    },
+    {
+      "key": "routeId",
+      "value": "101",
+      "type": "string",
+      "description": "Маршрут для изменения/удаления/карточки"
+    },
+    {
+      "key": "deleteId",
+      "value": "",
+      "type": "string",
+      "description": "Маршрут для удаления; пусто = маршрут из последнего «Создать маршрут» (createdId)"
+    },
+    {
+      "key": "replacementId",
+      "value": "",
+      "type": "string",
+      "description": "Маршрут-замена при удалении (пусто = без замены)"
+    },
+    {
+      "key": "filter",
+      "value": "корп",
+      "type": "string",
+      "description": "Строка поиска"
+    },
+    {
+      "key": "sortLabel",
+      "value": "Рейтинг",
+      "type": "string",
+      "description": "Колонка сортировки: ID, Название, Из, В, Расстояние, Рейтинг"
+    },
+    {
+      "key": "rating",
+      "value": "7",
+      "type": "string",
+      "description": "Рейтинг для спецопераций"
+    },
+    {
+      "key": "fromId",
+      "value": "1",
+      "type": "string",
+      "description": "Локация «Откуда» (1..5 в начальных данных)"
+    },
+    {
+      "key": "toId",
+      "value": "2",
+      "type": "string",
+      "description": "Локация «Куда»"
+    },
+    {
+      "key": "sort",
+      "value": "name",
+      "type": "string",
+      "description": "Сортировка для «Маршруты между»: name, rating, distance, creation_date"
+    },
+    {
+      "key": "vs_index",
+      "value": "",
+      "type": "string",
+      "description": "служебная: ViewState главной"
+    },
+    {
+      "key": "vs_detail",
+      "value": "",
+      "type": "string",
+      "description": "служебная: ViewState карточки"
+    },
+    {
+      "key": "vs_special",
+      "value": "",
+      "type": "string",
+      "description": "служебная: ViewState спецопераций"
+    },
+    {
+      "key": "ids_index",
+      "value": "",
+      "type": "string",
+      "description": "служебная: id кнопок главной"
+    },
+    {
+      "key": "ids_detail",
+      "value": "",
+      "type": "string",
+      "description": "служебная: id кнопок карточки"
+    },
+    {
+      "key": "ids_special",
+      "value": "",
+      "type": "string",
+      "description": "служебная: id кнопок спецопераций"
+    },
+    {
+      "key": "rows",
+      "value": "",
+      "type": "string",
+      "description": "служебная: id маршрута → id ссылок «Изменить»/«Удалить» в строке"
+    },
+    {
+      "key": "createdId",
+      "value": "",
+      "type": "string",
+      "description": "служебная: id маршрута, созданного последним «Создать маршрут»"
+    }
+  ]
+}
