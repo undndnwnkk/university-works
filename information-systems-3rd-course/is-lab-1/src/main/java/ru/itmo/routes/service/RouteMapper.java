@@ -5,6 +5,7 @@ import ru.itmo.routes.domain.Location;
 import ru.itmo.routes.domain.Route;
 import ru.itmo.routes.dto.CoordinatesDto;
 import ru.itmo.routes.dto.LocationDto;
+import ru.itmo.routes.dto.LocationForm;
 import ru.itmo.routes.dto.RouteDto;
 import ru.itmo.routes.dto.RouteForm;
 import java.util.List;
@@ -32,11 +33,17 @@ final class RouteMapper {
         return locations.stream().map(RouteMapper::toDto).toList();
     }
 
-    /** Copies user input onto the entity; locations are bound by the service. */
     static void copy(RouteForm form, Route target) {
         target.setName(form.getName());
         target.setCoordinates(new Coordinates(form.getCoordinateX(), form.getCoordinateY()));
         target.setDistance(form.getDistance());
         target.setRating(form.getRating());
+    }
+
+    static void copy(LocationForm form, Location target) {
+        target.setName(form.getName());
+        target.setX(form.getX());
+        target.setY(form.getY());
+        target.setZ(form.getZ());
     }
 }

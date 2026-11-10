@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/templates/app.xhtml">
+    <ui:define name="title">Локации</ui:define>
+    <ui:define name="content">
+        <h:form id="locationsForm">
+            <div class="page-heading">
+                <div><h1>Локации</h1><p>Точки, между которыми строятся маршруты</p></div>
+                <h:commandButton value="＋  Новая локация" action="#{locationBean.openCreate}" styleClass="button primary">
+                    <f:ajax execute="@this" render=":locationsForm:modalArea"/>
+                </h:commandButton>
+            </div>
+
+            <h:messages id="messages" globalOnly="true" infoClass="toast success" errorClass="toast error"/>
+
+            <h:panelGroup id="tablePanel" layout="block" styleClass="table-frame">
+                <h:dataTable value="#{locationBean.rows}" var="row" styleClass="data-table" headerClass="table-header" rowClasses="table-row"
+                             rendered="#{not empty locationBean.rows}">
+                    <h:column><f:facet name="header">ID</f:facet><span class="id-cell">##{row.location.id}</span></h:column>
+                    <h:column><f:facet name="header">Название</f:facet><ui:fragment rendered="#{row.location.name == null}"><span class="muted">не задано</span></ui:fragment>#{row.location.name}</h:column>
+                    <h:column><f:facet name="header">X</f:facet>#{row.location.x}</h:column>
+                    <h:column><f:facet name="header">Y</f:facet>#{row.location.y}</h:column>
+                    <h:column><f:facet name="header">Z</f:facet>#{row.location.z}</h:column>
+                    <h:column><f:facet name="header">Маршрутов</f:facet><span class="usage-badge #{row.routeCount == 0 ? 'zero' : ''}">#{row.routeCount}</span></h:column>
+                    <h:column>
+                        <f:facet name="header">Действия</f:facet>
+                        <div class="row-actions">
+                            <h:commandLink value="Изменить" action="#{locationBean.openEdit(row.location.id)}" styleClass="action-link"><f:ajax execute="@this" render=":locationsForm:modalArea :locationsForm:messages"/></h:commandLink>
+                            <h:commandLink value="Удалить" action="#{locationBean.askDelete(row.location.id)}" styleClass="action-link danger"><f:ajax execute="@this" render=":locationsForm:modalArea"/></h:commandLink>
+                        </div>
+                    </h:column>
+                </h:dataTable>
+                <h:panelGroup rendered="#{empty locationBean.rows}" layout="block" styleClass="empty-state">
+                    <strong>Локаций пока нет</strong><span>Создайте первую локацию, чтобы строить маршруты.</span>
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <h:panelGroup id="modalArea" layout="block">
+                <ui:fragment rendered="#{locationBean.editorOpen}"><div class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="locationEditorTitle">
+                    <section class="modal drawer">
+                        <header class="modal-header"><div><span class="modal-kicker">#{locationBean.editingId == null ? 'Новая запись' : 'Локация #'.concat(locationBean.editingId)}</span><h2 id="locationEditorTitle">#{locationBean.editingId == null ? 'Создать локацию' : 'Редактировать локацию'}</h2></div><h:commandButton value="×" action="#{locationBean.closeEditor}" immediate="true" styleClass="icon-button"><f:ajax render=":locationsForm:modalArea"/></h:commandButton></header>
+                        <div class="modal-body">
+                            <h:messages styleClass="form-errors" errorClass="field-error"/>
+                            <fieldset><legend>Локация</legend>
+                                <label for="locName">Название <span class="optional">необязательно, до 755 символов</span></label>
+                                <h:inputText id="locName" value="#{locationBean.draft.name}" maxlength="755"/>
+                                <div class="field-grid">
+                                    <div><label for="locX">X <b>*</b></label><h:inputText id="locX" value="#{locationBean.draft.x}" required="true" requiredMessage="Введите X" converterMessage="X должен быть целым числом"/><small>Целое число</small></div>
+                                    <div><label for="locY">Y <b>*</b></label><h:inputText id="locY" value="#{locationBean.draft.y}" required="true" requiredMessage="Введите Y" converterMessage="Y должен быть числом, например 20.5"/></div>
+                                    <div><label for="locZ">Z <b>*</b></label><h:inputText id="locZ" value="#{locationBean.draft.z}" required="true" requiredMessage="Введите Z" converterMessage="Z должен быть числом, например 2.0"/></div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <footer class="modal-footer"><h:commandButton value="Отмена" action="#{locationBean.closeEditor}" immediate="true" styleClass="button secondary"><f:ajax render=":locationsForm:modalArea"/></h:commandButton><h:commandButton value="#{locationBean.editingId == null ? 'Создать локацию' : 'Сохранить изменения'}" action="#{locationBean.save}" styleClass="button primary"><f:ajax execute="@form" render="@form"/></h:commandButton></footer>
+                    </section>
+                </div></ui:fragment>
+
+                <ui:fragment rendered="#{locationBean.deleteOpen}"><div class="modal-layer" role="alertdialog" aria-modal="true">
+                    <section class="modal confirm-modal">
+                        <header class="modal-header"><div><span class="modal-kicker danger-text">Необратимое действие</span><h2>Удалить локацию ##{locationBean.deleteId}?</h2></div></header>
+                        <div class="modal-body">
+                            <h:messages styleClass="form-errors" errorClass="field-error"/>
+                            <ui:fragment rendered="#{locationBean.deleteRouteCount == 0}"><p>На локацию не ссылается ни один маршрут, её можно просто удалить.</p></ui:fragment>
+                            <ui:fragment rendered="#{locationBean.deleteRouteCount gt 0}">
+                                <p>На локацию ссылаются маршруты: <b>#{locationBean.deleteRouteCount}</b>. Выберите локацию, к которой они будут привязаны вместо удаляемой.</p>
+                                <label for="replacement">Локация-замена <b>*</b></label>
+                                <h:selectOneMenu id="replacement" value="#{locationBean.replacementId}" required="true" requiredMessage="Выберите локацию-замену">
+                                    <f:selectItem itemValue="#{null}" itemLabel="Выберите локацию" noSelectionOption="true"/>
+                                    <f:selectItems value="#{locationBean.replacementCandidates}" var="candidate" itemValue="#{candidate.id}" itemLabel="#{candidate.displayName} · (#{candidate.x}; #{candidate.y}; #{candidate.z})"/>
+                                </h:selectOneMenu>
+                            </ui:fragment>
+                        </div>
+                        <footer class="modal-footer"><h:commandButton value="Отмена" action="#{locationBean.closeDelete}" immediate="true" styleClass="button secondary"><f:ajax render=":locationsForm:modalArea"/></h:commandButton><h:commandButton value="Удалить" action="#{locationBean.delete}" styleClass="button danger-button"><f:ajax execute="@form" render="@form"/></h:commandButton></footer>
+                    </section>
+                </div></ui:fragment>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>
