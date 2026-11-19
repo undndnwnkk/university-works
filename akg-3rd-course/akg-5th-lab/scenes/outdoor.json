@@ -1,0 +1,24 @@
+{
+  "camera": {"position": [0, 2.2, 6], "look_at": [0, 0.6, 0], "up": [0, 1, 0], "fov": 42, "width": 800, "height": 600},
+  "render": {"spp": 16, "max_depth": 6, "backend": "embree", "mode": "split", "normalize": "mean", "norm_value": 1.0,
+             "gamma": 2.2, "background": [0.18, 0.26, 0.4], "seed": 1, "output": "output/outdoor"},
+  "materials": {
+    "tile_light": {"kd": [0.8, 0.8, 0.78]},
+    "tile_dark": {"kd": [0.15, 0.15, 0.17], "ks": [0.1, 0.1, 0.1], "shininess": 40, "model": "phong"},
+    "glass": {"ks": [0.05, 0.05, 0.05], "shininess": 500, "kr": [0.07, 0.07, 0.07], "kt": [0.88, 0.88, 0.88], "ior": 1.5},
+    "mirror": {"kd": [0.02, 0.02, 0.02], "kr": [0.92, 0.92, 0.92]},
+    "gold": {"kd": [0.3, 0.2, 0.05], "ks": [0.45, 0.35, 0.12], "shininess": 40, "model": "phong", "kr": [0.2, 0.15, 0.05]},
+    "red_plastic": {"kd": [0.7, 0.08, 0.06], "ks": [0.3, 0.3, 0.3], "shininess": 90, "model": "blinn"}
+  },
+  "objects": [
+    {"type": "checker", "cells": 12, "size": 12, "position": [0, 0, -1], "materials": ["tile_light", "tile_dark"]},
+    {"type": "sphere", "radius": 0.7, "subdiv": 4, "position": [-1.6, 0.7, 0.2], "smooth": true, "material": "glass"},
+    {"type": "sphere", "radius": 0.7, "subdiv": 4, "position": [1.7, 0.7, -0.6], "smooth": true, "material": "mirror"},
+    {"type": "obj", "file": "../models/knot.obj", "scale": 0.45, "position": [0.05, 0.95, -0.9], "rotate": [80, 0, 0], "smooth": true, "material": "gold"},
+    {"type": "box", "size": [0.6, 0.6, 0.6], "position": [0.2, 0.3, 1.3], "rotate": [0, 35, 0], "material": "red_plastic"}
+  ],
+  "lights": [
+    {"type": "directional", "direction": [-0.45, -1.0, -0.55], "irradiance": [2.6, 2.45, 2.2]},
+    {"type": "point", "position": [2.5, 1.4, 2.2], "direction": [-1, -0.5, -1], "intensity": [6.0, 3.0, 0.8], "lambert": true}
+  ]
+}

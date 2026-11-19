@@ -1,0 +1,14 @@
+{
+  "camera": {"position": [0, 4, 4], "look_at": [0, 0, 0], "up": [0, 1, 0], "fov": 60, "width": 500, "height": 500},
+  "render": {"spp": 1, "max_depth": 1, "backend": "embree", "mode": "split", "normalize": "max", "norm_value": 1.0,
+             "gamma": 2.2, "background": [0, 0, 0], "seed": 1, "output": "output/test_plane"},
+  "materials": {
+    "gray": {"kd": [0.5, 0.5, 0.5]}
+  },
+  "objects": [
+    {"type": "quad", "points": [[-5, 0, 5], [5, 0, 5], [5, 0, -5], [-5, 0, -5]], "material": "gray"}
+  ],
+  "lights": [
+    {"type": "point", "position": [0, 2, 0], "direction": [0, -1, 0], "intensity": [10, 10, 10], "lambert": true}
+  ]
+}

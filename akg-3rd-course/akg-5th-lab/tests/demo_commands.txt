@@ -1,0 +1,15 @@
+show lights
+set camera.width 500
+set camera.height 500
+set render.spp 4
+set render.output "output/demo_base"
+render
+probe 250 420
+set lights.0.position [-0.5,1.9,0.5]
+set lights.0.intensity [4,2,1]
+set materials.glass.ior 1.33
+set materials.plastic.model "phong"
+set render.backend "bvh"
+set render.output "output/demo_changed"
+render
+bench 20000

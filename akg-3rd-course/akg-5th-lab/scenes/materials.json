@@ -1,0 +1,27 @@
+{
+  "camera": {"position": [0, 1.4, 5.2], "look_at": [0, 0.5, 0], "up": [0, 1, 0], "fov": 38, "width": 900, "height": 500},
+  "render": {"spp": 16, "max_depth": 6, "backend": "embree", "mode": "split", "normalize": "fixed", "norm_value": 0.32,
+             "gamma": 2.2, "background": [0.05, 0.05, 0.06], "seed": 1, "output": "output/materials"},
+  "materials": {
+    "floor": {"kd": [0.6, 0.6, 0.6]},
+    "lambert": {"kd": [0.7, 0.35, 0.1]},
+    "phong": {"kd": [0.7, 0.35, 0.1], "ks": [0.3, 0.3, 0.3], "shininess": 30, "model": "phong"},
+    "blinn": {"kd": [0.7, 0.35, 0.1], "ks": [0.3, 0.3, 0.3], "shininess": 30, "model": "blinn"},
+    "mirror": {"kd": [0.02, 0.02, 0.02], "kr": [0.9, 0.9, 0.9]},
+    "glass": {"ks": [0.05, 0.05, 0.05], "shininess": 500, "kr": [0.07, 0.07, 0.07], "kt": [0.88, 0.88, 0.88], "ior": 1.5},
+    "paper": {"kd": [0.25, 0.25, 0.25], "kdt": [0.6, 0.55, 0.4]}
+  },
+  "objects": [
+    {"type": "checker", "cells": 16, "size": 14, "position": [0, 0, -1], "materials": ["floor", "floor"]},
+    {"type": "sphere", "radius": 0.45, "subdiv": 4, "position": [-2.0, 0.45, 0], "smooth": true, "material": "lambert"},
+    {"type": "sphere", "radius": 0.45, "subdiv": 4, "position": [-1.0, 0.45, 0], "smooth": true, "material": "phong"},
+    {"type": "sphere", "radius": 0.45, "subdiv": 4, "position": [0.0, 0.45, 0], "smooth": true, "material": "blinn"},
+    {"type": "sphere", "radius": 0.45, "subdiv": 4, "position": [1.0, 0.45, 0], "smooth": true, "material": "mirror"},
+    {"type": "sphere", "radius": 0.45, "subdiv": 4, "position": [2.0, 0.45, 0], "smooth": true, "material": "glass"},
+    {"type": "quad", "points": [[-2.6, 0, -1.6], [2.6, 0, -1.6], [2.6, 1.6, -1.6], [-2.6, 1.6, -1.6]], "material": "paper"}
+  ],
+  "lights": [
+    {"type": "point", "position": [0.5, 3.0, 2.5], "direction": [-0.1, -1, -0.6], "intensity": [14, 14, 14], "lambert": true},
+    {"type": "point", "position": [0, 0.8, -3.0], "direction": [0, 0, 1], "intensity": [4, 3, 1.5], "lambert": true}
+  ]
+}

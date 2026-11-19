@@ -1,0 +1,16 @@
+{
+  "camera": {"position": [0, 5, 3], "look_at": [0, 0, 0], "up": [0, 1, 0], "fov": 50, "width": 600, "height": 600},
+  "render": {"spp": 4, "max_depth": 1, "backend": "embree", "mode": "split", "normalize": "max", "norm_value": 1.0,
+             "gamma": 2.2, "background": [0, 0, 0], "seed": 1, "output": "output/test_shadow"},
+  "materials": {
+    "gray": {"kd": [0.6, 0.6, 0.6]},
+    "cube": {"kd": [0.7, 0.3, 0.2]}
+  },
+  "objects": [
+    {"type": "quad", "points": [[-4, 0, 4], [4, 0, 4], [4, 0, -4], [-4, 0, -4]], "material": "gray"},
+    {"type": "box", "size": [0.8, 0.8, 0.8], "position": [0, 0.4, 0], "rotate": [0, 30, 0], "material": "cube"}
+  ],
+  "lights": [
+    {"type": "point", "position": [1.2, 2.5, 0.8], "direction": [0, -1, 0], "intensity": [10, 10, 10], "lambert": true}
+  ]
+}

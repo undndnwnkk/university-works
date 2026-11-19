@@ -1,0 +1,28 @@
+{
+  "camera": {"position": [0, 1, 3.7], "look_at": [0, 0.95, 0], "up": [0, 1, 0], "fov": 40, "width": 600, "height": 600},
+  "render": {"spp": 16, "max_depth": 6, "backend": "embree", "mode": "split", "normalize": "fixed", "norm_value": 0.2,
+             "gamma": 2.2, "background": [0, 0, 0], "seed": 1, "output": "output/room"},
+  "materials": {
+    "white": {"kd": [0.75, 0.75, 0.75]},
+    "floor": {"kd": [0.7, 0.68, 0.62], "ks": [0.08, 0.08, 0.08], "shininess": 15, "model": "phong"},
+    "red": {"kd": [0.75, 0.1, 0.08]},
+    "green": {"kd": [0.12, 0.6, 0.15]},
+    "mirror": {"kd": [0.03, 0.03, 0.03], "kr": [0.9, 0.9, 0.9]},
+    "glass": {"ks": [0.05, 0.05, 0.05], "shininess": 400, "kr": [0.07, 0.07, 0.07], "kt": [0.88, 0.88, 0.88], "ior": 1.5},
+    "plastic": {"kd": [0.08, 0.2, 0.65], "ks": [0.35, 0.35, 0.35], "shininess": 60, "model": "blinn"}
+  },
+  "objects": [
+    {"type": "quad", "points": [[-1, 0, 1], [1, 0, 1], [1, 0, -1], [-1, 0, -1]], "material": "floor"},
+    {"type": "quad", "points": [[-1, 2, 1], [-1, 2, -1], [1, 2, -1], [1, 2, 1]], "material": "white"},
+    {"type": "quad", "points": [[-1, 0, -1], [1, 0, -1], [1, 2, -1], [-1, 2, -1]], "material": "white"},
+    {"type": "quad", "points": [[-1, 0, 1], [-1, 0, -1], [-1, 2, -1], [-1, 2, 1]], "material": "red"},
+    {"type": "quad", "points": [[1, 0, -1], [1, 0, 1], [1, 2, 1], [1, 2, -1]], "material": "green"},
+    {"type": "box", "size": [0.55, 1.2, 0.55], "position": [-0.42, 0.6, -0.45], "rotate": [0, 25, 0], "material": "mirror"},
+    {"type": "sphere", "radius": 0.32, "subdiv": 4, "position": [-0.2, 0.32, 0.45], "smooth": true, "material": "glass"},
+    {"type": "obj", "file": "../models/knot.obj", "scale": 0.24, "position": [0.45, 0.42, -0.2], "rotate": [70, 0, 15], "smooth": true, "material": "plastic"}
+  ],
+  "lights": [
+    {"type": "point", "position": [0, 1.96, 0.2], "direction": [0, -1, 0], "intensity": [3.0, 2.8, 2.5], "lambert": true},
+    {"type": "point", "position": [0.75, 1.5, 0.9], "direction": [-0.6, -0.6, -0.5], "intensity": [0.25, 0.45, 1.0], "lambert": true}
+  ]
+}
