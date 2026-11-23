@@ -1,0 +1,54 @@
+Сцена scenes/room.json: 24342 triangles, 7 materials, 2 lights
+lab5> show lights
+  lights.0.type                            = "point"
+  lights.0.position                        = [0, 1.96, 0.2]
+  lights.0.direction                       = [0, -1, 0]
+  lights.0.intensity                       = [3.0, 2.8, 2.5]
+  lights.0.lambert                         = true
+  lights.1.type                            = "point"
+  lights.1.position                        = [0.75, 1.5, 0.9]
+  lights.1.direction                       = [-0.6, -0.6, -0.5]
+  lights.1.intensity                       = [0.25, 0.45, 1.0]
+  lights.1.lambert                         = true
+lab5> set camera.width 500
+  camera.width = 500
+lab5> set camera.height 500
+  camera.height = 500
+lab5> set render.spp 4
+  render.spp = 4
+lab5> set render.output "output/demo_base"
+  render.output = output/demo_base
+lab5> render
+Ускоряющая структура embree построена за 0.040 с
+Рендер 500x500, 4 лучей на пиксель, глубина 6, режим split, 24342 triangles, 7 materials, 2 lights
+  проход 4/4, 2.8 с
+Время 2.77 с, лучей 1734791, теневых лучей 2661513 (1.59 млн лучей/с)
+Яркость: макс 1.315, средняя 0.05909, нормировка на 0.2 (fixed), гамма 2.20
+Сохранено: output/demo_base.ppm, output/demo_base.png
+lab5> probe 250 420
+Яркость L(250, 420) = [0.015362, 0.0154428, 0.0165278] Вт/(ср*м2)
+lab5> set lights.0.position [-0.5,1.9,0.5]
+  lights.0.position = [-0.5,1.9,0.5]
+lab5> set lights.0.intensity [4,2,1]
+  lights.0.intensity = [4,2,1]
+lab5> set materials.glass.ior 1.33
+  materials.glass.ior = 1.33
+lab5> set materials.plastic.model "phong"
+  materials.plastic.model = phong
+lab5> set render.backend "bvh"
+  render.backend = bvh
+lab5> set render.output "output/demo_changed"
+  render.output = output/demo_changed
+lab5> render
+Ускоряющая структура bvh построена за 0.979 с
+Рендер 500x500, 4 лучей на пиксель, глубина 6, режим split, 24342 triangles, 7 materials, 2 lights
+  проход 4/4, 2.7 с
+Время 2.74 с, лучей 1726963, теневых лучей 2624248 (1.59 млн лучей/с)
+Яркость: макс 3.45, средняя 0.05251, нормировка на 0.2 (fixed), гамма 2.20
+Сохранено: output/demo_changed.ppm, output/demo_changed.png
+lab5> bench 20000
+  brute   построение 0.000 с, трассировка 20000 лучей 0.369 с, 0.054 млн лучей/с
+  bvh     построение 0.969 с, трассировка 20000 лучей 0.001 с, 15.642 млн лучей/с
+  embree  построение 0.024 с, трассировка 20000 лучей 0.002 с, 8.177 млн лучей/с
+  bvh     совпадение треугольников с brute: 100.000 %, max |dt| = 0.00e+00
+  embree  совпадение треугольников с brute: 100.000 %, max |dt| = 2.21e-06

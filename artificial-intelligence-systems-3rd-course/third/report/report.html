@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Отчёт по лабораторной работе №3</title>
+<style>
+  @page { size: A4; margin: 20mm 15mm 20mm 25mm; }
+  @page :first { margin: 15mm 15mm 15mm 25mm; }
+  body {
+    font-family: "Liberation Serif", "Times New Roman", serif;
+    font-size: 13pt; line-height: 1.45; color: #000; background: #fff;
+    text-align: justify; hyphens: auto;
+  }
+  p { margin: 0 0 6pt; text-indent: 1.25cm; }
+  p.noindent, li p { text-indent: 0; }
+  h1 { font-size: 15pt; text-align: center; margin: 0 0 12pt; page-break-before: always; }
+  h2 { font-size: 13.5pt; margin: 14pt 0 6pt; page-break-after: avoid; }
+  ul, ol { margin: 0 0 6pt; padding-left: 1.6cm; }
+  li { margin-bottom: 2pt; }
+  code, pre { font-family: "Liberation Mono", monospace; font-size: 10pt; }
+  code { background: #f2f2f2; padding: 0 2px; }
+  pre {
+    background: #f6f6f6; border: 1px solid #ccc; padding: 6pt 8pt;
+    white-space: pre-wrap; text-align: left; line-height: 1.3;
+    page-break-inside: avoid; margin: 4pt 0 8pt;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 4pt 0 10pt; font-size: 11pt; page-break-inside: avoid; text-align: left; }
+  th, td { border: 1px solid #000; padding: 3pt 5pt; vertical-align: top; }
+  th { background: #eee; }
+  .caption { text-align: center; font-size: 11.5pt; margin: 2pt 0 10pt; text-indent: 0; }
+  .figure { text-align: center; page-break-inside: avoid; margin: 6pt 0; }
+
+  /* Титульный лист */
+  .title { height: 257mm; display: flex; flex-direction: column; text-align: center; }
+  .title p { text-indent: 0; text-align: center; margin: 0; }
+  .title .top { font-size: 13pt; line-height: 1.5; }
+  .title .mid { margin-top: 55mm; }
+  .title .mid .kind { font-size: 15pt; font-weight: bold; margin-bottom: 8pt; }
+  .title .mid .subj { font-size: 13pt; margin-bottom: 6pt; }
+  .title .mid .name { font-size: 16pt; font-weight: bold; }
+  .title .people { margin-top: auto; margin-left: auto; width: 85mm; text-align: left; }
+  .title .people p { text-align: left; }
+  .title .bottom { margin-top: 45mm; }
+
+  .toc { list-style: none; padding-left: 0; }
+  .toc li { display: flex; }
+  .toc li span.dots { flex: 1; border-bottom: 1px dotted #000; margin: 0 4pt 5pt; }
+  .toc li.sub { padding-left: 1cm; }
+  .formula { text-align: center; text-indent: 0; margin: 6pt 0 8pt; font-style: italic; }
+  .figure img { max-width: 100%; }
+  td.num, th.num { text-align: right; }
+</style>
+</head>
+<body>
+
+<!-- ====================== Титульный лист ====================== -->
+<section class="title">
+  <div class="top">
+    <p>Министерство науки и высшего образования Российской Федерации</p>
+    <p>Федеральное государственное автономное образовательное учреждение высшего образования</p>
+    <p><b>«Национальный исследовательский университет ИТМО»</b></p>
+    <p>Факультет программной инженерии и компьютерной техники</p>
+  </div>
+  <div class="mid">
+    <p class="kind">Отчёт по лабораторной работе №3</p>
+    <p class="subj">по дисциплине «Системы искусственного интеллекта»</p>
+    <p class="name">Модуль 2. Методы машинного обучения</p>
+    <p class="subj" style="margin-top:8pt">Тема: «Линейная регрессия»</p>
+  </div>
+  <div class="people">
+    <p><b>Выполнил:</b></p>
+    <p>студент группы P3319</p>
+    <p>Быков Лев</p>
+    <p style="margin-top:10pt"><b>Преподаватель:</b></p>
+    <p>Болдырева Елена Александровна</p>
+  </div>
+  <div class="bottom">
+    <p>г. Санкт-Петербург</p>
+    <p>2026</p>
+  </div>
+</section>
+
+<!-- ====================== Содержание ====================== -->
+<h1>Содержание</h1>
+<ul class="toc">
+  <li>1. Цель и задание</li>
+  <li>2. Набор данных и его статистика</li>
+  <li>3. Предварительная обработка данных</li>
+  <li>4. Реализация метода наименьших квадратов</li>
+  <li>5. Модели и оценка качества</li>
+  <li class="sub">5.1. Модель 1 — все признаки</li>
+  <li class="sub">5.2. Модель 2 — Hours + Previous</li>
+  <li class="sub">5.3. Модель 3 — без Previous</li>
+  <li class="sub">5.4. Сравнение моделей</li>
+  <li>6. Бонус: синтетические признаки</li>
+  <li>7. Выводы</li>
+  <li>Приложение А. Структура проекта</li>
+</ul>
+
+<!-- ====================== 1 ====================== -->
+<h1>1. Цель и задание</h1>
+
+<p><b>Цель работы</b> — реализовать множественную линейную регрессию методом
+наименьших квадратов без готовых библиотек машинного обучения, построить
+несколько моделей на реальном наборе данных и сравнить их по коэффициенту
+детерминации.</p>
+
+<p class="noindent"><b>Задание:</b></p>
+<ul>
+  <li>получить и визуализировать статистику по датасету (количество, среднее,
+      стандартное отклонение, минимум, максимум, квантили);</li>
+  <li>выполнить предобработку: обработка пропусков, кодирование категориальных
+      признаков, нормировка;</li>
+  <li>разделить данные на обучающую и тестовую выборки;</li>
+  <li>реализовать линейную регрессию по МНК, используя только NumPy и Pandas;</li>
+  <li>построить три модели с разными наборами признаков и оценить каждую
+      по R²;</li>
+  <li>сравнить модели и сделать выводы о значимости признаков;</li>
+  <li>бонус — ввести синтетический признак.</li>
+</ul>
+
+<p>Студенты с нечётным порядковым номером используют датасет об успеваемости
+студентов (Student Performance), он и выбран в работе.</p>
+
+<!-- ====================== 2 ====================== -->
+<h1>2. Набор данных и его статистика</h1>
+
+<p>Файл <code>Student_Performance.csv</code> содержит 10 000 записей и
+6 столбцов. Целевая переменная — <code>Performance Index</code>, итоговый
+индекс успеваемости от 10 до 100. В отчёте используются короткие имена
+столбцов (таблица 1).</p>
+
+<table>
+  <tr><th>Исходное имя</th><th>Короткое имя</th><th>Тип</th><th>Описание</th></tr>
+  <tr><td>Hours Studied</td><td>Hours</td><td>целое, 1–9</td><td>часы на учёбу</td></tr>
+  <tr><td>Previous Scores</td><td>Previous</td><td>целое, 40–99</td><td>баллы за предыдущие экзамены</td></tr>
+  <tr><td>Extracurricular Activities</td><td>Extracurricular</td><td>категория Yes/No</td><td>участие во внеучебной деятельности</td></tr>
+  <tr><td>Sleep Hours</td><td>Sleep</td><td>целое, 4–9</td><td>среднее время сна в сутки</td></tr>
+  <tr><td>Sample Question Papers Practiced</td><td>Papers</td><td>целое, 0–9</td><td>число прорешанных пробных вариантов</td></tr>
+  <tr><td>Performance Index</td><td>Performance</td><td>число, 10–100</td><td>целевая переменная</td></tr>
+</table>
+<p class="caption">Таблица 1 — Признаки датасета</p>
+
+<p>Описательная статистика вычислена средствами Pandas
+(<code>describe</code> с дополнительными квантилями 5 % и 95 %)
+и приведена в таблице 2 и на рисунке 1.</p>
+
+<table>
+  <tr><th></th><th class="num">count</th><th class="num">mean</th><th class="num">std</th><th class="num">min</th><th class="num">5%</th><th class="num">25%</th><th class="num">50%</th><th class="num">75%</th><th class="num">95%</th><th class="num">max</th></tr>
+  <tr><td>Hours</td><td class="num">10000</td><td class="num">4,99</td><td class="num">2,59</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td class="num">5</td><td class="num">7</td><td class="num">9</td><td class="num">9</td></tr>
+  <tr><td>Previous</td><td class="num">10000</td><td class="num">69,45</td><td class="num">17,34</td><td class="num">40</td><td class="num">42</td><td class="num">54</td><td class="num">69</td><td class="num">85</td><td class="num">96</td><td class="num">99</td></tr>
+  <tr><td>Sleep</td><td class="num">10000</td><td class="num">6,53</td><td class="num">1,70</td><td class="num">4</td><td class="num">4</td><td class="num">5</td><td class="num">7</td><td class="num">8</td><td class="num">9</td><td class="num">9</td></tr>
+  <tr><td>Papers</td><td class="num">10000</td><td class="num">4,58</td><td class="num">2,87</td><td class="num">0</td><td class="num">0</td><td class="num">2</td><td class="num">5</td><td class="num">7</td><td class="num">9</td><td class="num">9</td></tr>
+  <tr><td>Performance</td><td class="num">10000</td><td class="num">55,22</td><td class="num">19,21</td><td class="num">10</td><td class="num">24</td><td class="num">40</td><td class="num">55</td><td class="num">71</td><td class="num">86</td><td class="num">100</td></tr>
+</table>
+<p class="caption">Таблица 2 — Описательная статистика числовых признаков</p>
+
+<div class="figure"><img src="../figures/01_stats_table.png"></div>
+<p class="caption">Рисунок 1 — Таблица статистики, сформированная программой</p>
+
+<p>Признаки <code>Hours</code>, <code>Sleep</code>, <code>Papers</code> и
+<code>Previous</code> распределены практически равномерно на своих
+интервалах, среднее и медиана совпадают (рисунок 2). Целевая переменная
+имеет унимодальное, близкое к симметричному распределение. Выбросов нет:
+все значения лежат в естественных границах шкал (рисунок 3).</p>
+
+<div class="figure"><img src="../figures/02_histograms.png"></div>
+<p class="caption">Рисунок 2 — Гистограммы числовых признаков</p>
+
+<div class="figure"><img src="../figures/03_boxplots.png" style="width:85%"></div>
+<p class="caption">Рисунок 3 — Ящики с усами (усы — минимум и максимум)</p>
+
+<p>Категориальный признак <code>Extracurricular</code> сбалансирован:
+5052 записи «No» и 4948 «Yes». Распределения успеваемости в двух группах
+почти одинаковы (рисунок 4).</p>
+
+<div class="figure"><img src="../figures/04_categorical.png" style="width:80%"></div>
+<p class="caption">Рисунок 4 — Категориальный признак Extracurricular</p>
+
+<!-- ====================== 3 ====================== -->
+<h1>3. Предварительная обработка данных</h1>
+
+<ol>
+  <li><b>Пропуски.</b> В датасете пропусков нет (0 из 60 000 ячеек). Код
+      всё равно содержит обработку: числовые пропуски заполняются медианой,
+      категориальные — модой. Медиана выбрана как устойчивая к выбросам
+      оценка.</li>
+  <li><b>Дубликаты.</b> Найдено и удалено 127 полностью совпадающих строк,
+      осталось 9873 записи. Дубликаты при случайном разбиении могли бы попасть
+      одновременно в обучающую и тестовую выборку и завысить оценку на
+      тесте.</li>
+  <li><b>Кодирование.</b> <code>Extracurricular</code> закодирован бинарно:
+      No → 0, Yes → 1. Для двух категорий это эквивалентно one-hot кодированию
+      с удалением одного столбца (иначе столбцы one-hot вместе со свободным
+      членом дали бы вырожденную матрицу X<sup>T</sup>X).</li>
+  <li><b>Разбиение.</b> Данные случайно перемешаны (seed = 42) и разделены
+      в пропорции 80/20: 7898 строк в обучающей выборке и 1975 в тестовой.</li>
+  <li><b>Нормировка.</b> Признаки приводятся к z-оценкам
+      z = (x − μ) / σ. Параметры μ и σ вычисляются <i>только</i> по обучающей
+      выборке и затем применяются к тестовой, чтобы информация из теста не
+      «просачивалась» в обучение. Целевая переменная не нормируется, поэтому
+      R² и RMSE измеряются в исходных баллах.</li>
+</ol>
+
+<p>Корреляционная матрица (рисунок 5) показывает, что признаки между собой
+практически не коррелируют (|r| (|r| &lt; 0,02)lt; 0,03), то есть мультиколлинеарности нет.
+С целевой переменной сильнее всего связаны <code>Previous</code> (r = 0,915)
+и <code>Hours</code> (r = 0,375); корреляция остальных признаков меньше 0,06.</p>
+
+<div class="figure"><img src="../figures/05_correlation.png" style="width:62%"></div>
+<p class="caption">Рисунок 5 — Корреляционная матрица</p>
+
+<div class="figure"><img src="../figures/06_scatter.png"></div>
+<p class="caption">Рисунок 6 — Диаграммы рассеяния Performance от каждого признака</p>
+
+<!-- ====================== 4 ====================== -->
+<h1>4. Реализация метода наименьших квадратов</h1>
+
+<p>Модель множественной линейной регрессии:</p>
+<p class="formula">ŷ = b<sub>0</sub> + b<sub>1</sub>x<sub>1</sub> + b<sub>2</sub>x<sub>2</sub> + … + b<sub>p</sub>x<sub>p</sub>.</p>
+
+<p>По МНК коэффициенты выбираются так, чтобы минимизировать сумму
+квадратов отклонений фактических значений от предсказанных:</p>
+<p class="formula">Q(B) = Σ (y<sub>i</sub> − ŷ<sub>i</sub>)² = (Y − XB)<sup>T</sup>(Y − XB) → min,</p>
+<p class="noindent">где X — матрица признаков, дополненная слева столбцом
+единиц (для свободного члена b<sub>0</sub>). Приравнивая градиент к нулю,
+∂Q/∂B = −2X<sup>T</sup>Y + 2X<sup>T</sup>XB = 0, получаем систему
+нормальных уравнений:</p>
+<p class="formula">(X<sup>T</sup>X) B = X<sup>T</sup>Y.</p>
+
+<p>Обращать матрицу X<sup>T</sup>X не требуется: система решается
+<b>собственной реализацией метода Гаусса</b> с выбором главного элемента
+по столбцу (функция <code>solve_gauss</code> в <code>linreg.py</code>).
+Это численно устойчивее явного вычисления (X<sup>T</sup>X)<sup>−1</sup>.
+Функции <code>np.linalg</code>, <code>sklearn</code> и другие готовые решатели
+не используются; NumPy служит только контейнером массивов и для матричного
+умножения.</p>
+
+<pre>def fit(self, x, y):
+    xd = self._design(x)                       # [1 | X]
+    beta = solve_gauss(xd.T @ xd, xd.T @ y)    # (X^T X) B = X^T Y
+    self.intercept_, self.coef_ = beta[0], beta[1:]</pre>
+
+<p>Качество оценивается коэффициентом детерминации:</p>
+<p class="formula">R² = 1 − SS<sub>res</sub> / SS<sub>tot</sub> = 1 − Σ(y<sub>i</sub> − ŷ<sub>i</sub>)² / Σ(y<sub>i</sub> − ȳ)².</p>
+<p class="noindent">R² показывает долю дисперсии целевой переменной,
+объяснённую моделью: 1 — идеальная модель, 0 — модель не лучше константы
+ȳ. Дополнительно приведены скорректированный R²
+(R²<sub>adj</sub> = 1 − (1 − R²)(n − 1)/(n − p − 1), штрафует за лишние
+признаки) и RMSE.</p>
+
+<p>Так как модель обучается на нормированных признаках, программа
+пересчитывает коэффициенты в исходные единицы:
+b<sub>j</sub> = β<sub>j</sub> / σ<sub>j</sub>,
+b<sub>0</sub> = β<sub>0</sub> − Σ b<sub>j</sub>μ<sub>j</sub>.
+Нормированные коэффициенты β<sub>j</sub> удобны для сравнения важности
+признаков (изменение Performance при росте признака на одно стандартное
+отклонение), исходные — для содержательной интерпретации.</p>
+
+<p><b>Проверка корректности.</b> Файл <code>test_linreg.py</code> содержит
+11 модульных тестов. В частности, реализация воспроизводит пример из
+методического пособия (Ŝ = 0,2787 + 0,1229·Y − 0,0294·W), точно
+восстанавливает коэффициенты на данных без шума и совпадает с эталоном
+<code>np.linalg.lstsq</code> до 10<sup>−9</sup> на зашумлённых данных
+(эталон используется только в тестах).</p>
+
+<!-- ====================== 5 ====================== -->
+<h1>5. Модели и оценка качества</h1>
+
+<p>Построены три модели с разными наборами признаков. Наборы выбраны так,
+чтобы проверить, насколько каждая группа признаков объясняет успеваемость:
+полный набор; два наиболее коррелированных признака; набор без самого
+сильного признака <code>Previous</code>.</p>
+
+<h2>5.1. Модель 1 — все признаки</h2>
+<p class="formula">Performance = −33,922 + 2,8505·Hours + 1,0177·Previous + 0,6232·Extracurricular + 0,4721·Sleep + 0,1897·Papers</p>
+<table>
+  <tr><th>Признак</th><th class="num">β (норм.)</th><th class="num">b (исх. ед.)</th></tr>
+  <tr><td>Previous</td><td class="num">17,652</td><td class="num">1,0177</td></tr>
+  <tr><td>Hours</td><td class="num">7,380</td><td class="num">2,8505</td></tr>
+  <tr><td>Sleep</td><td class="num">0,799</td><td class="num">0,4721</td></tr>
+  <tr><td>Papers</td><td class="num">0,544</td><td class="num">0,1897</td></tr>
+  <tr><td>Extracurricular</td><td class="num">0,312</td><td class="num">0,6232</td></tr>
+</table>
+<p class="caption">Таблица 3 — Коэффициенты модели 1</p>
+<p><b>R² (тест) = 0,9885</b>, R² (обучение) = 0,9887, RMSE = 2,05 балла.
+Все коэффициенты положительны: каждый фактор повышает успеваемость. Каждый
+дополнительный час учёбы даёт ≈ 2,85 балла, каждый балл предыдущих экзаменов
+≈ 1,02 балла, участие во внеучебной деятельности ≈ 0,62 балла.</p>
+
+<h2>5.2. Модель 2 — Hours + Previous</h2>
+<p class="formula">Performance = −29,756 + 2,8541·Hours + 1,0189·Previous</p>
+<p><b>R² (тест) = 0,9851</b>, R² (обучение) = 0,9859, RMSE = 2,33 балла.
+Всего два признака объясняют 98,5 % дисперсии — на 0,34 п.п. меньше, чем
+полная модель. Коэффициенты практически совпадают с моделью 1, потому что
+признаки не коррелируют между собой: удаление слабых признаков не смещает
+оценки сильных, а лишь увеличивает остаточный разброс.</p>
+
+<h2>5.3. Модель 3 — без Previous</h2>
+<p class="formula">Performance = 35,760 + 2,7890·Hours + 1,3283·Extracurricular + 0,5744·Sleep + 0,2701·Papers</p>
+<p><b>R² (тест) = 0,1371</b>, R² (обучение) = 0,1469, RMSE = 17,74 балла.
+Без прошлых оценок модель объясняет лишь 14 % дисперсии; ошибка выросла
+почти в 9 раз. Практически вся эта доля обеспечивается <code>Hours</code>
+(однофакторная модель по <code>Hours</code> даёт R² = 0,137). На рисунке 7
+видно, что прогноз модели 3 «сжат» в полосу 40–70 баллов и не различает
+сильных и слабых студентов.</p>
+
+<h2>5.4. Сравнение моделей</h2>
+<table>
+  <tr><th>Модель</th><th class="num">Признаков</th><th class="num">R² train</th><th class="num">R² test</th><th class="num">adj. R² test</th><th class="num">RMSE test</th></tr>
+  <tr><td>1 — все признаки</td><td class="num">5</td><td class="num">0,9887</td><td class="num"><b>0,9885</b></td><td class="num">0,9885</td><td class="num">2,047</td></tr>
+  <tr><td>2 — Hours + Previous</td><td class="num">2</td><td class="num">0,9859</td><td class="num">0,9851</td><td class="num">0,9851</td><td class="num">2,328</td></tr>
+  <tr><td>3 — без Previous</td><td class="num">4</td><td class="num">0,1469</td><td class="num">0,1371</td><td class="num">0,1353</td><td class="num">17,740</td></tr>
+  <tr><td>4 (бонус) — все + синтетические</td><td class="num">7</td><td class="num">0,9887</td><td class="num">0,9885</td><td class="num">0,9885</td><td class="num">2,046</td></tr>
+</table>
+<p class="caption">Таблица 4 — Сравнение моделей</p>
+
+<div class="figure"><img src="../figures/09_r2_comparison.png" style="width:70%"></div>
+<p class="caption">Рисунок 7 — R² моделей на тестовой выборке</p>
+
+<div class="figure"><img src="../figures/07_pred_vs_true.png"></div>
+<p class="caption">Рисунок 8 — Прогноз против факта (красная линия — идеальный прогноз)</p>
+
+<div class="figure"><img src="../figures/08_residuals.png"></div>
+<p class="caption">Рисунок 9 — Распределение остатков</p>
+
+<div class="figure"><img src="../figures/10_coefficients.png"></div>
+<p class="caption">Рисунок 10 — Нормированные коэффициенты моделей</p>
+
+<p>Чтобы оценить вклад каждого признака отдельно, построены также
+однофакторные модели (рисунок 11). Для линейной регрессии с одним признаком
+R² равен квадрату коэффициента корреляции.</p>
+
+<div class="figure"><img src="../figures/11_single_feature_r2.png" style="width:75%"></div>
+<p class="caption">Рисунок 11 — R² однофакторных моделей</p>
+
+<p>Во всех моделях R² на обучающей и тестовой выборках отличается не более
+чем на 0,01, т. е. переобучения нет — что ожидаемо для линейной модели
+с небольшим числом признаков и почти 8000 обучающих примеров. Остатки
+моделей 1 и 2 распределены симметрично вокруг нуля с σ ≈ 2 балла.</p>
+
+<!-- ====================== 6 ====================== -->
+<h1>6. Бонус: синтетические признаки</h1>
+
+<p>В модель 4 к полному набору признаков добавлены два синтетических:</p>
+<ul>
+  <li><code>Hours_x_Previous</code> = Hours · Previous — взаимодействие:
+      гипотеза «час учёбы полезнее сильному студенту»;</li>
+  <li><code>Hours_sq</code> = Hours² — гипотеза об убывающей отдаче от
+      учёбы (нелинейность).</li>
+</ul>
+
+<p>Сам по себе признак-взаимодействие информативен: однофакторная модель
+по <code>Hours_x_Previous</code> даёт R² = 0,514 — почти вчетверо больше,
+чем по <code>Hours</code> (0,137), так как он вбирает в себя информацию
+о прошлых оценках. Однако в полной модели его коэффициент практически равен
+нулю (β = −0,056 против 17,7 у Previous), а R² не изменился
+(0,98852 → 0,98853, RMSE 2,047 → 2,046). То же для <code>Hours_sq</code>
+(β = 0,088).</p>
+
+<p>Вывод: зависимость успеваемости от признаков в этом датасете
+<b>аддитивная и линейная</b> — эффекты факторов просто складываются, без
+взаимодействий и нелинейности. Это подтверждается и формой остатков
+(рисунок 9): у модели 1 в них нет систематической структуры. Синтетические
+признаки здесь ничего не добавляют и лишь усложняют модель; на данных
+с нелинейной зависимостью тот же приём дал бы прирост R².</p>
+
+<!-- ====================== 7 ====================== -->
+<h1>7. Выводы</h1>
+
+<ol>
+  <li>Реализована линейная регрессия по МНК: коэффициенты находятся решением
+      системы нормальных уравнений (X<sup>T</sup>X)B = X<sup>T</sup>Y
+      собственным методом Гаусса. Корректность подтверждена тестами,
+      в том числе на примере из методического пособия.</li>
+  <li><b>Лучшая модель — модель 1</b> (все признаки): R² = 0,9885 на тесте,
+      средняя ошибка около 2 баллов по шкале 10–100.</li>
+  <li><b>Главный признак — Previous</b> (баллы за прошлые экзамены):
+      один он объясняет 83 % дисперсии, без него R² падает до 0,14.
+      Второй по важности — <b>Hours</b>: вместе с Previous они дают
+      R² = 0,985, т. е. модель 2 — оптимальный компромисс между простотой
+      и точностью.</li>
+  <li>Признаки <code>Sleep</code>, <code>Papers</code>,
+      <code>Extracurricular</code> по отдельности почти ничего не объясняют
+      (R² ≈ 0), но статистически полезны в полной модели: вместе они
+      добавляют ≈ 0,34 п.п. R² и снижают RMSE с 2,33 до 2,05. Их эффект мал,
+      но не нулевой: +0,47 балла за час сна, +0,19 за пробный вариант,
+      +0,62 за внеучебную активность.</li>
+  <li>Для модели 3 видно, что текущие привычки (часы учёбы, сон, практика)
+      без учёта прошлой успеваемости позволяют предсказать результат лишь
+      грубо: прошлые оценки — лучший предиктор будущих.</li>
+  <li>Синтетические признаки (взаимодействие и квадрат) не улучшили
+      модель, что указывает на чисто линейную аддитивную природу данных.</li>
+</ol>
+
+<!-- ====================== Приложение ====================== -->
+<h1>Приложение А. Структура проекта</h1>
+<table>
+  <tr><th>Файл</th><th>Содержание</th></tr>
+  <tr><td><code>linreg.py</code></td><td>МНК (метод Гаусса), R², RMSE, разбиение, z-нормировка</td></tr>
+  <tr><td><code>main.py</code></td><td>Статистика, графики, предобработка, обучение и сравнение моделей</td></tr>
+  <tr><td><code>test_linreg.py</code></td><td>11 модульных тестов</td></tr>
+  <tr><td><code>data/Student_Performance.csv</code></td><td>Датасет</td></tr>
+  <tr><td><code>results.md</code></td><td>Таблицы результатов, генерируются <code>main.py</code></td></tr>
+  <tr><td><code>figures/</code></td><td>Графики, генерируются <code>main.py</code></td></tr>
+</table>
+<p class="noindent">Команды запуска:</p>
+<pre>python3 main.py           # расчёт, results.md и figures/
+python3 -m unittest -v    # тесты</pre>
+
+</body>
+</html>

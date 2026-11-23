@@ -1,0 +1,1486 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/undndnwnkk/ontologies/video-games"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.semanticweb.org/undndnwnkk/ontologies/video-games">
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <Literal xml:lang="ru">Перевод базы знаний Prolog о видеоиграх, жанрах и студиях в OWL 2.</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <Literal xml:lang="ru">Онтология видеоигр</Literal>
+    </Annotation>
+    <Declaration>
+        <Class IRI="#ActionGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#BeginnerFriendlyGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#CompetitiveGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#CozyGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Game"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Genre"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HardGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IndieGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IndieSingleplayerGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MultiplayerGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#NarrativeSoloGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SingleplayerGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SocialGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#StoryDrivenGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Studio"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#developedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#develops"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasGenre"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isGenreOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#sameDeveloperAs"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#minAge"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#action"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#action_rpg"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#adventure"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#among_us"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#baldurs_gate_3"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#cd_projekt_red"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#celeste"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#civilization_6"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#concernedape"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#counter_strike_2"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#dark_souls_3"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#disco_elysium"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#dota_2"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#extremely_ok_games"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#hades"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#half_life_2"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#hollow_knight"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#minecraft"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#moba"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#mojang"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#outer_wilds"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#platformer"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#portal_2"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#puzzle"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#red_dead_redemption_2"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#rocket_league"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#rpg"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#sandbox"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#shooter"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#simulation"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#sport"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#stardew_valley"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#strategy"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#supergiant_games"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#terraria"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#the_witcher_3"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#undertale"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#valve"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#ActionGame"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Game"/>
+            <ObjectUnionOf>
+                <ObjectHasValue>
+                    <ObjectProperty IRI="#hasGenre"/>
+                    <NamedIndividual IRI="#action"/>
+                </ObjectHasValue>
+                <ObjectHasValue>
+                    <ObjectProperty IRI="#hasGenre"/>
+                    <NamedIndividual IRI="#action_rpg"/>
+                </ObjectHasValue>
+            </ObjectUnionOf>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#BeginnerFriendlyGame"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Game"/>
+            <ObjectUnionOf>
+                <Class IRI="#CozyGame"/>
+                <ObjectHasValue>
+                    <ObjectProperty IRI="#hasGenre"/>
+                    <NamedIndividual IRI="#puzzle"/>
+                </ObjectHasValue>
+            </ObjectUnionOf>
+            <ObjectComplementOf>
+                <Class IRI="#CompetitiveGame"/>
+            </ObjectComplementOf>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#CompetitiveGame"/>
+        <ObjectOneOf>
+            <NamedIndividual IRI="#among_us"/>
+            <NamedIndividual IRI="#counter_strike_2"/>
+            <NamedIndividual IRI="#dota_2"/>
+            <NamedIndividual IRI="#rocket_league"/>
+        </ObjectOneOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#IndieSingleplayerGame"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#IndieGame"/>
+            <Class IRI="#SingleplayerGame"/>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#MultiplayerGame"/>
+        <ObjectOneOf>
+            <NamedIndividual IRI="#among_us"/>
+            <NamedIndividual IRI="#baldurs_gate_3"/>
+            <NamedIndividual IRI="#civilization_6"/>
+            <NamedIndividual IRI="#counter_strike_2"/>
+            <NamedIndividual IRI="#dark_souls_3"/>
+            <NamedIndividual IRI="#dota_2"/>
+            <NamedIndividual IRI="#minecraft"/>
+            <NamedIndividual IRI="#portal_2"/>
+            <NamedIndividual IRI="#red_dead_redemption_2"/>
+            <NamedIndividual IRI="#rocket_league"/>
+            <NamedIndividual IRI="#terraria"/>
+        </ObjectOneOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#NarrativeSoloGame"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#StoryDrivenGame"/>
+            <ObjectComplementOf>
+                <Class IRI="#MultiplayerGame"/>
+            </ObjectComplementOf>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#SocialGame"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Game"/>
+            <Class IRI="#MultiplayerGame"/>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <SubClassOf>
+        <Class IRI="#CompetitiveGame"/>
+        <Class IRI="#Game"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#CozyGame"/>
+        <Class IRI="#Game"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HardGame"/>
+        <Class IRI="#Game"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IndieGame"/>
+        <Class IRI="#Game"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MultiplayerGame"/>
+        <Class IRI="#Game"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SingleplayerGame"/>
+        <Class IRI="#Game"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#StoryDrivenGame"/>
+        <Class IRI="#Game"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="#Game"/>
+        <Class IRI="#Genre"/>
+        <Class IRI="#Studio"/>
+    </DisjointClasses>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#action"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#action_rpg"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#adventure"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#CompetitiveGame"/>
+        <NamedIndividual IRI="#among_us"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#among_us"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#IndieGame"/>
+        <NamedIndividual IRI="#among_us"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#among_us"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#baldurs_gate_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#baldurs_gate_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#baldurs_gate_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#baldurs_gate_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Studio"/>
+        <NamedIndividual IRI="#cd_projekt_red"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#celeste"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#HardGame"/>
+        <NamedIndividual IRI="#celeste"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#IndieGame"/>
+        <NamedIndividual IRI="#celeste"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#celeste"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#celeste"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#civilization_6"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#civilization_6"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#civilization_6"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Studio"/>
+        <NamedIndividual IRI="#concernedape"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#CompetitiveGame"/>
+        <NamedIndividual IRI="#counter_strike_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#counter_strike_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#counter_strike_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#dark_souls_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#HardGame"/>
+        <NamedIndividual IRI="#dark_souls_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#dark_souls_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#dark_souls_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#disco_elysium"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#IndieGame"/>
+        <NamedIndividual IRI="#disco_elysium"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#disco_elysium"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#disco_elysium"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#CompetitiveGame"/>
+        <NamedIndividual IRI="#dota_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#dota_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#dota_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Studio"/>
+        <NamedIndividual IRI="#extremely_ok_games"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#hades"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#IndieGame"/>
+        <NamedIndividual IRI="#hades"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#hades"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#hades"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#half_life_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#half_life_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#half_life_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#hollow_knight"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#HardGame"/>
+        <NamedIndividual IRI="#hollow_knight"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#IndieGame"/>
+        <NamedIndividual IRI="#hollow_knight"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#hollow_knight"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#hollow_knight"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#CozyGame"/>
+        <NamedIndividual IRI="#minecraft"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#minecraft"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#minecraft"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#minecraft"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#moba"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Studio"/>
+        <NamedIndividual IRI="#mojang"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#outer_wilds"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#IndieGame"/>
+        <NamedIndividual IRI="#outer_wilds"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#outer_wilds"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#outer_wilds"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#platformer"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#portal_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#portal_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#portal_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#portal_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#puzzle"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#red_dead_redemption_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#red_dead_redemption_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#red_dead_redemption_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#red_dead_redemption_2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#CompetitiveGame"/>
+        <NamedIndividual IRI="#rocket_league"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#rocket_league"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#rocket_league"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#rpg"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#sandbox"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#shooter"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#simulation"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#sport"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#CozyGame"/>
+        <NamedIndividual IRI="#stardew_valley"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#stardew_valley"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#IndieGame"/>
+        <NamedIndividual IRI="#stardew_valley"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#stardew_valley"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Genre"/>
+        <NamedIndividual IRI="#strategy"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Studio"/>
+        <NamedIndividual IRI="#supergiant_games"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#terraria"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#IndieGame"/>
+        <NamedIndividual IRI="#terraria"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#MultiplayerGame"/>
+        <NamedIndividual IRI="#terraria"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#terraria"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#the_witcher_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#the_witcher_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#the_witcher_3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Game"/>
+        <NamedIndividual IRI="#undertale"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#IndieGame"/>
+        <NamedIndividual IRI="#undertale"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SingleplayerGame"/>
+        <NamedIndividual IRI="#undertale"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StoryDrivenGame"/>
+        <NamedIndividual IRI="#undertale"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Studio"/>
+        <NamedIndividual IRI="#valve"/>
+    </ClassAssertion>
+    <DifferentIndividuals>
+        <NamedIndividual IRI="#action"/>
+        <NamedIndividual IRI="#action_rpg"/>
+        <NamedIndividual IRI="#adventure"/>
+        <NamedIndividual IRI="#moba"/>
+        <NamedIndividual IRI="#platformer"/>
+        <NamedIndividual IRI="#puzzle"/>
+        <NamedIndividual IRI="#rpg"/>
+        <NamedIndividual IRI="#sandbox"/>
+        <NamedIndividual IRI="#shooter"/>
+        <NamedIndividual IRI="#simulation"/>
+        <NamedIndividual IRI="#sport"/>
+        <NamedIndividual IRI="#strategy"/>
+    </DifferentIndividuals>
+    <DifferentIndividuals>
+        <NamedIndividual IRI="#action"/>
+        <NamedIndividual IRI="#action_rpg"/>
+        <NamedIndividual IRI="#among_us"/>
+        <NamedIndividual IRI="#baldurs_gate_3"/>
+        <NamedIndividual IRI="#cd_projekt_red"/>
+        <NamedIndividual IRI="#celeste"/>
+        <NamedIndividual IRI="#civilization_6"/>
+        <NamedIndividual IRI="#concernedape"/>
+        <NamedIndividual IRI="#counter_strike_2"/>
+        <NamedIndividual IRI="#dark_souls_3"/>
+        <NamedIndividual IRI="#disco_elysium"/>
+        <NamedIndividual IRI="#dota_2"/>
+        <NamedIndividual IRI="#extremely_ok_games"/>
+        <NamedIndividual IRI="#hades"/>
+        <NamedIndividual IRI="#half_life_2"/>
+        <NamedIndividual IRI="#hollow_knight"/>
+        <NamedIndividual IRI="#minecraft"/>
+        <NamedIndividual IRI="#moba"/>
+        <NamedIndividual IRI="#mojang"/>
+        <NamedIndividual IRI="#outer_wilds"/>
+        <NamedIndividual IRI="#platformer"/>
+        <NamedIndividual IRI="#portal_2"/>
+        <NamedIndividual IRI="#puzzle"/>
+        <NamedIndividual IRI="#red_dead_redemption_2"/>
+        <NamedIndividual IRI="#rocket_league"/>
+        <NamedIndividual IRI="#sandbox"/>
+        <NamedIndividual IRI="#simulation"/>
+        <NamedIndividual IRI="#stardew_valley"/>
+        <NamedIndividual IRI="#supergiant_games"/>
+        <NamedIndividual IRI="#terraria"/>
+        <NamedIndividual IRI="#the_witcher_3"/>
+        <NamedIndividual IRI="#undertale"/>
+        <NamedIndividual IRI="#valve"/>
+    </DifferentIndividuals>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#baldurs_gate_3"/>
+        <NamedIndividual IRI="#rpg"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#developedBy"/>
+        <NamedIndividual IRI="#celeste"/>
+        <NamedIndividual IRI="#extremely_ok_games"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#celeste"/>
+        <NamedIndividual IRI="#platformer"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#civilization_6"/>
+        <NamedIndividual IRI="#strategy"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#counter_strike_2"/>
+        <NamedIndividual IRI="#shooter"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#dark_souls_3"/>
+        <NamedIndividual IRI="#action"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#dark_souls_3"/>
+        <NamedIndividual IRI="#rpg"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#disco_elysium"/>
+        <NamedIndividual IRI="#rpg"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#developedBy"/>
+        <NamedIndividual IRI="#dota_2"/>
+        <NamedIndividual IRI="#valve"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#dota_2"/>
+        <NamedIndividual IRI="#moba"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#developedBy"/>
+        <NamedIndividual IRI="#hades"/>
+        <NamedIndividual IRI="#supergiant_games"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#hades"/>
+        <NamedIndividual IRI="#action"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#developedBy"/>
+        <NamedIndividual IRI="#half_life_2"/>
+        <NamedIndividual IRI="#valve"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#half_life_2"/>
+        <NamedIndividual IRI="#shooter"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#hollow_knight"/>
+        <NamedIndividual IRI="#action"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#hollow_knight"/>
+        <NamedIndividual IRI="#platformer"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#developedBy"/>
+        <NamedIndividual IRI="#minecraft"/>
+        <NamedIndividual IRI="#mojang"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#minecraft"/>
+        <NamedIndividual IRI="#sandbox"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#outer_wilds"/>
+        <NamedIndividual IRI="#adventure"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#outer_wilds"/>
+        <NamedIndividual IRI="#puzzle"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#developedBy"/>
+        <NamedIndividual IRI="#portal_2"/>
+        <NamedIndividual IRI="#valve"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#portal_2"/>
+        <NamedIndividual IRI="#puzzle"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#red_dead_redemption_2"/>
+        <NamedIndividual IRI="#action"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#red_dead_redemption_2"/>
+        <NamedIndividual IRI="#adventure"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#rocket_league"/>
+        <NamedIndividual IRI="#sport"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#developedBy"/>
+        <NamedIndividual IRI="#stardew_valley"/>
+        <NamedIndividual IRI="#concernedape"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#stardew_valley"/>
+        <NamedIndividual IRI="#simulation"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#terraria"/>
+        <NamedIndividual IRI="#sandbox"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#developedBy"/>
+        <NamedIndividual IRI="#the_witcher_3"/>
+        <NamedIndividual IRI="#cd_projekt_red"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#the_witcher_3"/>
+        <NamedIndividual IRI="#action_rpg"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#the_witcher_3"/>
+        <NamedIndividual IRI="#rpg"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasGenre"/>
+        <NamedIndividual IRI="#undertale"/>
+        <NamedIndividual IRI="#rpg"/>
+    </ObjectPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#among_us"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#baldurs_gate_3"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">18</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#celeste"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#civilization_6"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">12</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#counter_strike_2"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">18</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#dark_souls_3"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">16</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#disco_elysium"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">18</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#dota_2"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">12</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#hades"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">12</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#half_life_2"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">16</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#hollow_knight"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#minecraft"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#outer_wilds"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">12</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#portal_2"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">12</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#red_dead_redemption_2"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">18</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#rocket_league"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">3</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#stardew_valley"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#terraria"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">12</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#the_witcher_3"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">18</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#minAge"/>
+        <NamedIndividual IRI="#undertale"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">12</Literal>
+    </DataPropertyAssertion>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#developedBy"/>
+        <ObjectProperty IRI="#develops"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasGenre"/>
+        <ObjectProperty IRI="#isGenreOf"/>
+    </InverseObjectProperties>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="#developedBy"/>
+    </FunctionalObjectProperty>
+    <SymmetricObjectProperty>
+        <ObjectProperty IRI="#sameDeveloperAs"/>
+    </SymmetricObjectProperty>
+    <IrreflexiveObjectProperty>
+        <ObjectProperty IRI="#sameDeveloperAs"/>
+    </IrreflexiveObjectProperty>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#developedBy"/>
+        <Class IRI="#Game"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#develops"/>
+        <Class IRI="#Studio"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasGenre"/>
+        <Class IRI="#Game"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#sameDeveloperAs"/>
+        <Class IRI="#Game"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#developedBy"/>
+        <Class IRI="#Studio"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#develops"/>
+        <Class IRI="#Game"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasGenre"/>
+        <Class IRI="#Genre"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#sameDeveloperAs"/>
+        <Class IRI="#Game"/>
+    </ObjectPropertyRange>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#minAge"/>
+    </FunctionalDataProperty>
+    <DataPropertyDomain>
+        <DataProperty IRI="#minAge"/>
+        <Class IRI="#Game"/>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty IRI="#minAge"/>
+        <Datatype abbreviatedIRI="xsd:integer"/>
+    </DataPropertyRange>
+    <DLSafeRule>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal xml:lang="ru">Правило same_developer/2: разные игры одной студии.</Literal>
+        </Annotation>
+        <Body>
+            <ObjectPropertyAtom>
+                <ObjectProperty IRI="#developedBy"/>
+                <Variable IRI="#g1"/>
+                <Variable IRI="#s"/>
+            </ObjectPropertyAtom>
+            <ObjectPropertyAtom>
+                <ObjectProperty IRI="#developedBy"/>
+                <Variable IRI="#g2"/>
+                <Variable IRI="#s"/>
+            </ObjectPropertyAtom>
+            <DifferentIndividualsAtom>
+                <Variable IRI="#g1"/>
+                <Variable IRI="#g2"/>
+            </DifferentIndividualsAtom>
+        </Body>
+        <Head>
+            <ObjectPropertyAtom>
+                <ObjectProperty IRI="#sameDeveloperAs"/>
+                <Variable IRI="#g1"/>
+                <Variable IRI="#g2"/>
+            </ObjectPropertyAtom>
+        </Head>
+    </DLSafeRule>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#ActionGame</IRI>
+        <Literal xml:lang="ru">Игра жанра action ИЛИ action_rpg. Правило action_game/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#ActionGame</IRI>
+        <Literal xml:lang="ru">Экшен-игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#BeginnerFriendlyGame</IRI>
+        <Literal xml:lang="ru">НЕ соревновательная игра, которая спокойная ИЛИ является головоломкой. Правило recommended_for_beginner/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#BeginnerFriendlyGame</IRI>
+        <Literal xml:lang="ru">Игра для новичка</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#CompetitiveGame</IRI>
+        <Literal xml:lang="ru">Основной игровой процесс предполагает соревнование. Соответствует competitive/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#CompetitiveGame</IRI>
+        <Literal xml:lang="ru">Соревновательная игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#CozyGame</IRI>
+        <Literal xml:lang="ru">Игра подходит для спокойного, ненапряжённого прохождения. Соответствует cozy/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#CozyGame</IRI>
+        <Literal xml:lang="ru">Спокойная игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Game</IRI>
+        <Literal xml:lang="ru">Видеоигра. Соответствует предикату game/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Game</IRI>
+        <Literal xml:lang="ru">Игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Genre</IRI>
+        <Literal xml:lang="ru">Жанр видеоигры. Второй аргумент has_genre/2.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Genre</IRI>
+        <Literal xml:lang="ru">Жанр</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#HardGame</IRI>
+        <Literal xml:lang="ru">Игра высокой сложности, не рекомендуется новичкам (лаб. 2).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#HardGame</IRI>
+        <Literal xml:lang="ru">Сложная игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#IndieGame</IRI>
+        <Literal xml:lang="ru">Игра создана независимой студией или небольшой командой. Соответствует indie/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#IndieGame</IRI>
+        <Literal xml:lang="ru">Независимая игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#IndieSingleplayerGame</IRI>
+        <Literal xml:lang="ru">Независимая И одиночная игра. Правило indie_singleplayer/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#IndieSingleplayerGame</IRI>
+        <Literal xml:lang="ru">Независимая одиночная игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#MultiplayerGame</IRI>
+        <Literal xml:lang="ru">Игра поддерживает совместную или соревновательную игру. Соответствует multiplayer/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#MultiplayerGame</IRI>
+        <Literal xml:lang="ru">Многопользовательская игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#NarrativeSoloGame</IRI>
+        <Literal xml:lang="ru">Сюжетная игра И НЕ многопользовательская. Правило narrative_solo/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#NarrativeSoloGame</IRI>
+        <Literal xml:lang="ru">Сюжетная игра без мультиплеера</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#SingleplayerGame</IRI>
+        <Literal xml:lang="ru">В игре есть полноценный одиночный режим. Соответствует singleplayer/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#SingleplayerGame</IRI>
+        <Literal xml:lang="ru">Одиночная игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#SocialGame</IRI>
+        <Literal xml:lang="ru">Игра И поддержка мультиплеера. Правило social_game/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#SocialGame</IRI>
+        <Literal xml:lang="ru">Социальная игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#StoryDrivenGame</IRI>
+        <Literal xml:lang="ru">Сюжет — одна из основных составляющих игры. Соответствует story_driven/1.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#StoryDrivenGame</IRI>
+        <Literal xml:lang="ru">Сюжетная игра</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Studio</IRI>
+        <Literal xml:lang="ru">Студия-разработчик. Второй аргумент developed_by/2.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Studio</IRI>
+        <Literal xml:lang="ru">Студия</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#action</IRI>
+        <Literal>Action</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#action_rpg</IRI>
+        <Literal>Action RPG</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#adventure</IRI>
+        <Literal>Adventure</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#among_us</IRI>
+        <Literal>Among Us</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#baldurs_gate_3</IRI>
+        <Literal>Baldur&apos;s Gate 3</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#cd_projekt_red</IRI>
+        <Literal>CD Projekt Red</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#celeste</IRI>
+        <Literal>Celeste</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#civilization_6</IRI>
+        <Literal>Civilization VI</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#concernedape</IRI>
+        <Literal>ConcernedApe</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#counter_strike_2</IRI>
+        <Literal>Counter-Strike 2</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#dark_souls_3</IRI>
+        <Literal>Dark Souls III</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#developedBy</IRI>
+        <Literal xml:lang="ru">Игра создана студией. Соответствует developed_by/2.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#developedBy</IRI>
+        <Literal xml:lang="ru">разработана студией</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#develops</IRI>
+        <Literal xml:lang="ru">Студия разработала игру. Правило game_by_studio/2.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#develops</IRI>
+        <Literal xml:lang="ru">разработала игру</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#disco_elysium</IRI>
+        <Literal>Disco Elysium</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#dota_2</IRI>
+        <Literal>Dota 2</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#extremely_ok_games</IRI>
+        <Literal>Extremely OK Games</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#hades</IRI>
+        <Literal>Hades</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#half_life_2</IRI>
+        <Literal>Half-Life 2</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#hasGenre</IRI>
+        <Literal xml:lang="ru">Игра относится к жанру. Соответствует has_genre/2.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#hasGenre</IRI>
+        <Literal xml:lang="ru">имеет жанр</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#hollow_knight</IRI>
+        <Literal>Hollow Knight</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#isGenreOf</IRI>
+        <Literal xml:lang="ru">является жанром игры</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#minAge</IRI>
+        <Literal xml:lang="ru">Минимальный возраст игрока по рейтингу PEGI (лаб. 2).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#minAge</IRI>
+        <Literal xml:lang="ru">минимальный возраст</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#minecraft</IRI>
+        <Literal>Minecraft</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#moba</IRI>
+        <Literal>MOBA</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#mojang</IRI>
+        <Literal>Mojang</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#outer_wilds</IRI>
+        <Literal>Outer Wilds</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#platformer</IRI>
+        <Literal>Platformer</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#portal_2</IRI>
+        <Literal>Portal 2</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#puzzle</IRI>
+        <Literal>Puzzle</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#red_dead_redemption_2</IRI>
+        <Literal>Red Dead Redemption 2</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#rocket_league</IRI>
+        <Literal>Rocket League</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#rpg</IRI>
+        <Literal>RPG</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#sameDeveloperAs</IRI>
+        <Literal xml:lang="ru">Две разные игры одной студии. Правило same_developer/2.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#sameDeveloperAs</IRI>
+        <Literal xml:lang="ru">от того же разработчика, что и</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#sandbox</IRI>
+        <Literal>Sandbox</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#shooter</IRI>
+        <Literal>Shooter</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#simulation</IRI>
+        <Literal>Simulation</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#sport</IRI>
+        <Literal>Sport</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#stardew_valley</IRI>
+        <Literal>Stardew Valley</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#strategy</IRI>
+        <Literal>Strategy</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#supergiant_games</IRI>
+        <Literal>Supergiant Games</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#terraria</IRI>
+        <Literal>Terraria</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#the_witcher_3</IRI>
+        <Literal>The Witcher 3</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#undertale</IRI>
+        <Literal>Undertale</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#valve</IRI>
+        <Literal>Valve</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+
